@@ -1,0 +1,235 @@
+@font-face {
+    font-family: 'Hogback';
+    src: url('/Sakana/view/fonts/principal/Hogback Demo Version.otf') format('opentype');
+}
+
+
+/* VARIÁVEIS GLOBAIS */
+:root {
+    --primary-wine: #7a0635;
+    --primary-wine-hover: #8d073d;
+    --dark-blue: #092741;
+    --bg-card: #f5f1e3;
+    --text-light: #ffffff;
+
+    --border-radius: 12px;
+
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* RESET BÁSICO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* CONFIGURAÇÃO GLOBAL DA PÁGINA */
+body {
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   BACKGROUNDS DAS TELAS
+===================================================== */
+
+.page-home {
+    background-image: url("/Sakana/view/images/img_background-tela_inicial.png");
+}
+
+.page {
+    background-image: url("/Sakana/view/images/img_background-tela_login.png");
+}
+
+.page-gerencia {
+    background: none;
+}
+
+
+/* =====================================================
+   COMPONENTES REUTILIZÁVEIS
+===================================================== */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+
+    text-align: center;
+
+    animation: fadeIn 0.8s ease-out;
+}
+
+
+/* TÍTULOS */
+
+.titulo {
+    font-family: 'Hogback';
+    font-size: 5rem;
+
+    color: var(--primary-wine);
+
+    margin-bottom: -10px;
+
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.subtitulo {
+    font-family: 'Hogback';
+    font-size: 1.8rem;
+
+    color: var(--dark-blue);
+
+    letter-spacing: 2px;
+}
+
+
+/* =====================================================
+   BOTÕES
+===================================================== */
+
+.btn-primary {
+    text-decoration: none;
+    background-color: var(--primary-wine);
+    color: var(--text-light);
+
+    font-size: 18px;
+    font-weight: 600;
+
+    padding: 16px 45px;
+
+    border: none;
+    border-radius: var(--border-radius);
+
+    cursor: pointer;
+
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    transition: var(--transition);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-wine-hover);
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 8px 25px rgba(122, 6, 53, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   TELAS DE LOGIN / CADASTRO
+===================================================== */
+
+.card {
+    width: 380px;
+
+    padding: 50px 40px;
+
+    background-color: var(--bg-card);
+
+    border: 3px solid var(--dark-blue);
+    border-radius: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 35px;
+
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+
+/* CAMPOS */
+
+.input-group {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+
+    border: 2px solid rgba(125, 22, 51, 0.3);
+    border-radius: 10px;
+
+    background: white;
+
+    color: var(--primary-wine);
+    font-size: 16px;
+
+    text-align: center;
+
+    transition: var(--transition);
+}
+
+input:focus {
+    outline: none;
+
+    border-color: var(--primary-wine);
+
+    box-shadow: 0 0 0 4px rgba(122, 6, 53, 0.1);
+}
+
+
+/* LINKS */
+
+.link-voltar {
+    color: var(--dark-blue);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    text-decoration: none;
+
+    opacity: 0.7;
+
+    transition: var(--transition);
+}
+
+.link-voltar:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+
+
+
+/* ANIMAÇÕES */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
