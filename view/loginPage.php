@@ -20,8 +20,8 @@
         <h2 style="color: var(--dark-blue);">LOGAR</h2>
 
         <form class="input-group" action="/Sakana/index.php?action=logado" method="POST">
-            <input type="email" name="txtEmail" placeholder="Email">
-            <input type="password" name="txtSenha" placeholder="Senha">
+            <input type="email" name="txtEmail" placeholder="Email" required>
+            <input type="password" name="txtSenha" placeholder="Senha" required>
 
             <button type="submit" class="btn-primary">LOGAR</button>
         </form>

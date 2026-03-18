@@ -47,5 +47,35 @@
                 require_once __DIR__ . "/../view/registerPage.php";
             }   
         }
+
+        public function logar(){
+            if ($_SERVER ["REQUEST_METHOD"] !== "POST") {
+                require_once __DIR__ . "/../view/loginPage.php";
+                return;
+            }
+
+            $email = $_POST["txtEmail"] ?? "";
+            $senha = $_POST["txtSenha"] ?? "";
+
+            if ($email === "" || $senha === "") {
+                echo "<script>alert('Por favor, preencha todos os campos!');</script>";
+                require_once __DIR__ . "/../view/loginPage.php";
+                return;
+            }
+
+            require_once __DIR__ . "/../model/accountModel.php";
+            $accountModel = new AccountModel();
+            $logou = $accountModel->logarUser($email, $senha);
+
+            if ($logou) {
+                require_once __DIR__ . "/../view/accessPage.php";
+            }
+            else {
+                echo "<script>alert('Login inválido');</script>";
+                require_once __DIR__ . "/../view/loginPage.php";
+            }
+            
+
+        }
     }
 ?>
