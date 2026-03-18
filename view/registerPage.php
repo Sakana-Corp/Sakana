@@ -12,7 +12,7 @@
         <div class="card">
             <h2 style="color: var(--dark-blue);">CADASTRAR</h2>
 
-            <form class="input-group" action="/Sakana/controller/router.php?action=cadastrar" method="POST">
+            <form class="input-group" action="/Sakana/index.php?action=cadastrar" method="POST">
                 <input type="text" name="txtNome" placeholder="Nome" required>
                 <input type="email" name="txtEmail" placeholder="Email" required>
                 <input type="password" name="txtSenha" placeholder="Senha" required>

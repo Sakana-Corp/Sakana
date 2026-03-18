@@ -1,3 +1,3 @@
 <?php
-    header("location: controller/router.php?action=home");
+    require_once "controller/router.php";
 ?>

@@ -1,7 +1,7 @@
 <?php
     class AccountModel{
         public function cadastrarUser($nome, $email, $senha){
-            require_once(__DIR__ . "/../config/conexao.php");
+            require_once __DIR__ . "/../config/conexao.php";
 
             try{
                 $conexao = Conexao::getConn();

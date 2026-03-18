@@ -1,7 +1,7 @@
 <?php 
     class AccessController {
         function logado(){
-            require_once("../view/accessPage.php");
+            require_once __DIR__ . "/../view/accessPage.php";
         }
     }
 ?>

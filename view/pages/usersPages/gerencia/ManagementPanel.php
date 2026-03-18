@@ -43,7 +43,7 @@ SIMULADOR DE RESTAURANTE
 <a href="pedidos.html" target="frame" class="menu-btn">Pedidos</a>
 <a href="cardapio.html" target="frame" class="menu-btn">Cardápio</a>
 <a href="mesas.html" target="frame" class="menu-btn">Mesas</a>
-<a href="/Sakana/controller/router.php?action=logado" class="btn-setor">Trocar de setor</a>
+<a href="/Sakana/index.php?action=logado" class="btn-setor">Trocar de setor</a>
 
 </aside>
 

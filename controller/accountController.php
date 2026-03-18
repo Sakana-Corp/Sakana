@@ -2,15 +2,15 @@
     class AccountController {
 
         public function cadastro(){
-            require_once("../view/registerPage.php");
+            require_once __DIR__ . "/../view/registerPage.php";
         }
         public function login(){
-            require_once("../view/loginPage.php");
+            require_once __DIR__ . "/../view/loginPage.php";
         }
 
         public function cadastrar(){
             if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-                require_once ("../view/registerPage.php");
+                require_once __DIR__ .  "/../view/registerPage.php";
                 return;
             }
 
@@ -23,31 +23,29 @@
             // validações
             if ($nome === "" || $email === "" || $senha === "" || $confirmaSenha === "") {
                 echo "<script>alert('Por favor, preencha todos os campos!');</script>";
-                require_once("../view/registerPage.php");
+                require_once __DIR__ . "/../view/registerPage.php";
                 return;
             }
 
             if($senha !== $confirmaSenha){
                 echo "<script>alert('As senhas não conferem!');</script>";
-                require_once("../view/registerPage.php");
+                require_once __DIR__ . "/../view/registerPage.php";
                 return;
             }
 
-            require_once "../model/accountModel.php";
+            require_once __DIR__ . "/../model/accountModel.php";
             $accountModel = new AccountModel();
             $cadastrou = $accountModel->cadastrarUser($nome, $email, $senha);
 
             if ($cadastrou) {
                 echo "<script>alert('Cadastro realizado com sucesso!');</script>";
-                require_once("../view/loginPage.php");
+                require_once __DIR__ . "/../view/loginPage.php";
                 return;
             }
             else {
                 echo "<script>alert('Erro ao realizar cadastro!');</script>";
-                require_once("../view/registerPage.php");
-            }
-            
-
+                require_once __DIR__ . "/../view/registerPage.php";
+            }   
         }
     }
 ?>

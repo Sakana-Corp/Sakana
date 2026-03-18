@@ -14,7 +14,7 @@
         <h2 class="subtitulo">SIMULADOR GERENCIAL</h2>
         
         <div style="margin-top: 40px;">
-            <a class="btn-primary" href="/Sakana/controller/router.php?action=login">
+            <a class="btn-primary" href="/Sakana/index.php?action=login">
                 Iniciar Simulador
             </a>
         </div>

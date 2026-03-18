@@ -19,14 +19,14 @@
 
         <h2 style="color: var(--dark-blue);">LOGAR</h2>
 
-        <form class="input-group" action="/Sakana/controller/router.php?action=logado" method="POST">
+        <form class="input-group" action="/Sakana/index.php?action=logado" method="POST">
             <input type="email" name="txtEmail" placeholder="Email">
             <input type="password" name="txtSenha" placeholder="Senha">
 
             <button type="submit" class="btn-primary">LOGAR</button>
         </form>
 
-        <a href="/Sakana/controller/router.php?action=cadastro" class="btn-primary" style="width: 100%; background-color: var(--dark-blue);">
+        <a href="/Sakana/index.php?action=cadastro" class="btn-primary" style="width: 100%; background-color: var(--dark-blue);">
             CADASTRAR
         </a>
     </div>

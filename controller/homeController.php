@@ -1,7 +1,7 @@
 <?php
     class HomeController {
         public function index() {
-            require_once "../view/homePage.php";
+            require_once __DIR__ . "/../view/homePage.php";
         }
     }
 ?>
