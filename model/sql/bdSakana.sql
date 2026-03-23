@@ -5,7 +5,7 @@ create table LoginUser(
 	idUser int (11) auto_increment primary key,
     nomeUser varchar (30) not null,
     email varchar (50) unique not null,
-    senha varchar(16) unique not null
+    senha varchar(16) not null
 );
 
 /*
