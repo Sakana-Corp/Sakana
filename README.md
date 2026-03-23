@@ -14,4 +14,5 @@ Novas funcionalidades podem ser adicionadas futuramente para tornar a simulaçã
 
 👨‍💻 Autores
 
+
 Desenvolvido por Petrick Preite, Sojiro Takemura, Maria Bononi, Giovanna Ferreira e Matheus Marangoni.
