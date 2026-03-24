@@ -37,5 +37,17 @@
             require_once "usersController.php";
             $controller = new UsersController();
             $controller->logadoGerencia();
+            break;
+        case "painelAcesso":
+            require_once "accessController.php";
+            $controller = new AccessController();
+            $controller->painelAcesso();
+            break;
+        case "logout":
+            require_once "accessController.php";
+            $controller = new AccessController();
+            $controller->logout();
+            break;
+        
     }
 ?>
