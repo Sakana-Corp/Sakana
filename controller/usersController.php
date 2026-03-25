@@ -1,9 +1,8 @@
 <?php
     class UsersController {
         private function requireAuth(){
-            if (session_status() !== PHP_SESSION_ACTIVE){
-                session_start();
-            }
+            SessionHelper::garanteSessaoIniciada();
+            
             if (empty($_SESSION["idUser"])){
                 header("Location: /Sakana/index.php?action=login");
                 exit();

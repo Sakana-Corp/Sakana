@@ -13,15 +13,17 @@
             <h2 style="color: var(--dark-blue);">CADASTRAR</h2>
 
             <form class="input-group" action="/Sakana/index.php?action=cadastrar" method="POST">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"] ?? "", ENT_QUOTES, "UTF-8") ?>">
+
                 <input type="text" name="txtNome" placeholder="Nome" minlength="2" maxlength="30" required>
-                <input type="email" name="txtEmail" placeholder="Email" minlength="6" maxlength="50" required>
+                <input type="email" name="txtEmail" placeholder="Email" maxlength="50" required>
                 <input type="password" name="txtSenha" placeholder="Senha" minlength="8" maxlength="16" autocomplete="new-password" required>
                 <input type="password" name="txtConfirmaSenha" placeholder="Confirmar senha" minlength="8" maxlength="16" autocomplete="new-password" required>
 
                 <button type="submit" name="btnEnviar" class="btn-primary">CADASTRAR</button>
             </form>
         </div>
-</div>
+    </div>
 
 </body>
 </html>

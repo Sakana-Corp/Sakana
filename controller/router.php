@@ -9,9 +9,9 @@
             $controller->index();
             break;
         case "login":
-            require_once "accountController.php";
-            $controller = new AccountController();
-            $controller->login();
+            require_once "accessController.php";
+            $controller = new AccessController();
+            $controller->loginForm();
             break;
         case "cadastrar":
             require_once "accountController.php";
@@ -47,6 +47,11 @@
             require_once "accessController.php";
             $controller = new AccessController();
             $controller->logout();
+            break;
+        default:
+            require_once "homeController.php";
+            $controller = new HomeController();
+            $controller->index();
             break;
         
     }

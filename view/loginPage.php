@@ -20,7 +20,9 @@
         <h2 style="color: var(--dark-blue);">LOGAR</h2>
 
         <form class="input-group" action="/Sakana/index.php?action=logado" method="POST">
-            <input type="email" name="txtEmail" placeholder="Email" minlength="6" maxlength="50" required>
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"] ?? "", ENT_QUOTES, "UTF-8") ?>">
+
+            <input type="email" name="txtEmail" placeholder="Email" maxlength="50" required>
             <input type="password" name="txtSenha" placeholder="Senha" minlength="8" maxlength="16" autocomplete="new-password" required>
 
             <button type="submit" class="btn-primary">LOGAR</button>

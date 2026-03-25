@@ -1,17 +1,8 @@
 <?php
-    $secure = (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off");
-    session_set_cookie_params([
-        "lifetime" => 0,
-        "path" => "/",
-        "domain" => "",
-        "secure" => $secure,
-        "httponly" => true,
-        "samesite" => "Lax"
-    ]);
+    require_once "config/config.php";
 
-    if (session_status() !== PHP_SESSION_ACTIVE) {
-        session_start();
-    }
+    session_set_cookie_params($SECURITY_CONFIG["session"]);
+    SessionHelper::garanteSessaoIniciada();
 
     require_once "controller/router.php";
 ?>

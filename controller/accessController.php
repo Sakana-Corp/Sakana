@@ -2,8 +2,25 @@
     class AccessController {
         function logado(){
             if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                SessionHelper::garanteSessaoIniciada();
+
+                // Bloqueia envio de formulário forjado (CSRF).
+                if (!SessionHelper::validarToken()) {
+                    echo "<script>
+                            alert('Tentativa de requisição inválida!');
+                            window.location='/Sakana/index.php?action=login';
+                          </script>";
+                    return;
+                }
+
                 $email = $_POST["txtEmail"];
                 $senha = $_POST["txtSenha"];
+
+                if ($email === "" || $senha === "") {
+                    echo "<script>alert('Por favor, preencha todos os campos!');</script>";
+                    require_once __DIR__ . "/../view/loginPage.php";
+                    return;
+                }
 
                 require_once __DIR__ . "/../model/accountModel.php";
                 $accontModel = new AccountModel();
@@ -11,13 +28,13 @@
                 $usuario = $accontModel->logarUser($email, $senha);
 
                 if ($usuario) {
-                    if (session_status() !== PHP_SESSION_ACTIVE) {
-                        session_start();
-                    }
+                    // Troca o ID da sessão após autenticar para evitar fixation.
                     session_regenerate_id(true);
 
                     $_SESSION["idUser"] = $usuario["idUser"];
                     $_SESSION["nomeUser"] = $usuario["nomeUser"];
+
+                    $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
 
                     header("Location: /Sakana/index.php?action=painelAcesso");
                     exit;
@@ -31,13 +48,20 @@
             }
             else {
                 header("Location: /Sakana/index.php?action=login");
+                exit;
             }
         }
 
+        public function loginForm() {
+            SessionHelper::garanteSessaoIniciada();
+            SessionHelper::gerarToken();
+
+            require_once __DIR__ . "/../view/loginPage.php";
+        }
+
         public function painelAcesso() {
-            if (session_status() !== PHP_SESSION_ACTIVE){
-                session_start();
-            }
+            SessionHelper::garanteSessaoIniciada();
+
             if (empty($_SESSION["idUser"])) {
                 header("Location: /Sakana/index.php?action=login");
                 exit;
@@ -47,27 +71,9 @@
         }
 
         public function logout() {
-           if (session_status() !== PHP_SESSION_ACTIVE) {
-                session_start();
-           }
+           SessionHelper::garanteSessaoIniciada();
+           SessionHelper::encerrar();
 
-           $_SESSION = [];
-
-           if (ini_get("session.use_cookies")) {
-            $params = session_get_cookie_params();
-
-            setcookie(
-                session_name(),
-                "",
-                time() - 42000,
-                $params["path"],
-                $params["domain"],
-                $params["secure"],
-                $params["httponly"]
-            );
-           }
-
-           session_destroy();
            header("Location: /Sakana/index.php?action=home");
            exit();
         }
