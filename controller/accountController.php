@@ -11,7 +11,7 @@
         public function cadastrar(){
             if ($_SERVER["REQUEST_METHOD"] !== "POST") {
                 header("Location: /Sakana/index.php?action=cadastro");
-                exit();
+                exit;
                 return;
             }
 
@@ -19,12 +19,9 @@
 
             // Exige token CSRF válido antes de processar o cadastro.
             if (!SessionHelper::validarToken()) {
-                echo "<script>
-                        alert('Tentativa de requisição inválida!');
-                         window.location='/Sakana/index.php?action=cadastro';
-                      </script>";
-                require_once __DIR__ . "/../view/registerPage.php";
-                return;
+                SessionHelper::setFlash("error", "Tentativa de requisição inválida.");
+                header("Location: /Sakana/index.php?action=cadastro");
+                exit;
             }
 
             $nome = $_POST["txtNome"] ?? "";
@@ -35,32 +32,45 @@
 
             // validações
             if ($nome === "" || $email === "" || $senha === "" || $confirmaSenha === "") {
-                echo "<script>alert('Por favor, preencha todos os campos!');</script>";
-                require_once __DIR__ . "/../view/registerPage.php";
-                return;
+                SessionHelper::setFlash("warning", "Preencha todos os campos para continuar.");
+                header("Location: /Sakana/index.php?action=cadastro");
+                exit;
             }
 
             if($senha !== $confirmaSenha){
-                echo "<script>alert('As senhas não conferem!');</script>";
-                require_once __DIR__ . "/../view/registerPage.php";
-                return;
+                SessionHelper::setFlash("warning", "As senhas não conferem. Digite novamente.");
+                header("Location: /Sakana/index.php?action=cadastro");
+                exit;
             }
 
             require_once __DIR__ . "/../model/accountModel.php";
             $accountModel = new AccountModel();
-            $cadastrou = $accountModel->cadastrarUser($nome, $email, $senha);
+            $resultado = $accountModel->cadastrarUser($nome, $email, $senha);
 
-            if ($cadastrou) {
+            if ($resultado["ok"]) {
                 // Renova token após sucesso para reduzir reutilização.
                 $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
 
-                echo "<script>alert('Cadastro realizado com sucesso!');</script>";
-                require_once __DIR__ . "/../view/loginPage.php";
-                return;
+                SessionHelper::setFlash("success", "Cadastro realizado com sucesso!");
+                header("Location: /Sakana/index.php?action=login");
+                exit;
             }
             else {
-                echo "<script>alert('Erro ao realizar cadastro!');</script>";
-                require_once __DIR__ . "/../view/registerPage.php";
+                $error = $resultado["error"];
+
+                if ($error === "email_exists") {
+                    $msg = "Este email já está cadastrado. Use outro ou faça login.";
+                }
+                elseif ($error === "database_error") {
+                    $msg = "Banco de dados indisponível. Tente mais tarde.";
+                }
+                else {
+                    $msg = "Erro ao Cadastrar. Tente novamente.";
+                }
+
+                SessionHelper::setFlash("error", $msg);
+                header("Location: /Sakana/index.php?action=cadastro");
+                exit;
             }   
         }
     }

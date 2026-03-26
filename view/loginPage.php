@@ -12,28 +12,40 @@
 
 <body class="page">
 
-<div class="container" style="flex-direction:row; gap:120px;">
+    <?php
+        SessionHelper::garanteSessaoIniciada();
+        $flash = SessionHelper::getFlash();
+    ?>
+    <?php if ($flash): ?>
+        <div class="alert alert-toast alert-<?= htmlspecialchars($flash["type"], ENT_QUOTES, "UTF-8") ?>" role="alert" aria-live="polite">
+            <span class="alert-text"><?= htmlspecialchars($flash["message"], ENT_QUOTES, "UTF-8") ?></span>
+            <button type="button" class="alert-close" aria-label="Fechar aviso">×</button>
+        </div>
+    <?php endif; ?>
 
-    <!-- DIV LOGIN -->
-    <div class="card">
+    <div class="container" style="flex-direction:row; gap:120px;">
 
-        <h2 style="color: var(--dark-blue);">LOGAR</h2>
+        <!-- DIV LOGIN -->
+        <div class="card">
 
-        <form class="input-group" action="/Sakana/index.php?action=logado" method="POST">
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"] ?? "", ENT_QUOTES, "UTF-8") ?>">
+            <h2 style="color: var(--dark-blue);">LOGAR</h2>
 
-            <input type="email" name="txtEmail" placeholder="Email" maxlength="50" required>
-            <input type="password" name="txtSenha" placeholder="Senha" minlength="8" maxlength="16" autocomplete="new-password" required>
+            <form class="input-group" action="/Sakana/index.php?action=logado" method="POST">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"] ?? "", ENT_QUOTES, "UTF-8") ?>">
 
-            <button type="submit" class="btn-primary">LOGAR</button>
-        </form>
+                <input type="email" name="txtEmail" placeholder="Email" maxlength="50" required>
+                <input type="password" name="txtSenha" placeholder="Senha" minlength="8" maxlength="16" autocomplete="new-password" required>
 
-        <a href="/Sakana/index.php?action=cadastro" class="btn-primary" style="width: 100%; background-color: var(--dark-blue);">
-            CADASTRAR
-        </a>
+                <button type="submit" class="btn-primary">LOGAR</button>
+            </form>
+
+            <a href="/Sakana/index.php?action=cadastro" class="btn-primary" style="width: 100%; background-color: var(--dark-blue);">
+                CADASTRAR
+            </a>
+        </div>
+
     </div>
 
-</div>
-
+    <script src="/Sakana/view/js/alerts.js" defer></script>
 </body>
 </html>

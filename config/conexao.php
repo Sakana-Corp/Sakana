@@ -11,7 +11,7 @@ class Conexao {
             $conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $conexao;
         } catch (PDOException $e) {
-            die("Erro na conexão: " . $e->getMessage());
+            throw new RuntimeException("db_unavailable", 0, $e);
         }
     }
 }

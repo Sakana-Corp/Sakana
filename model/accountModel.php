@@ -5,6 +5,17 @@
 
             try{
                 $conexao = Conexao::getConn();
+
+                // verificação de email existente
+                $sqlCheck = "SELECT COUNT(*) as count FROM LoginUser WHERE email = :email";
+                $stmtCheck = $conexao->prepare($sqlCheck);
+                $stmtCheck->bindParam(":email", $email);
+                $stmtCheck->execute();
+                $result = $stmtCheck->fetch(PDO::FETCH_ASSOC);
+
+                if ($result["count"] > 0) {
+                    return ["ok" => false, "error" => "email_exists"];
+                }
                 
                 $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
@@ -14,9 +25,16 @@
                 $stmt->bindParam(":email", $email);
                 $stmt->bindParam(":senha", $senhaHash);
                 $stmt->execute();
-                return true;
+                return ["ok" => true];
             } catch(PDOException $e){
-                return false;
+                if ($e->getCode() == 23000) {
+                    return ["ok" => false, "error" => "email_exists"];
+                }
+                error_log("Erro PDO ao cadastrar usuário: " . $e->getMessage());
+                return ["ok" => false, "error" => "database_error"];
+            } catch(Throwable $e) {
+                error_log("Erro inesperado ao cadastrar usuário: " . $e->getMessage());
+                return ["ok" => false, "error" => "database_error"];
             }
         }
 
@@ -34,12 +52,17 @@
                 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 if ($usuario && password_verify($senha, $usuario["senha"])){
-                    return $usuario;
+                    return ["ok" => true, "user" => $usuario];
                 }
-                return false;
+
+                return ["ok" => false, "error" => "invalid_credentials"];
 
             } catch(PDOException $e){
-                return false;
+                error_log("Erro PFO ao logar usuário: " . $e->getMessage());
+                return ["ok" => false, "error" => "database_error"];
+            } catch(Throwable $e) {
+                error_log("Erro inesperado ao logar usuário: " . $e->getMessage());
+                return ["ok" => false, "error" => "database_error"];
             }
         }
     }

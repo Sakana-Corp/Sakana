@@ -1,5 +1,26 @@
 <?php
     class SessionHelper {
+        public static function setFlash($type, $message) {
+            // Define uma mensagem temporária na sessão (usada uma única vez).
+            self::garanteSessaoIniciada();
+            $_SESSION["flash"] = [
+                "type" => $type,
+                "message" => $message
+            ];
+        }
+
+        public static function getFlash() {
+            // Obtém a mensagem flash E a deleta imediatamente.
+            self::garanteSessaoIniciada();
+            if (empty($_SESSION["flash"])) {
+                return null;
+            }
+
+            $flash = $_SESSION["flash"];
+            unset($_SESSION["flash"]);
+            return $flash;
+        }
+
         public static function garanteSessaoIniciada() {
             if (session_status() !== PHP_SESSION_ACTIVE) {
                 session_start();

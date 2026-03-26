@@ -6,44 +6,54 @@
 
                 // Bloqueia envio de formulário forjado (CSRF).
                 if (!SessionHelper::validarToken()) {
-                    echo "<script>
-                            alert('Tentativa de requisição inválida!');
-                            window.location='/Sakana/index.php?action=login';
-                          </script>";
-                    return;
+                    SessionHelper::setFlash("error", "Tentativa de requisição inválida.");
+                    header("Location: /Sakana/index.php?action=login");
+                    exit;
                 }
 
-                $email = $_POST["txtEmail"];
-                $senha = $_POST["txtSenha"];
+                $email = $_POST["txtEmail"] ?? "";
+                $senha = $_POST["txtSenha"] ?? "";
 
                 if ($email === "" || $senha === "") {
-                    echo "<script>alert('Por favor, preencha todos os campos!');</script>";
-                    require_once __DIR__ . "/../view/loginPage.php";
-                    return;
+                    SessionHelper::setFlash("warning", "Preencha email e senha para continuar.");
+                    header("Location: /Sakana/index.php?action=login");
+                    exit;
                 }
 
                 require_once __DIR__ . "/../model/accountModel.php";
                 $accontModel = new AccountModel();
 
-                $usuario = $accontModel->logarUser($email, $senha);
+                $resultado = $accontModel->logarUser($email, $senha);
 
-                if ($usuario) {
+                if ($resultado["ok"]) {
                     // Troca o ID da sessão após autenticar para evitar fixation.
                     session_regenerate_id(true);
 
-                    $_SESSION["idUser"] = $usuario["idUser"];
-                    $_SESSION["nomeUser"] = $usuario["nomeUser"];
+                    $_SESSION["idUser"] = $resultado["user"]["idUser"];
+                    $_SESSION["nomeUser"] = $resultado["user"]["nomeUser"];
 
                     $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
 
+                    SessionHelper::setFlash("success", "Login realizado com sucesso! Bem-vindo.");
                     header("Location: /Sakana/index.php?action=painelAcesso");
                     exit;
                 }
                 else {
-                    echo "<script>
-                            alert('Email ou senha incorretos!');
-                            window.location='/Sakana/index.php?action=login';
-                          </script>";
+                    $error = $resultado["error"] ?? "unknown_error";
+
+                    if ($error === "invalid_credentials") {
+                        $msg = "Email ou senha incorretos. Tente novamente.";
+                    }
+                    elseif ($error === "database_error") {
+                        $msg = "Banco de dados indisponível. Tente mais tarde.";
+                    }
+                    else {
+                        $msg = "Erro ao processar login. Tente novamente.";
+                    }
+
+                    SessionHelper::setFlash("error", $msg);
+                    header("Location: /Sakana/index.php?action=login");
+                    exit;
                 }
             }
             else {
@@ -63,6 +73,7 @@
             SessionHelper::garanteSessaoIniciada();
 
             if (empty($_SESSION["idUser"])) {
+                SessionHelper::setFlash("info", "Sessão expirada. Faça login novamente.");
                 header("Location: /Sakana/index.php?action=login");
                 exit;
             }

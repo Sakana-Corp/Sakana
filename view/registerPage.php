@@ -7,9 +7,22 @@
     <title>Cadastro | Sakana</title>
 </head>
 <body class="page">
+
+    <?php
+        SessionHelper::garanteSessaoIniciada();
+        $flash = SessionHelper::getFlash();
+    ?>
+    <?php if ($flash): ?>
+        <div class="alert alert-toast alert-<?= htmlspecialchars($flash["type"], ENT_QUOTES, "UTF-8") ?>" role="alert" aria-live="polite">
+            <span class="alert-text"><?= htmlspecialchars($flash["message"], ENT_QUOTES, "UTF-8") ?></span>
+            <button type="button" class="alert-close" aria-label="Fechar aviso">×</button>
+        </div>
+    <?php endif; ?>
+
     <div class="container" style="flex-direction:row; gap:120px;">
         <!-- DIV CADASTRO -->
         <div class="card">
+
             <h2 style="color: var(--dark-blue);">CADASTRAR</h2>
 
             <form class="input-group" action="/Sakana/index.php?action=cadastrar" method="POST">
@@ -25,5 +38,7 @@
         </div>
     </div>
 
+
+    <script src="/Sakana/view/js/alerts.js" defer></script>
 </body>
 </html>
