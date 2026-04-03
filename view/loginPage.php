@@ -7,7 +7,6 @@
 <title>Login | Sakana</title>
 
 <link rel="stylesheet" href="/Sakana/view/css/style.css">
-
 </head>
 
 <body class="page">
@@ -15,7 +14,12 @@
     <?php
         SessionHelper::garanteSessaoIniciada();
         $flash = SessionHelper::getFlash();
+
+        if ($flash && !in_array($flash["type"], ["error", "warning", "info"])) {
+            $flash = null;
+        }
     ?>
+
     <?php if ($flash): ?>
         <div class="alert alert-toast alert-<?= htmlspecialchars($flash["type"], ENT_QUOTES, "UTF-8") ?>" role="alert" aria-live="polite">
             <span class="alert-text"><?= htmlspecialchars($flash["message"], ENT_QUOTES, "UTF-8") ?></span>
@@ -24,10 +28,7 @@
     <?php endif; ?>
 
     <div class="container" style="flex-direction:row; gap:120px;">
-
-        <!-- DIV LOGIN -->
         <div class="card">
-
             <h2 style="color: var(--dark-blue);">LOGAR</h2>
 
             <form class="input-group" action="/Sakana/index.php?action=logado" method="POST">
@@ -43,7 +44,6 @@
                 CADASTRAR
             </a>
         </div>
-
     </div>
 
     <script src="/Sakana/view/js/alerts.js" defer></script>

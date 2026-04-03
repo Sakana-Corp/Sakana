@@ -3,7 +3,6 @@
     src: url('/Sakana/view/fonts/principal/Hogback Demo Version.otf') format('opentype');
 }
 
-
 /* VARIÁVEIS GLOBAIS */
 :root {
     --primary-wine: #7a0635;
@@ -18,35 +17,33 @@
     --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* RESET BÁSICO */
+/* RESET */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* CONFIGURAÇÃO GLOBAL DA PÁGINA */
+/* BODY GLOBAL */
 body {
-    height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
+    min-height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-
-    overflow: hidden;
 }
 
 
-/* =====================================================
-   BACKGROUNDS DAS TELAS
-===================================================== */
+/* TELAS CENTRALIZADAS */
+.page-home,
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
 
 .page-home {
     background-image: url("/Sakana/view/images/img_background-tela_inicial.png");
@@ -56,21 +53,12 @@ body {
     background-image: url("/Sakana/view/images/img_background-tela_login.png");
 }
 
-.page-gerencia {
-    background: none;
-}
-
-
-/* =====================================================
-   COMPONENTES REUTILIZÁVEIS
-===================================================== */
-
+/* CONTAINER */
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
-
     text-align: center;
 
     animation: fadeIn 0.8s ease-out;
@@ -78,13 +66,10 @@ body {
 
 
 /* TÍTULOS */
-
 .titulo {
     font-family: 'Hogback';
     font-size: 5rem;
-
     color: var(--primary-wine);
-
     margin-bottom: -10px;
 
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
@@ -93,17 +78,11 @@ body {
 .subtitulo {
     font-family: 'Hogback';
     font-size: 1.8rem;
-
     color: var(--dark-blue);
-
     letter-spacing: 2px;
 }
 
-
-/* =====================================================
-   BOTÕES
-===================================================== */
-
+/* BOTÕES */
 .btn-primary {
     text-decoration: none;
     background-color: var(--primary-wine);
@@ -113,7 +92,6 @@ body {
     font-weight: 600;
 
     padding: 16px 45px;
-
     border: none;
     border-radius: var(--border-radius);
 
@@ -128,28 +106,18 @@ body {
 
 .btn-primary:hover {
     background-color: var(--primary-wine-hover);
-
     transform: translateY(-3px);
-
     box-shadow: 0 8px 25px rgba(122, 6, 53, 0.3);
 }
 
-.btn-primary:active {
-    transform: translateY(-1px);
-}
-
-
-/* =====================================================
-   TELAS DE LOGIN / CADASTRO
-===================================================== */
-
+/* ========================= */
+/* CARD LOGIN */
+/* ========================= */
 .card {
     width: 380px;
-
     padding: 50px 40px;
 
     background-color: var(--bg-card);
-
     border: 3px solid var(--dark-blue);
     border-radius: 20px;
 
@@ -161,12 +129,9 @@ body {
     box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
 
-
-/* CAMPOS */
-
+/* INPUTS */
 .input-group {
     width: 100%;
-
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -180,37 +145,26 @@ input {
     border-radius: 10px;
 
     background: white;
-
     color: var(--primary-wine);
     font-size: 16px;
 
     text-align: center;
-
     transition: var(--transition);
 }
 
 input:focus {
     outline: none;
-
     border-color: var(--primary-wine);
-
     box-shadow: 0 0 0 4px rgba(122, 6, 53, 0.1);
 }
-
 
 /* LINKS */
 
 .link-voltar {
     color: var(--dark-blue);
-
     font-size: 14px;
-    font-weight: 500;
-
     text-decoration: none;
-
     opacity: 0.7;
-
-    transition: var(--transition);
 }
 
 .link-voltar:hover {
@@ -218,207 +172,14 @@ input:focus {
     text-decoration: underline;
 }
 
-
-
-
-/* ANIMAÇÕES */
+/* ANIMAÇÃO */
 @keyframes fadeIn {
     from {
         opacity: 0;
         transform: translateY(20px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-/* =====================================================
-   ALERTAS (FLASH MESSAGE)
-===================================================== */
-
-:root {
-    --alert-success-bg: #dff5ea;
-    --alert-success-border: #1f7a4d;
-    --alert-success-text: #12442d;
-
-    --alert-error-bg: #f8e2e8;
-    --alert-error-border: #7a0635;
-    --alert-error-text: #4f0321;
-
-    --alert-warning-bg: #f9efcf;
-    --alert-warning-border: #c08a11;
-    --alert-warning-text: #6a4a00;
-
-    --alert-info-bg: #e2edf7;
-    --alert-info-border: #1d4f7a;
-    --alert-info-text: #0f2f4b;
-}
-
-.alert {
-    width: 100%;
-    position: relative;
-    padding: 12px 14px 12px 42px;
-    margin-bottom: -10px;
-
-    border-radius: 12px;
-    border: 2px solid transparent;
-
-    font-size: 14px;
-    line-height: 1.35;
-    font-weight: 600;
-    text-align: left;
-
-    box-shadow: 0 6px 16px rgba(9, 39, 65, 0.12);
-    animation: alertEnter 0.35s ease-out;
-}
-
-.alert::before {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 16px;
-    font-weight: 700;
-}
-
-.alert-success {
-    background: linear-gradient(135deg, var(--alert-success-bg), #eefaf3);
-    border-color: var(--alert-success-border);
-    color: var(--alert-success-text);
-}
-
-.alert-success::before {
-    content: "✓";
-    color: var(--alert-success-border);
-}
-
-.alert-error {
-    background: linear-gradient(135deg, var(--alert-error-bg), #fbeff3);
-    border-color: var(--alert-error-border);
-    color: var(--alert-error-text);
-}
-
-.alert-error::before {
-    content: "!";
-    color: var(--alert-error-border);
-}
-
-.alert-warning {
-    background: linear-gradient(135deg, var(--alert-warning-bg), #fff7df);
-    border-color: var(--alert-warning-border);
-    color: var(--alert-warning-text);
-}
-
-.alert-warning::before {
-    content: "!";
-    color: var(--alert-warning-border);
-}
-
-.alert-info {
-    background: linear-gradient(135deg, var(--alert-info-bg), #edf4fb);
-    border-color: var(--alert-info-border);
-    color: var(--alert-info-text);
-}
-
-.alert-info::before {
-    content: "i";
-    color: var(--alert-info-border);
-}
-
-@keyframes alertEnter {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* =====================================================
-   ALERTA EM FORMATO POP-UP (TOAST)
-===================================================== */
-
-.alert-toast {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    width: min(380px, calc(100vw - 32px));
-    z-index: 9999;
-
-    margin: 0;
-    padding-right: 44px;
-
-    box-shadow: 0 10px 28px rgba(9, 39, 65, 0.22);
-    border-width: 2px;
-    backdrop-filter: blur(1px);
-    will-change: transform, opacity;
-
-    animation: toastPullIn 0.32s cubic-bezier(0.2, 0.9, 0.2, 1);
-}
-
-.alert-text {
-    display: block;
-}
-
-.alert-close {
-    position: absolute;
-    top: 7px;
-    right: 10px;
-
-    width: 26px;
-    height: 26px;
-    border: none;
-    border-radius: 50%;
-
-    font-size: 18px;
-    line-height: 1;
-    font-weight: 700;
-    cursor: pointer;
-
-    color: inherit;
-    background: rgba(255, 255, 255, 0.45);
-    transition: var(--transition);
-}
-
-.alert-close:hover {
-    transform: scale(1.08);
-    background: rgba(255, 255, 255, 0.72);
-}
-
-.alert-hide {
-    animation: toastOut 0.2s ease-in forwards;
-}
-
-@keyframes toastPullIn {
-    from {
-        opacity: 0;
-        transform: translateX(110%);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes toastOut {
-    from {
-        opacity: 1;
-        transform: translateY(0) translateX(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-8px) translateX(6px);
-    }
-}
-
-@media (max-width: 520px) {
-    .alert-toast {
-        top: 14px;
-        right: 12px;
-        width: calc(100vw - 24px);
     }
 }
