@@ -1,49 +1,263 @@
+/* ========================================
+   FONTES
+======================================== */
 @font-face {
     font-family: 'Hogback';
-    src: url('/Sakana/view/fonts/principal/Hogback Demo Version.otf') format('opentype');
+    src: url('/Sakana/view/fonts/principal/Hogback Demo Version.otf') format('truetype');
 }
 
-/* VARIÁVEIS GLOBAIS */
+/* ========================================
+   VARIÁVEIS GLOBAIS
+======================================== */
 :root {
-    --primary-wine: #7a0635;
-    --primary-wine-hover: #8d073d;
-    --dark-blue: #092741;
-    --bg-card: #f5f1e3;
+    --primary-wine: #9b0f47;
+    --primary-wine-hover: #b31256;
+    --primary-wine-dark: #7f0d3c;
+
+    --dark-blue: #17304a;
+    --medium-blue: #5d83a7;
+    --light-bg: #f4efe6;
+    --card-bg: #f5f1e3;
     --text-light: #ffffff;
+    --text-soft: #f3ede3;
+    --border-light: #e8dfd2;
 
     --border-radius: 12px;
-
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.15);
+    --transition: all 0.3s ease;
 }
 
-/* RESET */
+/* ========================================
+   RESET GLOBAL
+======================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* BODY GLOBAL */
+html,
 body {
-    min-height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    min-height: 100%;
+}
 
+body {
+    font-family: Arial, sans-serif;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
 
-/* TELAS CENTRALIZADAS */
+button {
+    cursor: pointer;
+    border: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ========================================
+   CLASSES ÚTEIS
+======================================== */
+.hidden {
+    display: none !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* ========================================
+   ALERTAS
+======================================== */
+.alert {
+    width: 100%;
+    padding: 14px 18px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    animation: fadeAlert 0.25s ease;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.alert-info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+@keyframes fadeAlert {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   TOPO PADRÃO DO SISTEMA
+======================================== */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 78px;
+    padding: 0 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--medium-blue);
+    color: var(--text-soft);
+    z-index: 1000;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.logo-text {
+    font-family: 'Hogback', Arial, sans-serif;
+    font-size: 30px;
+    letter-spacing: 2px;
+    color: #e9e1d4;
+}
+
+.titulo-sistema {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-soft);
+    text-align: center;
+}
+
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    color: var(--text-soft);
+}
+
+.user-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* ========================================
+   ESTRUTURA GERAL
+======================================== */
+.layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 78px;
+}
+
+.main-content,
+.conteudo {
+    flex: 1;
+    padding: 25px;
+}
+
+/* ========================================
+   MENU LATERAL
+======================================== */
+.sidebar,
+.menu-lateral {
+    width: 290px;
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.menu-btn {
+    display: block;
+    width: 100%;
+    padding: 18px 20px;
+    text-align: center;
+    background: var(--primary-wine);
+    color: var(--text-light);
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: 700;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
+
+.menu-btn:hover {
+    background: var(--primary-wine-hover);
+    transform: translateY(-1px);
+}
+
+.menu-btn.active {
+    background: var(--primary-wine-dark);
+}
+
+.trocar-setor {
+    margin-top: auto;
+    padding: 13px 18px;
+    border: 2px solid var(--border-light);
+    background: transparent;
+    color: var(--border-light);
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* ========================================
+   PÁGINA INICIAL / HOME
+======================================== */
 .page-home,
 .page {
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    min-height: 100vh;
 }
-
 
 .page-home {
     background-image: url("/Sakana/view/images/img_background-tela_inicial.png");
@@ -53,117 +267,148 @@ body {
     background-image: url("/Sakana/view/images/img_background-tela_login.png");
 }
 
-/* CONTAINER */
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
     text-align: center;
-
     animation: fadeIn 0.8s ease-out;
 }
 
-
-/* TÍTULOS */
 .titulo {
-    font-family: 'Hogback';
+    font-family: 'Hogback', Arial, sans-serif;
     font-size: 5rem;
     color: var(--primary-wine);
     margin-bottom: -10px;
-
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .subtitulo {
-    font-family: 'Hogback';
+    font-family: 'Hogback', Arial, sans-serif;
     font-size: 1.8rem;
     color: var(--dark-blue);
     letter-spacing: 2px;
 }
 
-/* BOTÕES */
-.btn-primary {
-    text-decoration: none;
+/* ========================================
+   BOTÕES GERAIS
+======================================== */
+.btn-primary,
+.login-btn {
     background-color: var(--primary-wine);
     color: var(--text-light);
-
-    font-size: 18px;
-    font-weight: 600;
-
-    padding: 16px 45px;
     border: none;
     border-radius: var(--border-radius);
-
-    cursor: pointer;
-
-    text-transform: uppercase;
-    letter-spacing: 1px;
-
+    font-size: 16px;
+    font-weight: 700;
     transition: var(--transition);
     box-shadow: var(--shadow-soft);
 }
 
-.btn-primary:hover {
-    background-color: var(--primary-wine-hover);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(122, 6, 53, 0.3);
+.btn-primary {
+    display: inline-block;
+    padding: 16px 45px;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* ========================= */
-/* CARD LOGIN */
-/* ========================= */
+.btn-primary:hover,
+.login-btn:hover {
+    background-color: var(--primary-wine-hover);
+    transform: translateY(-3px);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 14px;
+}
+
+/* ========================================
+   CARD LOGIN
+======================================== */
+.page-login {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--medium-blue), #1f3d5a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-container,
+.card {
+    background-color: var(--light-bg);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 32px 28px;
+}
+
 .card {
     width: 380px;
     padding: 50px 40px;
-
-    background-color: var(--bg-card);
     border: 3px solid var(--dark-blue);
-    border-radius: 20px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 35px;
-
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    background-color: var(--card-bg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
 }
 
-/* INPUTS */
+.login-container h1,
+.login-container h2 {
+    text-align: center;
+    color: var(--dark-blue);
+    margin-bottom: 22px;
+}
+
+.login-form,
 .input-group {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
 }
 
+.login-form label {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark-blue);
+}
+
+.login-form input,
+.input-group input,
 input {
     width: 100%;
     padding: 14px;
-
     border: 2px solid rgba(125, 22, 51, 0.3);
     border-radius: 10px;
-
-    background: white;
+    background: #ffffff;
     color: var(--primary-wine);
     font-size: 16px;
-
     text-align: center;
     transition: var(--transition);
+    outline: none;
 }
 
+.login-form input:focus,
+.input-group input:focus,
 input:focus {
-    outline: none;
     border-color: var(--primary-wine);
     box-shadow: 0 0 0 4px rgba(122, 6, 53, 0.1);
 }
 
-/* LINKS */
-
 .link-voltar {
     color: var(--dark-blue);
     font-size: 14px;
-    text-decoration: none;
     opacity: 0.7;
 }
 
@@ -172,7 +417,9 @@ input:focus {
     text-decoration: underline;
 }
 
-/* ANIMAÇÃO */
+/* ========================================
+   ANIMAÇÕES
+======================================== */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -181,5 +428,74 @@ input:focus {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* ========================================
+   RESPONSIVIDADE
+======================================== */
+@media (max-width: 1000px) {
+    .titulo-sistema {
+        display: none;
+    }
+
+    .sidebar,
+    .menu-lateral {
+        width: 230px;
+    }
+}
+
+@media (max-width: 768px) {
+    .topbar {
+        height: auto;
+        min-height: 78px;
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .layout {
+        flex-direction: column;
+        padding-top: 90px;
+    }
+
+    .sidebar,
+    .menu-lateral {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px 16px;
+    }
+
+    .menu-btn,
+    .trocar-setor {
+        width: 220px;
+    }
+
+    .trocar-setor {
+        margin-top: 0;
+    }
+
+    .main-content,
+    .conteudo {
+        padding: 18px;
+    }
+
+    .titulo {
+        font-size: 3rem;
+        font-family: 'Hogback', Arial, sans-serif;
+        font-size: 5rem;
+        color: var(--primary-wine);
+        margin-bottom: -10px;
+    }
+
+    .subtitulo {
+        font-size: 1.2rem;
+    }
+
+    .card {
+        width: 90%;
+        padding: 35px 25px;
     }
 }

@@ -6,7 +6,8 @@
     <title>Gerência | Sakana</title>
 
     <link rel="stylesheet" href="/Sakana/view/css/style.css">
-    <link rel="stylesheet" href="/Sakana/view/css/gerencia.css?v=2">
+    <link rel="stylesheet" href="/Sakana/view/css/gerencia.css?v=1">
+    <link rel="stylesheet" href="/Sakana/view/css/cardapio.css">
 </head>
 
 <body class="page-gerencia">
