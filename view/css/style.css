@@ -331,7 +331,10 @@ a {
 ======================================== */
 .page-login {
     min-height: 100vh;
-    background: linear-gradient(135deg, var(--medium-blue), #1f3d5a);
+    background-image: url("/Sakana/view/images/img_background-tela_login.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;

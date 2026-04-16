@@ -1,43 +1,35 @@
 <?php 
 require_once __DIR__ . "/baseController.php";
+require_once __DIR__ . "/../model/accountModel.php";
+require_once __DIR__ . "/../service/accountService.php";
 class AccessController extends BaseController {
+
+    private function getService(): AccountService {
+        return new AccountService(new AccountModel());
+    }
+
     function logado(): void {
         $this->requirePost("login");
         $this->startSession();
         $this->validateCsrfOrRedirect("login");
 
-        $email = $_POST["txtEmail"] ?? "";
-        $senha = $_POST["txtSenha"] ?? "";
 
-        if ($email === "" || $senha === "") {
-            $this->flashAndRedirect("warning", "Preencha email e senha para continuar.", "login");
-        }
+        $resultado = $this->getService()->logar($_POST);
 
-        require_once __DIR__ . "/../model/accountModel.php";
-        $accontModel = new AccountModel();
-
-        $resultado = $accontModel->logarUser($email, $senha);
-
-        if ($resultado["ok"]) {
+        if (!empty($resultado["ok"])) {
             session_regenerate_id(true);
-
             $_SESSION["idUser"] = $resultado["user"]["idUser"];
-            $_SESSION["nomeUser"] = $resultado["user"]["nomeUser"];
+            $_SESSION["nomeUser"] = $resultado ["user"]["nomeUser"];
             $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
 
             $this->redirectToAction("painelAcesso");
         }
-        $error = $resultado["error"] ?? "unknown_error";
 
-        if ($error === "invalid_credentials") {
-            $msg = "Email ou senha incorretos. Tente novamente.";
-        } elseif ($error === "database_error") {
-            $msg = "Banco de dados indisponível. Tente mais tarde.";
-        } else {
-            $msg = "Erro ao processar login. Tente novamente.";
-        }
-
-        $this->flashAndRedirect("error", $msg, "login");
+        $this->flashAndRedirect(
+            $resultado["flashType"],
+            $resultado["flashMessage"],
+            $resultado["nextAction"]
+        );
     }
 
     public function loginForm(): void {

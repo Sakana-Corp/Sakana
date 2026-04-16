@@ -1,57 +1,36 @@
 <?php
 require_once __DIR__ . "/baseController.php";
+require_once __DIR__ . "/../model/accountModel.php";
+require_once __DIR__ . "/../service/accountService.php";
 class AccountController extends BaseController {
 
-    public function cadastro(){
+    public function getService(): AccountService {
+        return new AccountService(new AccountModel());
+    }
+
+    public function cadastro(): void{
         $this->startSession();
         SessionHelper::gerarToken();
 
         require_once __DIR__ . "/../view/registerPage.php";
     }
 
-    public function cadastrar(){
+    public function cadastrar(): void{
         $this->requirePost("cadastro");
         $this->startSession();
         $this->validateCsrfOrRedirect("cadastro");
 
-        $nome = $_POST["txtNome"] ?? "";
-        $email = $_POST["txtEmail"] ?? "";
-        $senha = $_POST["txtSenha"] ?? "";
-        $confirmaSenha = $_POST["txtConfirmaSenha"] ?? "";
+        $resultado = $this->getService()->cadastrar($_POST);
 
-
-        // validações
-        if ($nome === "" || $email === "" || $senha === "" || $confirmaSenha === "") {
-            $this->flashAndRedirect("warning", "Preencha todos os campos para continuar.", "cadastro");
-        }
-
-        if($senha !== $confirmaSenha){
-            $this->flashAndRedirect("warning", "As senhas não conferem. Digite novamente.", "cadastro");
-        }
-
-        require_once __DIR__ . "/../model/accountModel.php";
-        $accountModel = new AccountModel();
-        $resultado = $accountModel->cadastrarUser($nome, $email, $senha);
-
-        if ($resultado["ok"]) {
-            // Renova token após sucesso para reduzir reutilização.
+        if (!empty($resultado["ok"])) {
             $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
-            $this->flashAndRedirect("success", "Cadastro realizado com sucesso!", "login");
         }
 
-        $error = $resultado["error"] ?? "unknown_error";
-
-        if ($error === "email_exists") {
-            $msg = "Este email já está cadastrado. Use outro ou faça login.";
-        }
-        elseif ($error === "database_error") {
-            $msg = "Banco de dados indisponível. Tente mais tarde.";
-        }
-        else {
-            $msg = "Erro ao Cadastrar. Tente novamente.";
-        }
-
-        $this->flashAndRedirect("error", $msg, "cadastro");
+        $this->flashAndRedirect(
+            $resultado["flashType"],
+            $resultado["flashMessage"],
+            $resultado["nextAction"]
+        );
     }
 }
 ?>
