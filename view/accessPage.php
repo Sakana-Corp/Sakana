@@ -15,7 +15,7 @@
         
         <div class="card">
             <div class="input-group">
-                <a href="/Sakana/index.php?action=loginGerencia" style="text-decoration: none; width: 100%;">
+                <a href="/Sakana/index.php?action=logadoGerencia" style="text-decoration: none; width: 100%;">
                     <button class="btn-primary" style="width: 100%; margin-bottom: 15px;">GERÊNCIA</button>
                 </a>
                 

@@ -34,35 +34,21 @@ switch($action) {
         $controller->logado();
         break;
 
-    case "loginGerencia":
-        require_once "usersController.php";
-        $controller = new UsersController();
-        $controller->logarGerencia();
-        break;
-
     case "logadoGerencia":
         require_once "usersController.php";
         $controller = new UsersController();
-        $controller->logadoGerencia();
+        $controller->logadoGerencia($_GET["page"] ?? "home");
         break;
 
     // 👇 COLOQUE AQUI
     case 'funcionarios':
-        require_once "view/pages/usersPages/gerencia/funcionarios.php";
-        break;
-
     case 'pedidos':
-        require_once "view/pages/usersPages/gerencia/pedidos.php";
-        break;
-
     case 'cardapio':
-        require_once "view/pages/usersPages/gerencia/cardapio.php";
-        break;
-
     case 'mesas':
-        require_once "view/pages/usersPages/gerencia/mesas.php";
+        require_once "usersController.php";
+        $controller = new UsersController();
+        $controller->logadoGerencia($action);
         break;
-
     case "painelAcesso":
         require_once "accessController.php";
         $controller = new AccessController();

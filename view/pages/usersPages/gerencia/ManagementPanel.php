@@ -35,35 +35,15 @@
             <a href="/Sakana/index.php?action=logadoGerencia&page=cardapio" class="menu-btn">Cardápio</a>
             <a href="/Sakana/index.php?action=logadoGerencia&page=mesas" class="menu-btn">Mesas</a>
 
-            <a href="/Sakana/index.php?action=loginGerencia" class="btn-setor">Trocar de setor</a>
+            <a href="/Sakana/index.php?action=painelAcesso" class="btn-setor">Trocar de setor</a>
         </aside>
 
         <main class="conteudo">
-            <?php
-                $pagina = $_GET['page'] ?? 'home';
-
-                switch ($pagina) {
-                    case 'funcionarios':
-                        include __DIR__ . '/funcionarios.php';
-                        break;
-
-                    case 'pedidos':
-                        include __DIR__ . '/pedidos.php';
-                        break;
-
-                    case 'cardapio':
-                        include __DIR__ . '/cardapio.php';
-                        break;
-
-                    case 'mesas':
-                        include __DIR__ . '/mesas.php';
-                        break;
-
-                    default:
-                        echo '<div class="home-gerencia"></div>';
-                        break;
-                }
-            ?>
+            <?php if (!empty($arquivoConteudo) && file_exists($arquivoConteudo)): ?>
+                <?php require $arquivoConteudo; ?>
+            <?php else: ?>
+                <div class="home-gerencia"></div>
+            <?php endif; ?>
         </main>
 
     </div>
