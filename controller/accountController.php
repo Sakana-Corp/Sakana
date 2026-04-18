@@ -1,11 +1,11 @@
 <?php
 require_once __DIR__ . "/baseController.php";
-require_once __DIR__ . "/../model/accountModel.php";
+require_once __DIR__ . "/../model/accountRepository.php";
 require_once __DIR__ . "/../service/accountService.php";
 class AccountController extends BaseController {
 
     public function getService(): AccountService {
-        return new AccountService(new AccountModel());
+        return new AccountService(new AccountRepository());
     }
 
     public function cadastro(): void{

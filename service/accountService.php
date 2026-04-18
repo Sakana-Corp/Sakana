@@ -1,9 +1,13 @@
 <?php
 class AccountService {
-    private $accountModel;
+    private $accountRepository;
 
-    public function __construct(AccountModel $accountModel) {
-        $this->accountModel = $accountModel;
+    public function __construct(AccountRepository $accountRepository) {
+        $this->accountRepository = $accountRepository;
+    }
+
+    private function hashPassword(string $senha): string {
+        return password_hash($senha, PASSWORD_DEFAULT);
     }
 
     public function cadastrar(array $input): array {
@@ -39,33 +43,44 @@ class AccountService {
             ];
         }
 
-        $resultado = $this->accountModel->cadastrarUser($nome, $email, $senha);
+        try {
+            if ($this->accountRepository->emailExists($email)) {
+                return [
+                    "ok" => false,
+                    "flashType" => "warning",
+                    "flashMessage" => "Este email já está cadastrado. use outro ou faça login.",
+                    "nextAction" => "cadastro"
+                ];
+            }
 
-        if (!empty($resultado["ok"])) {
-            return [ 
+            $senhaHash = $this->hashPassword($senha);
+
+            $this->accountRepository->create($nome, $email, $senhaHash);
+
+            return [
                 "ok" => true,
                 "flashType" => "success",
                 "flashMessage" => "Cadastro realizado com sucesso!",
                 "nextAction" => "login"
             ];
+        } catch (RuntimeException $e) {
+            $error = $e->getMessage();
+
+            if ($error === "email_exists") {
+                $msg = "Este email já está cadastrado. Use outro ou faça login.";
+            } elseif ($error === "database_error") {
+                $msg = "Banco de dados indisponível. Tente mais tarde.";
+            } else {
+                $msg = "Erro ao cadastrar. Tente novamente.";
+            }
+
+            return [
+                "ok" => false,
+                "flashType" => "error",
+                "flashMessage" => $msg,
+                "nextAction" => "cadastro"
+            ];
         }
-
-        $error = $resultado["error"] ?? "unknown_error";
-
-        if ($error === "email_exists") {
-            $msg = "Este email já está cadastrado. Use outro ou faça login."; 
-        } elseif ($error === "database_error") {
-            $msg = "Banco de dados indisponível. Tente mais tarde.";
-        } else {
-            $msg = "Erro ao cadastrar. Tente novamente.";
-        }
-
-        return [
-            "ok" => false,
-            "flashType" => "error",
-            "flashMessage" => $msg,
-            "nextAction" => "cadastro"
-        ];
     }
 
     public function logar(array $input): array {
@@ -90,31 +105,32 @@ class AccountService {
             ];
         }
 
-        $resultado = $this->accountModel->logarUser($email, $senha);
+        try {
+            $usuario = $this->accountRepository->findByEmail($email);
 
-        if (!empty($resultado["ok"])) {
+            if (!$usuario || !password_verify($senha, $usuario["senha"])) {
+                return [
+                    "ok" => false,
+                    "flashType" => "error",
+                    "flashMessage" => "Email ou senha incorretos. Tente novamente.",
+                    "nextAction" => "login"
+                ];
+            }
+
+            unset($usuario["senha"]);
+
             return [
                 "ok" => true,
-                "user" => $resultado["user"]
+                "user" => $usuario
+            ];
+        } catch (RuntimeException $e) {
+            return [
+                "ok" => false,
+                "flashType" => "error",
+                "flashMessage" => "Banco de dados indisponível. Tente mais tarde.",
+                "nextAction" => "login"
             ];
         }
-
-        $error = $resultado["error"] ?? "unknown_error";
-
-        if ($error === "invalid_credentials") {
-            $msg = "Email ou senha incorretos. Tente novamente.";
-        } elseif ($error === "database_error") {
-            $msg = "Banco de dados indisponível. Tente mais tarde.";
-        } else {
-            $msg = "Erro ao processar login. Tente novamente.";
-        }
-
-        return [ 
-            "ok" => false,
-            "flashType" => "error",
-            "flashMessage" => $msg,
-            "nextAction" => "login"
-        ];
     }
 }
 ?>
