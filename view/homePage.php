@@ -9,11 +9,11 @@
 <body class="page-home">
 
     <div class="container">
-        <img src="/Sakana/view/images/logo.png" alt="Logo Sakana" id="logo" style="width: 18rem;">
+        <img src="/Sakana/view/images/logo.png" alt="Logo Sakana" id="logo" class="img-logo">
         <h1 class="titulo">SAKANA</h1>
         <h2 class="subtitulo">SIMULADOR GERENCIAL</h2>
         
-        <div style="margin-top: 40px;">
+        <div class="spacer-top">
             <a class="btn-primary" href="/Sakana/index.php?action=login">
                 Iniciar Simulador
             </a>

@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/Sakana/view/css/style.css">
 </head>
 
-<body class="page-login">
+<body class="page-login" role="application" aria-label="Página de Login">
 
     <?php
         SessionHelper::garanteSessaoIniciada();
@@ -27,24 +27,53 @@
         </div>
     <?php endif; ?>
 
-    <div class="container" style="flex-direction:row; gap:120px;">
-        <div class="card">
-            <h2 style="color: var(--dark-blue);">LOGAR</h2>
+    <main class="container container-row">
+        <section class="card" aria-labelledby="login-title">
+            <h1 id="login-title" class="title-primary">LOGAR</h1>
 
-            <form class="input-group" action="/Sakana/index.php?action=logado" method="POST">
+            <form class="input-group"
+                  action="/Sakana/index.php?action=logado"
+                  method="POST"
+                  aria-label="Formulário de login">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"] ?? "", ENT_QUOTES, "UTF-8") ?>">
 
-                <input type="email" name="txtEmail" placeholder="Email" maxlength="50" required>
-                <input type="password" name="txtSenha" placeholder="Senha" minlength="8" maxlength="16" autocomplete="new-password" required>
+                <div class="form-group">
+                    <label for="email-input">Email</label>
+                    <input id="email-input"
+                           type="email"
+                           name="txtEmail"
+                           placeholder="seu@email.com"
+                           maxlength="50"
+                           required
+                           aria-required="true"
+                           aria-label="Email para login">
+                </div>
+                <div class="form-group">
+                    <label for="password-input">Senha</label>
+                    <input type="password"
+                           name="txtSenha"
+                           placeholder="Sua senha"
+                           minlength="8"
+                           maxlength="16"
+                           autocomplete="current-password"
+                           required
+                           aria-required="true"
+                           aria-label="Senha para login">
+                </div>
 
-                <button type="submit" class="btn-primary">LOGAR</button>
+
+                <button type="submit" class="btn-primary" aria-label="Fazer login no sistema">
+                    LOGAR
+                </button>
             </form>
 
-            <a href="/Sakana/index.php?action=cadastro" class="btn-primary" style="width: 100%; background-color: var(--dark-blue);">
+            <a href="/Sakana/index.php?action=cadastro"
+               class="btn-primary btn-secondary btn-link"
+               aria-label="Ir para página de cadastro de novo usuário">
                 CADASTRAR
             </a>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script src="/Sakana/view/js/alerts.js" defer></script>
 </body>

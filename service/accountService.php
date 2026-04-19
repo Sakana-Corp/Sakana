@@ -1,9 +1,12 @@
 <?php
+require_once __DIR__ . "/inputValidator.php";
 class AccountService {
     private $accountRepository;
+    private $validator;
 
     public function __construct(AccountRepository $accountRepository) {
         $this->accountRepository = $accountRepository;
+        $this->validator = new InputValidator();
     }
 
     private function hashPassword(string $senha): string {
@@ -16,29 +19,20 @@ class AccountService {
         $senha = (string)($input["txtSenha"] ?? "");
         $confirmaSenha = (string)($input["txtConfirmaSenha"] ?? "");
 
-        if ($nome === "" || $email === "" || $senha === "" || $confirmaSenha === "") {
-            return [
-                "ok" => false,
-                "flashType" => "warning",
-                "flashMessage" => "Preencha todos os campos para continuar.",
-                "nextAction" => "cadastro"
-            ];
-        }
+        // validação de entrada
+        $this->validator->clear()
+            ->notEmpty("nome", $nome, 2)
+            ->notEmpty("email", $email)
+            ->email("email", $email)
+            ->notEmpty("senha", $senha, 8)
+            ->notEmpty("confirmaSenha", $confirmaSenha, 8)
+            ->match("confirmaSenha", $senha, $confirmaSenha, "Senhas");
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (!$this->validator->isValid()) {
             return [
                 "ok" => false,
                 "flashType" => "warning",
-                "flashMessage" => "Email inválido. Verifique e tente novamente.",
-                "nextAction" => "cadastro"
-            ];
-        }
-
-        if ($senha !== $confirmaSenha) {
-            return [
-                "ok" => false,
-                "flashType" => "warning",
-                "flashMessage" => "As senhas não conferem. Digite novamente.",
+                "flashMessage" => $this->validator->getFirstError(),
                 "nextAction" => "cadastro"
             ];
         }
@@ -87,20 +81,16 @@ class AccountService {
         $email = trim((string)($input["txtEmail"] ?? ""));
         $senha = (string)($input["txtSenha"] ?? "");
 
-        if ($email === "" || $senha === "") {
-            return [
-                "ok" => false,
-                "flashType" => "warning",
-                "flashMessage" => "Preencha email e senha para continuar.",
-                "nextAction" => "login"
-            ];
-        }
+        $this->validator->clear()
+            ->notEmpty("email", $email)
+            ->email("email", $email)
+            ->notEmpty("senha", $senha, 8);
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (!$this->validator->isValid()) {
             return [
                 "ok" => false,
                 "flashType" => "warning",
-                "flashMessage" => "Email inválido. Verifique e tente novamente.",
+                "flashMessage" => $this->validator->getFirstError(),
                 "nextAction" => "login"
             ];
         }

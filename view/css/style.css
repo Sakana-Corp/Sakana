@@ -78,6 +78,94 @@ a {
 }
 
 /* ========================================
+   LAYOUT UTILITIES
+======================================== */
+.container-row {
+    flex-direction: row;
+    gap: 120px;
+}
+
+.title-primary {
+    color: var(--dark-blue);
+}
+
+.title-card {
+    color: var(--dark-blue);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.btn-link {
+    text-decoration: none;
+    width: 100%;
+}
+
+.btn-secondary {
+    background-color: var(--dark-blue);
+}
+
+.link-logout {
+    margin-top: 20px;
+}
+
+.spacer-top {
+    margin-top: 40px;
+}
+
+.img-logo {
+    width: 18rem;
+}
+
+/* ========================================
+   ACESSIBILIDADE
+======================================== */
+.btn-as-link {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+    cursor: pointer;
+    font-size: inherit;
+    font-weight: inherit;
+    text-decoration: underline;
+}
+
+.btn-as-link:hover {
+    opacity: 0.8;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--dark-blue);
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* ========================================
    ALERTAS
 ======================================== */
 .alert {
