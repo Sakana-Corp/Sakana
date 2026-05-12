@@ -2,7 +2,7 @@
 class Conexao {
     public static function getConn() {
         $host = "localhost";
-        $port = "3322";
+        $port = "";
         $dbname = "bdSakana";
         $user = "root";
         $pass = "";
