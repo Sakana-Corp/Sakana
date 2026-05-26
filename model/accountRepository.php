@@ -42,7 +42,7 @@ class AccountRepository {
 
     public function findByEmail(string $email): ?array {
         try {
-            $sql = "SELECT idUser, nomeUser, email, senha FROM LoginUser WHERE email = :email LIMIT 1";
+            $sql = "SELECT idUser, nomeUser, email, senha, fotoPerfil FROM LoginUser WHERE email = :email LIMIT 1";
             $stmt = $this->conexao->prepare($sql);
             $stmt->bindParam(":email", $email, PDO::PARAM_STR);
             $stmt->execute();
@@ -52,6 +52,45 @@ class AccountRepository {
             return $usuario ?: null;
         } catch (PDOException $e) {
             error_log("Erro ao buscar usuário: " . $e->getMessage());
+            throw new RuntimeException("database_error");
+        }
+    }
+
+    public function updatePassword(string $email, string $senhaHash): bool {
+        try {
+            $sql = "UPDATE LoginUser SET senha = :senha WHERE email = :email";
+            $stmt = $this->conexao->prepare($sql);
+            $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+            $stmt->bindParam(":senha", $senhaHash, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Erro ao atualizar senha: " . $e->getMessage());
+            throw new RuntimeException("database_error");
+        }
+    }
+
+    public function updateProfile(int $idUser, string $nome, string $email, ?string $fotoPerfil = null): bool {
+        try {
+            $sql = "UPDATE LoginUser SET nomeUser = :nome, email = :email, fotoPerfil = :fotoPerfil WHERE idUser = :idUser";
+            $stmt = $this->conexao->prepare($sql);
+            $stmt->bindParam(":nome", $nome, PDO::PARAM_STR);
+            $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+            $stmt->bindParam(":idUser", $idUser, PDO::PARAM_INT);
+
+            if ($fotoPerfil === null) {
+                $stmt->bindValue(":fotoPerfil", null, PDO::PARAM_NULL);
+            } else {
+                $stmt->bindValue(":fotoPerfil", $fotoPerfil, PDO::PARAM_STR);
+            }
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                throw new RuntimeException("email_exists");
+            }
+
+            error_log("Erro ao atualizar perfil: " . $e->getMessage());
             throw new RuntimeException("database_error");
         }
     }

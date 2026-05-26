@@ -7,7 +7,10 @@ create table LoginUser(
     email varchar (50) unique not null,
     senha varchar(255) not null
 );
-
+create table imagem(
+	nomeImg varchar (100) not null,
+    endpasta varchar (255) not null
+);
 /*
 create table garcom (
 	idGarcom int(11) auto_increment primary key,
@@ -31,5 +34,5 @@ create table funcionarios (
 	
 );
 */
-
+select * from imagem;
 select * from LoginUser;

@@ -38,10 +38,14 @@
                 <input type="password" name="txtSenha" placeholder="Senha" minlength="8" maxlength="16" autocomplete="new-password" required>
 
                 <button type="submit" class="btn-primary">LOGAR</button>
+               
             </form>
 
             <a href="/Sakana/index.php?action=cadastro" class="btn-primary" style="width: 100%; background-color: var(--dark-blue);">
                 CADASTRAR
+            </a>
+             <a href="/Sakana/index.php?action=recuperarSenha" class="btn-link" style="margin-top: 10px; font-size: 0.9em;">
+                Esqueci minha senha
             </a>
         </div>
     </div>
