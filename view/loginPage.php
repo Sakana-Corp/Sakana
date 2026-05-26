@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/Sakana/view/css/style.css">
 </head>
 
-<body class="page-login">
+<body class="page">
 
     <?php
         SessionHelper::garanteSessaoIniciada();
