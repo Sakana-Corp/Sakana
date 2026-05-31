@@ -1,5 +1,6 @@
 <?php
     require_once __DIR__ . "/baseController.php";
+    require_once __DIR__ . "/../model/employeeModel.php";
     class EmployeeController extends BaseController {
 
         public function cadastrar() {
@@ -49,6 +50,13 @@
 
             $this->flashAndRedirect("error", $msg, "logadoGerencia&page=cadastroFuncionario");
 
+        }
+
+        public function listarFuncionarios() {
+            $employeeModel = new EmployeeModel();
+            $listaFuncionarios = $employeeModel->listarTodosFuncionario();
+
+            require_once __DIR__ . "/../view/pages/usersPages/gerencia/consultaFuncionario.php";
         }
     }
 ?>

@@ -37,5 +37,16 @@
                 return ["ok" => false, "error" => "database_error"];
             }
         }
+
+        public function listarTodosFuncionario() {
+            $sql = "SELECT f.idFuncionario, f.nomeFunc, f.cpf, f.endereco, f.cargo                                      
+                    FROM Funcionario f
+                    ORDER BY f.idFuncionario ASC";
+
+            $stmt = Conexao::getConn()->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
     }
 ?>
