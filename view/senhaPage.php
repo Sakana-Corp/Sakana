@@ -10,7 +10,7 @@
     <title>Recuperar Senha | Sakana</title>
     <link rel="stylesheet" href="/Sakana/view/css/style.css">
 </head>
-<body class="page-login">
+<body class="page">
     <?php if ($flash): ?>
         <div class="alert-toast alert-<?php echo $flash['type']; ?>">
             <span><?php echo htmlspecialchars($flash['message']); ?></span>
