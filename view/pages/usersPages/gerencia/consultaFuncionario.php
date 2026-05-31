@@ -34,7 +34,7 @@
                 
                     <?php endforeach;?>
                 <?php else: ?>
-                    <tr><td colspan="7" class="msg-vazia">Nenhum registro para exibir.</td></tr>
+                    <tr><td colspan="4" class="msg-vazia">Nenhum registro para exibir.</td></tr>
                 <?php endif; ?>
             </tbody>
         </table>

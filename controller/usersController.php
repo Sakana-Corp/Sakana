@@ -3,7 +3,7 @@ require_once __DIR__ . "/baseController.php";
 
 class UsersController extends BaseController {
 
-    private function renderGerencia(string $pagina = "home"): void {
+    private function renderGerencia(string $pagina = "home", array $dados = []): void {
         $mapaPaginas = [
             "home" => null,
             "editarPerfil" => __DIR__ . "/../view/pages/usersPages/edtPerfil/edtPerfil.php",
@@ -28,6 +28,8 @@ class UsersController extends BaseController {
         $paginaAtiva = $pagina;
         $arquivoConteudo = $mapaPaginas[$pagina];
 
+        extract($dados, EXTR_SKIP);
+
         require_once __DIR__ . "/../view/pages/usersPages/gerencia/ManagementPanel.php";
     }
 
@@ -40,7 +42,7 @@ class UsersController extends BaseController {
 
             if (!SessionHelper::validarToken()) {
                 SessionHelper::setFlash("error", "Tentativa de requisição inválida.");
-                $this->renderGerencia("editarPerfil");
+                $this->renderGerencia("editarPerfil", []);
                 return;
             }
 
@@ -49,7 +51,7 @@ class UsersController extends BaseController {
 
             if ($nome === "" || $email === "") {
                 SessionHelper::setFlash("warning", "Preencha nome e email para continuar.");
-                $this->renderGerencia("editarPerfil");
+                $this->renderGerencia("editarPerfil", []);
                 return;
             }
 
@@ -62,13 +64,13 @@ class UsersController extends BaseController {
 
                 if ($usuarioAtual === null) {
                     SessionHelper::setFlash("error", "Não foi possível localizar o usuário atual.");
-                    $this->renderGerencia("editarPerfil");
+                    $this->renderGerencia("editarPerfil", []);
                     return;
                 }
 
                 if ($email !== $usuarioAtual["email"] && $accountRepository->emailExists($email)) {
                     SessionHelper::setFlash("error", "Este email já está sendo usado por outro usuário.");
-                    $this->renderGerencia("editarPerfil");
+                    $this->renderGerencia("editarPerfil", []);
                     return;
                 }
 
@@ -80,20 +82,20 @@ class UsersController extends BaseController {
 
                     if (!in_array($extensao, $permitidas, true)) {
                         SessionHelper::setFlash("warning", "A imagem deve ser JPG, JPEG, PNG ou WEBP.");
-                        $this->renderGerencia("editarPerfil");
+                        $this->renderGerencia("editarPerfil", []);
                         return;
                     }
 
                     if ($_FILES["fotoPerfil"]["size"] > 2 * 1024 * 1024) {
                         SessionHelper::setFlash("warning", "A imagem deve ter no máximo 2MB.");
-                        $this->renderGerencia("editarPerfil");
+                        $this->renderGerencia("editarPerfil", []);
                         return;
                     }
 
                     $dirDestino = __DIR__ . "/../view/images/perfis";
                     if (!is_dir($dirDestino) && !mkdir($dirDestino, 0755, true) && !is_dir($dirDestino)) {
                         SessionHelper::setFlash("error", "Não foi possível preparar a pasta de imagens.");
-                        $this->renderGerencia("editarPerfil");
+                        $this->renderGerencia("editarPerfil", []);
                         return;
                     }
 
@@ -102,7 +104,7 @@ class UsersController extends BaseController {
 
                     if (!move_uploaded_file($_FILES["fotoPerfil"]["tmp_name"], $caminhoDestino)) {
                         SessionHelper::setFlash("error", "Não foi possível salvar a imagem de perfil.");
-                        $this->renderGerencia("editarPerfil");
+                        $this->renderGerencia("editarPerfil", []);
                         return;
                     }
 
@@ -123,22 +125,29 @@ class UsersController extends BaseController {
                 SessionHelper::setFlash("error", "Erro ao atualizar o perfil. Tente novamente.");
             }
 
-            $this->renderGerencia("editarPerfil");
+            $this->renderGerencia("editarPerfil", [] );
             return;
         }
 
         SessionHelper::gerarToken();
-        $this->renderGerencia("editarPerfil");
+        $this->renderGerencia("editarPerfil", []);
     }
 
     public function logarGerencia(): void {
         $this->requireAuth("login");
-        $this->renderGerencia("home");
+        $this->renderGerencia("home", []);
     }
 
     public function logadoGerencia(string $pagina = "home"): void {
         $this->requireAuth("login");
-        $this->renderGerencia($pagina);
+        $dados = [];
+        if ($pagina === "consultaFuncionario") {
+            require_once __DIR__ . "/../model/employeeModel.php";
+            $employeeModel = new EmployeeModel();
+            $dados["listaFuncionarios"] = $employeeModel->listarTodosFuncionario();
+            return;
+        }
+        $this->renderGerencia($pagina, $dados ?? []);
     }
 }
 ?>

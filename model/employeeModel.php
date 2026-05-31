@@ -1,7 +1,7 @@
 <?php
+    require_once __DIR__ . "/../config/conexao.php";
     class EmployeeModel {
         public function cadastrarFunc($nome, $cpf, $endereco, $cargo) {
-            require_once __DIR__ . "/../config/conexao.php";
 
             try {
                 $conexao = Conexao::getConn();
