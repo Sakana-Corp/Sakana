@@ -4,19 +4,19 @@
     <div class="form-grid">
         <label class="form-field">
             <span>Nome completo</span>
-            <input type="text" name="nome" class="form-input" value="<?= $nomeUsuario ?>" required>
+            <input type="text" name="nome" class="form-input" value="<?= $nomeUsuario ?? "" ?>" required>
         </label>
 
         <label class="form-field">
             <span>E-mail</span>
-            <input type="email" name="email" class="form-input" value="<?= $emailUsuario ?>" required>
+            <input type="email" name="email" class="form-input" value="<?= $emailUsuario ?? "" ?>" required>
         </label>
     </div>
 
     <div class="form-grid">
         <label class="form-field">
             <span>Foto de perfil</span>
-            <input type="file" name="fotoPerfil" class="form-input" accept="image/png,image/jpeg,image/webp">
+            <input type="file" name="fotoPerfil" class="form-input" accept="image/png, image/jpeg, image/webp, image/jpg">
             <small class="perfil-upload-help">Formatos aceitos: JPG, JPEG, PNG ou WEBP. Tamanho máximo: 2MB.</small>
         </label>
     </div>

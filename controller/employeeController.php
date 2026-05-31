@@ -1,12 +1,6 @@
 <?php
     require_once __DIR__ . "/baseController.php";
     class EmployeeController extends BaseController {
-        public function cadastrarFuncForm() {
-            $this->startSession();
-            SessionHelper::gerarToken();
-
-            require_once __DIR__ . "/../view/pages/usersPages/gerencia/cadastroFuncionario.php";
-        }
 
         public function cadastrar() {
             $this->requirePost("cadastrarFuncForm");

@@ -27,12 +27,6 @@ switch($action) {
         $controller = new EmployeeController();
         $controller->cadastrar();
         break;
-    
-    case "cadastrarFuncForm":
-        require_once "employeeController.php";
-        $controller = new EmployeeController();
-        $controller->cadastrarFuncForm();
-        break;
 
     case "cadastro":
         require_once "accountController.php";
