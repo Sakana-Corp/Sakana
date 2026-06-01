@@ -145,7 +145,6 @@ class UsersController extends BaseController {
             require_once __DIR__ . "/../model/employeeModel.php";
             $employeeModel = new EmployeeModel();
             $dados["listaFuncionarios"] = $employeeModel->listarTodosFuncionario();
-            return;
         }
         $this->renderGerencia($pagina, $dados ?? []);
     }
