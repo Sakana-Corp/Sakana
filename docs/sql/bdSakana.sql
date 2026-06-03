@@ -1,6 +1,8 @@
 create database bdSakana;
 use bdSakana;
 
+ -- drop database bdsakana;
+
 create table LoginUser(
 	idUser int (11) auto_increment primary key,
     nomeUser varchar (30) not null,
@@ -13,32 +15,57 @@ create table imagem(
 	nomeImg varchar (100) not null,
     endpasta varchar (255) not null
 );
-/*
-create table garcom (
-	idGarcom int(11) auto_increment primary key,
-    loginGarcom varchar(20) not null unique,
-    senhaGarcom varchar(20)
+
+create table cargo (
+	idCargo int(11) auto_increment primary key,
+    nomeCargo varchar(20) not null,
+    salario decimal (7,2) not null
 );
 
-create table cozinha (
-	idCozinha int(11) auto_increment primary key,
-    loginCozinha varchar(20) not null unique,
-    senhaCozinha varchar(20)
-);
-
-create table atendimento (
-	idAtendimento int(11) auto_increment primary key,
-    loginAtendimento varchar(20) not null unique,
-    senhaAtendimento varchar(20)
-);
-*/
-create table Funcionario(
-    idFuncionario int(11) auto_increment primary key,
+create table Funcionario (
+    idFuncionario int (11) auto_increment primary key,
     nomeFunc varchar(100) not null,
-    cpf varchar(11) unique not null,
+    cpf char(11) unique not null,
     endereco varchar(255) not null,
-    cargo varchar(50) not null,
-    dataCadastro timestamp default current_timestamp
+    telefone char(11) unique not null,
+    dataCadastro timestamp default current_timestamp,
+    idUser int(11) not null unique,
+        constraint fkFunc_user foreign key (idUser) references LoginUser(idUser),
+    idCargo int(11) not null,
+        constraint fkFunc_cargo foreign key (idCargo) references cargo(idCargo),
+    idDepartamento int(11) not null
+);
+
+create table categoria(
+    idCategoria int (11) auto_increment primary key,
+    nomeCategoria varchar(40) not null
+);
+
+create table produto (
+    idProduto int (11) auto_increment primary key,
+    idCategoria int (11) not null,
+    nomeProduto varchar(40) not null unique,
+    Preco decimal (7,2) not null,
+    imgProduto varchar (255) unique,
+    DescProduto varchar (255) unique,
+        constraint fkProd_Cat foreign key (idCategoria) references categoria(idCategoria)
+);
+
+create table mesa (
+    idMesa int (11) auto_increment primary key,
+    horarioIni datetime not null,
+    horarioFim datetime not null,
+    ValorTotal decimal (7,2) not null
+);
+
+create table pedido (
+    idPedido  int (11) auto_increment primary key,
+    idProduto int (11) not null,
+        constraint fkPed_Prod foreign key (idProduto) references produto(idProduto),
+    idMesa int (11) not null,
+        constraint fkPed_Mesa foreign key (idMesa) references mesa(idMesa),
+    Quantidade int(5) not null,
+    Valor decimal (7,2) not null
 );
 
 select * from imagem;
