@@ -34,6 +34,10 @@
                 <input type="password" name="txtConfirmaSenha" placeholder="Confirmar senha" minlength="8" maxlength="16" autocomplete="new-password" required>
 
                 <button type="submit" name="btnEnviar" class="btn-primary">CADASTRAR</button>
+
+                <a href="/Sakana/index.php?action=login" class="btn-link" style="margin-top: 10px; font-size: 0.9em;">
+                Voltar para login
+                </a>
             </form>
         </div>
     </div>

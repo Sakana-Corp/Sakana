@@ -5,14 +5,14 @@ create table LoginUser(
 	idUser int (11) auto_increment primary key,
     nomeUser varchar (30) not null,
     email varchar (50) unique not null,
-    senha varchar(255) unique not null,
-    contaImg varchar (255) unique
+    senha varchar(255) not null
 );
 
-create table cargo (
-	idCargo int(11) auto_increment primary key,
-    nomeCargo varchar(20) not null,
-    salario decimal (7,2) not null
+/*
+create table garcom (
+	idGarcom int(11) auto_increment primary key,
+    loginGarcom varchar(20) not null unique,
+    senhaGarcom varchar(20)
 );
 
 create table funcionarios (
@@ -43,21 +43,9 @@ DescProduto varchar (255) unique,
 	constraint fkProd_Cat foreign key (idCategoria) references categoria(idCategoria)
 );
 
-create table mesa (
-idMesa int (11) auto_increment primary key,
-horarioIni datetime not null,
-horarioFim datetime not null,
-ValorTotal decimal (7,2) not null
-);
+create table funcionarios (
 	
-
-create table pedido (
-idPedido  int (11) auto_increment primary key,
-idProduto int (11) not null,
-	constraint fkPed_Prod foreign key (idProduto) references produto(idProduto),
-idMesa int (11) not null,
-	constraint fkPed_Mesa foreign key (idMesa) references mesa(idMesa),
-Quantidade int(5) not null,
-Valor decimal (7,2) not null
 );
+*/
 
+select * from LoginUser;

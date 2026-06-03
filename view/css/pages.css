@@ -1,0 +1,79 @@
+/* ========================================
+   PÁGINAS ESPECÍFICAS
+======================================== */
+
+/* Página Genérica */
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    min-height: 100vh;
+    background-image: url("/Sakana/view/images/img_background-tela_login.png");
+}
+
+/* Página Home */
+.page-home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    min-height: 100vh;
+    background-image: url("/Sakana/view/images/img_background-tela_inicial.png");
+}
+
+/* Página Login */
+.page-login {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--medium-blue), #1f3d5a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Container de Login */
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 32px 28px;
+    background-color: var(--light-bg);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+}
+
+/* Página de Gerência */
+.page-gerencia {
+    min-height: 100vh;
+    background-image: url("/Sakana/view/images/img_background-tela_gerencia.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Home da Gerência */
+.home-gerencia {
+    min-height: calc(100vh - 105px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.home-gerencia h1 {
+    font-size: 32px;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .page-login {
+        padding: 20px;
+    }
+
+    .login-container {
+        width: 100%;
+    }
+}

@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="/Sakana/view/css/style.css">
     <link rel="stylesheet" href="/Sakana/view/css/gerencia.css?v=1">
+    <link rel="stylesheet" href="/Sakana/view/css/perfil.css?v=1">
 </head>
 
 <body class="page-gerencia">
@@ -22,8 +23,16 @@
         </div>
 
         <div class="user-area">
-            <span>User : N/A</span>
-            <img src="/Sakana/view/images/user.png" alt="Usuário" class="user-icon">
+            <span><?php if (isset($_SESSION['nomeUser'])): ?>
+                <?= htmlspecialchars($_SESSION['nomeUser'], ENT_QUOTES, 'UTF-8') ?>
+            <?php else: ?>
+                Usuário não logado
+            <?php endif; ?>
+        </span>
+        <a href="/Sakana/index.php?action=editarPerfil" class="user-profile-link">
+            <img src="<?= htmlspecialchars($_SESSION['fotoPerfil'] ?? '/Sakana/view/images/user.png', ENT_QUOTES, 'UTF-8') ?>" alt="Usuário" class="user-icon">
+        </a>
+            
         </div>
     </header>
 

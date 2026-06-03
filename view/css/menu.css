@@ -1,0 +1,57 @@
+/* ========================================
+   COMPONENTE MENU
+======================================== */
+
+/* Botão de Menu */
+.menu-btn {
+    display: block;
+    width: 100%;
+    padding: 18px 20px;
+    text-align: center;
+    background: var(--primary-wine);
+    color: var(--text-light);
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: 700;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
+
+.menu-btn:hover {
+    background: var(--primary-wine-hover);
+    transform: translateY(-1px);
+}
+
+.menu-btn.active {
+    background: var(--primary-wine-dark);
+}
+
+/* Botão Trocar Setor */
+.trocar-setor {
+    margin-top: auto;
+    padding: 13px 18px;
+    border: 2px solid var(--border-light);
+    background: transparent;
+    color: var(--border-light);
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.trocar-setor:hover {
+    background: rgba(232, 223, 210, 0.1);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .menu-btn,
+    .trocar-setor {
+        width: 220px;
+    }
+
+    .trocar-setor {
+        margin-top: 0;
+    }
+}

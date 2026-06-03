@@ -15,4 +15,5 @@ class Conexao {
             throw new RuntimeException("db_unavailable", 0, $e);
         }
     }
+    
 }

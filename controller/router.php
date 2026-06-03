@@ -21,6 +21,12 @@ switch($action) {
         $controller = new AccountController();
         $controller->cadastrar();
         break;
+    
+    case "cadastrarFunc":
+        require_once "employeeController.php";
+        $controller = new EmployeeController();
+        $controller->cadastrar();
+        break;
 
     case "cadastro":
         require_once "accountController.php";
@@ -51,10 +57,28 @@ switch($action) {
         $controller->painelAcesso();
         break;
 
+    case "editarPerfil":
+        require_once "usersController.php";
+        $controller = new UsersController();
+        $controller->editarPerfil();
+        break;
+
     case "logout":
         require_once "accessController.php";
         $controller = new AccessController();
         $controller->logout();
+        break;
+
+    case "recuperarSenha":
+        require_once "accessController.php";
+        $controller = new AccessController();
+        $controller->recuperarSenhaForm();
+        break;
+
+    case "atualizarSenha":
+        require_once "accessController.php";
+        $controller = new AccessController();
+        $controller->atualizarSenha();
         break;
 
     default:
