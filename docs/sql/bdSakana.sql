@@ -80,5 +80,6 @@ select * from produto;
 SET FOREIGN_KEY_CHECKS = 0;
 
 TRUNCATE TABLE categoria;
+truncate table produto;
 
 SET FOREIGN_KEY_CHECKS = 1;
