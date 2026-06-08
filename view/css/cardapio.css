@@ -14,25 +14,39 @@
 .titulo-pagina {
     text-align: center;
     font-size: 28px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     color: #2c3e50;
 }
 
 /* Ações de Cardápio */
 .acoes-cardapio {
     display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 25px;
 }
 
+.card-mod{
+    width: 50%;
+    display: flex;
+    justify-content: left;
+    gap: 15px;
+}
+.card-visualizar{
+    width:30%;
+    display: flex;
+    justify-content: right;
+    gap: 15px;
+}
 /* CARD DE OPÇÃO - Já em cards.css, mantém-se aqui o extra */
 .card-opcao {
-    width: 260px;
+    width: 200px;
+    height: 60px;
     background: white;
     border-radius: 16px;
-    padding: 25px;
-    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
     text-decoration: none;
     color: #333;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -40,24 +54,21 @@
 }
 
 .card-opcao:hover {
-    transform: translateY(-5px);
+    transform: translateY(-2px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .card-icon {
-    font-size: 40px;
+    font-size: 30px;
     margin-bottom: 10px;
 }
 
 .card-opcao h3 {
-    margin-bottom: 10px;
+    font-size: 15px;
+    margin-bottom: 5px;
     color: #5a7a99;
 }
 
-.card-opcao p {
-    font-size: 14px;
-    color: #666;
-}
 
 /* Título de Formulário */
 .titulo-form {
@@ -67,7 +78,128 @@
     margin-bottom: 25px;
 }
 
+/*CATEGORIAS*/
+.imagem-categoria {
+    height: 80%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.cardapio-header {
+    width: 100%;
+    align-items: center;
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    margin-bottom: 25px;
+    background: rgba(168, 143, 143, 0.95);
+    border-radius: 12px;
+}
+
+.cardapio-body {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+}
+
+.cardapio-categoria {
+    max-width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 12px;
+    padding: 15px;
+    gap: 15px;
+}
+
+.aba-categoria {
+    width: 200px;
+    height: 60px;
+    background: #fffefc;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 2px solid #753047;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.aba-categoria.aba-ativa {
+    width: 200px;
+    background: #753047;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.aba-categoria p{
+    font-size: 18px;
+    color: #753047;
+    font-weight: 600;
+}
+
+.aba-categoria.aba-ativa p{
+    font-size: 15px;
+    color: #fff9fb;
+    font-weight: 700;
+}
+
+.aba-categoria:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/*PSQUISAR*/
+.cardapio-pesquisa {
+    width: 90%;
+}
+
+/*PRODUTOS*/
+.produto-frame {    
+    width: 10%;
+    height: 200px;
+    aspect-ratio: 1/2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border-radius: 12px;
+    background-color: #fffbf2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.produto-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.produto-nome {
+    font-size: 18px;
+    color: #000000;
+    font-weight: 600;
+    text-align: center;
+}
+.produto-valor {
+    font-size: 16px;
+    color: #000000;
+    font-weight: 700;
+}
+
+.imagem-produto {
+    height: 50%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 8px;
+}
 /* FORMULÁRIOS - Estilos específicos */
+
 
 /* Grupo de Formulário */
 .form-grupo {
@@ -75,7 +207,7 @@
     max-width: 750px;
     margin: 35px auto;
     padding: 30px;
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 240, 240, 0.92);
     border-radius: 18px;
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
 }
@@ -88,22 +220,107 @@
     font-weight: 600;
 }
 
+.form-inputFile {
+    display: none;
+}
+
+.file-upload-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.custom-file-upload {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    background-color: #693d4e;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    user-select: none;
+}
+
+.custom-file-upload:hover {
+    background-color: #572c3c;
+}
+
+.file-name {
+    color: #284b63;
+    font-size: 0.95rem;
+    min-width: 180px;
+}
+
 /* Input de Formulário */
 .form-input {
     width: 100%;
     height: 48px;
     margin-bottom: 18px;
     padding: 0 15px;
-    border: 1px solid #c8d6df;
-    border-radius: 12px;
     font-size: 15px;
     outline: none;
     transition: var(--transition);
 }
 
 .form-input:focus {
-    border-color: #5a7a99;
+    border-color: #000000;
     box-shadow: 0 0 0 3px rgba(90, 122, 153, 0.18);
+}
+
+
+input[type="file"]::file-selector-button {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  background-color: #693d4e;
+  color: #ffffff;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+  vertical-align: middle;
+  align-items: center;
+  border-radius: 0.5rem;
+  user-select: none;
+  gap: 0.75rem;
+  box-shadow:
+    0 4px 6px -1px #488aec31,
+    0 2px 4px -1px #488aec17;
+  transition: all 0.6s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+    box-shadow:
+    0 10px 15px -3px #488aec4f,
+    0 4px 6px -2px #488aec17;
+}
+
+input[type="file"]::file-selector-button:focus,
+input[type="file"]::file-selector-button:active {
+    opacity: 0.85;
+    box-shadow: none;
+}
+input[type="file"]::file-selector-button:svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.perfil-upload-help {
+    font-size: 0.85rem;
+    color: #000000;
+    font-weight: 700;
+}
+
+.form-separador {
+    margin-bottom: 30px;
 }
 
 /* Botão Primário em Formulários */

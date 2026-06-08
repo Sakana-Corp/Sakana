@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/Sakana/view/css/style.css">
     <link rel="stylesheet" href="/Sakana/view/css/gerencia.css?v=1">
     <link rel="stylesheet" href="/Sakana/view/css/perfil.css?v=1">
+    <link rel="stylesheet" href="/Sakana/view/css/alerts.css">
 </head>
 
 <body class="page-gerencia">
@@ -48,6 +49,13 @@
         </aside>
 
         <main class="conteudo">
+            <?php $flash = SessionHelper::getFlash(); ?>
+            <?php if ($flash): ?>
+                <div class="alert alert-toast alert-<?php echo htmlspecialchars($flash['type'], ENT_QUOTES, 'UTF-8'); ?>" role="alert" aria-live="polite">
+                    <span class="alert-text"><?php echo htmlspecialchars($flash['message'], ENT_QUOTES, 'UTF-8'); ?></span>
+                    <button type="button" class="alert-close" aria-label="Fechar aviso">×</button>
+                </div>
+            <?php endif; ?>
             <?php if (!empty($arquivoConteudo) && file_exists($arquivoConteudo)): ?>
                 <?php require $arquivoConteudo; ?>
             <?php else: ?>

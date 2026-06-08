@@ -34,6 +34,18 @@ switch($action) {
         $controller->cadastro();
         break;
 
+    case "cadastrarCategoria":
+        require_once "cardapioController.php";
+        $controller = new CardapioController();
+        $controller->cadastrarCategoria();
+        break;
+
+    case "cadastrarProduto":
+        require_once "cardapioController.php";
+        $controller = new CardapioController();
+        $controller->cadastrarProduto();
+        break;
+
     case "logado":
         require_once "accessController.php";
         $controller = new AccessController();
