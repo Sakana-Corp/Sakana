@@ -4,6 +4,7 @@ require_once __DIR__ . "/baseController.php";
 class UsersController extends BaseController {
 
     private function renderGerencia(string $pagina = "home", array $dados = []): void {
+        SessionHelper::gerarToken();
         $mapaPaginas = [
             "home" => null,
             "editarPerfil" => __DIR__ . "/../view/pages/usersPages/edtPerfil/edtPerfil.php",
@@ -15,7 +16,8 @@ class UsersController extends BaseController {
             "pedidos" => __DIR__ . "/../view/pages/usersPages/gerencia/pedidos.php",
 
             "cardapio" => __DIR__ . "/../view/pages/usersPages/gerencia/cardapio.php",
-            "cadastroCardapio" => __DIR__ . "/../view/pages/usersPages/gerencia/cadastroCardapio.php",
+            "cadastroProduto" => __DIR__ . "/../view/pages/usersPages/gerencia/cadastroProduto.php",
+            "cadastroCategoria" => __DIR__ . "/../view/pages/usersPages/gerencia/cadastroCategoria.php",
             "consultaCardapio" => __DIR__ . "/../view/pages/usersPages/gerencia/consultaCardapio.php",
 
             "mesas" => __DIR__ . "/../view/pages/usersPages/gerencia/mesas.php"
@@ -141,11 +143,28 @@ class UsersController extends BaseController {
     public function logadoGerencia(string $pagina = "home"): void {
         $this->requireAuth("login");
         $dados = [];
+
         if ($pagina === "consultaFuncionario") {
             require_once __DIR__ . "/../model/employeeModel.php";
             $employeeModel = new EmployeeModel();
             $dados["listaFuncionarios"] = $employeeModel->listarTodosFuncionario();
         }
+
+        if ($pagina === "cardapio") {
+            require_once __DIR__ . "/../model/categoriaModel.php";
+            $categoriaModel = new CategoriaModel();
+            $dados["listaCategorias"] = $categoriaModel->listarCategorias();
+            require_once __DIR__ . "/../model/produtoModel.php";
+            $produtoModel = new ProdutoModel();
+            $dados["listaProdutos"] = $produtoModel->listarProdutos();
+        }
+
+        if($pagina === "cadastroProduto") {
+            require_once __DIR__ . "/../model/categoriaModel.php";
+            $categoriaModel = new CategoriaModel();
+            $dados["listaCategorias"] = $categoriaModel->listarCategorias();
+        }
+
         $this->renderGerencia($pagina, $dados ?? []);
     }
 }

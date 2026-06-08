@@ -39,7 +39,7 @@
         }
 
         public function listarTodosFuncionario() {
-            $sql = "SELECT f.idFuncionario, f.nomeFunc, f.cpf, f.endereco, f.cargo                                      
+            $sql = "SELECT f.idFuncionario, f.nomeFunc, f.cpf, f.endereco, f.idCargo                                      
                     FROM Funcionario f
                     ORDER BY f.idFuncionario ASC";
 
