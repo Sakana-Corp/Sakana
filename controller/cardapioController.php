@@ -49,7 +49,6 @@
             $resultado = $categoriaModel->cadastrarCategoria($nomeCategoria, $descCategoria, $fotoCategoria);
 
             if ($resultado["ok"]) {
-                // Renova token após sucesso para reduzir reutilização.
                 $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
                 $this->flashAndRedirect("success", "Categoria cadastrada com sucesso!", "logadoGerencia&page=cadastroCategoria");
             }
@@ -146,11 +145,117 @@
             $this->flashAndRedirect("error", $msg, "logadoGerencia&page=cadastroProduto");
     }
 
-     public function listarProdutos() {
+    public function listarProdutos() {
         $produtoModel = new ProdutoModel();
         $listaProdutos = $produtoModel->listarProdutos();
 
         require_once __DIR__ . "/../view/pages/pages/gerencia/cardapio.php";
         }
+
+    public function seedCardapio() {
+        $this->requirePost("logadoGerencia&page=cadastroCategoria");
+        $this->startSession();
+        $this->validateCsrfOrRedirect("logadoGerencia&page=cadastroCategoria");
+
+        require_once __DIR__ . "/../model/categoriaModel.php";
+        require_once __DIR__ . "/../model/produtoModel.php";
+
+        $categoriaModel = new CategoriaModel();
+        $produtoModel = new ProdutoModel();
+
+        $categoriasExemplo = [
+            ["Bebidas", "Sucos, refrigerantes e drinks", "/Sakana/view/images/seed/categorias/bebidas.jpg"],
+            ["Sushis", "Combinados e peças avulsas", "/Sakana/view/images/seed/categorias/sushis.jpg"],
+            ["Temakis", "Enrolado em forma de cone recheado", "/Sakana/view/images/seed/categorias/temakis.jpg"],
+        ];
+
+        $idsCategorias = [];
+        foreach ($categoriasExemplo as [$nome, $desc, $foto]) {
+            $resultado = $categoriaModel->cadastrarCategoria($nome, $desc, $foto);
+            if ($resultado["ok"]) {
+                $idsCategorias[$nome] = $resultado["id"]; 
+            }
+        }
+
+        $produtosExemplo = [
+            ["Coca-Cola 350ml", "Lata gelada de Coca-Cola", "/Sakana/view/images/seed/produtos/cocacola.jpg", "Bebidas", 6.00],
+            ["Guaraná Antarctica 350ml", "Lata gelada de Guarana", "/Sakana/view/images/seed/produtos/guarana.jpg", "Bebidas", 6.00],
+            ["Combinado 20 peças", "Sushi e sashimi variados", "/Sakana/view/images/seed/produtos/combinado20.jpg", "Sushis", 45.00],
+            ["Combinado 10 peças", "Sushis variados", "/Sakana/view/images/seed/produtos/combinado10.jpg", "Sushis", 25.00],
+            ["Temaki Salmão Cru", "Temaki cru", "/Sakana/view/images/seed/produtos/temakiCru.jpg", "Temakis", 15.00],
+            ["Temaki Salmão Grelhado", "Temaki grelhado", "/Sakana/view/images/seed/produtos/temakiGrelhado.jpg", "Temakis", 15.00],
+        ];
+
+        foreach ($produtosExemplo as [$nome, $desc, $foto, $nomeCategoria, $valor]) {
+            $categoriaId = $idsCategorias[$nomeCategoria] ?? null;
+            if ($categoriaId) {
+                $produtoModel->cadastrarProduto($nome, $desc, $foto, $categoriaId, $valor);
+            }
+        }
+
+        $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+        $this->flashAndRedirect("success", "Cardápio de exemplo cadastrado!", "logadoGerencia&page=cardapio");
+    }
+
+    public function excluirCategoria() {
+        $this->requirePost("logadoGerencia&page=cardapio");
+        $this->startSession();
+        $this->validateCsrfOrRedirect("logadoGerencia&page=cardapio");
+
+        $idCategoria = $_POST["idCategoria"] ?? "";
+
+        if ($idCategoria === "") {
+            $this->flashAndRedirect("warning", "Categoria inválida.", "logadoGerencia&page=cardapio");
+        }
+
+        require_once __DIR__ . "/../model/categoriaModel.php";
+        $categoriaModel = new CategoriaModel();
+        $resultado = $categoriaModel->excluirCategoria($idCategoria);
+
+        if ($resultado["ok"]) {
+            $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+            $this->flashAndRedirect("success", "Categoria excluída com sucesso!", "logadoGerencia&page=cardapio");
+        }
+
+        $error = $resultado["error"] ?? "unknown_error";
+
+        if ($error === "has_products") {
+            $msg = "Não é possível excluir: existem produtos cadastrados nessa categoria.";
+        } elseif ($error === "database_error") {
+            $msg = "Banco de dados indisponível. Tente mais tarde.";
+        } else {
+            $msg = "Erro ao excluir categoria.";
+        }
+
+        $this->flashAndRedirect("error", $msg, "logadoGerencia&page=cardapio");
+    }
+
+    public function excluirProduto() {
+        $this->requirePost("logadoGerencia&page=cardapio");
+        $this->startSession();
+        $this->validateCsrfOrRedirect("logadoGerencia&page=cardapio");
+
+        $idProduto = $_POST["idProduto"] ?? "";
+
+        if ($idProduto === "") {
+            $this->flashAndRedirect("warning", "Pr inválida.", "logadoGerencia&page=cardapio");
+        }
+
+        require_once __DIR__ . "/../model/produtoModel.php";
+        $produtoModel = new ProdutoModel();
+        $resultado = $produtoModel->excluirProduto($idProduto);
+
+        if ($resultado["ok"]) {
+            $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+            $this->flashAndRedirect("success", "Produto excluído com sucesso!", "logadoGerencia&page=cardapio");
+        }
+
+        if ($error === "database_error") {
+            $msg = "Banco de dados indisponível. Tente mais tarde.";
+        } else {
+            $msg = "Erro ao excluir categoria.";
+        }
+
+    }
     }
 ?>

@@ -24,6 +24,13 @@
                 <h3>Visualizar cardápio</h3>
             </a>
         </div>
+        <form action="/Sakana/index.php?action=seedCardapio" method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+            <button type="submit" class="card-opcao">
+                <div class="card-icon">✨</div>
+                <h3>Cadastrar Exemplo</h3>
+            </button>
+        </form>
     </div>
 
     <div class="cardapio-container">
@@ -38,6 +45,12 @@
                             <img class="imagem-categoria" src="<?php echo htmlspecialchars($c['imgCategoria'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($c['nomeCategoria'], ENT_QUOTES, 'UTF-8'); ?>" class="categoria-icon">
                             <p class="categoria-nome"><?php echo htmlspecialchars($c['nomeCategoria'], ENT_QUOTES, 'UTF-8'); ?></p>
                         </button>
+                        <form action="/Sakana/index.php?action=excluirCategoria" method="POST" 
+                            onsubmit="return confirm('Tem certeza que deseja excluir esta categoria?');">
+                            <input type="hidden" name="idCategoria" value="<?php echo htmlspecialchars($c['idCategoria'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                            <button type="submit" class="btn-excluir">🗑️</button>
+                        </form>
                     <?php endforeach; ?>
             </div>
                 <?php else: ?>
@@ -57,6 +70,12 @@
                             <p class="produto-descricao"><?php echo htmlspecialchars($p['descProduto'], ENT_QUOTES, 'UTF-8'); ?></p>
                             <p class="produto-valor">R$ <?php echo number_format($p['valorProduto'], 2, ',', '.'); ?></p>
                         </div>
+                        <form action="/Sakana/index.php?action=excluirProduto" method="POST" 
+                            onsubmit="return confirm('Tem certeza que deseja excluir este produto?');">
+                            <input type="hidden" name="idProduto" value="<?php echo htmlspecialchars($p['idProduto'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                            <button type="submit" class="btn-excluir">🗑️ Excluir</button>
+                        </form>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>

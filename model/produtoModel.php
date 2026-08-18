@@ -47,5 +47,21 @@
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        public function excluirProduto($id){
+            try {
+            $conexao = Conexao::getConn();
+
+            $sql = "DELETE FROM produto WHERE idProduto = :id";
+            $stmt = $conexao->prepare($sql);
+            $stmt->bindParam(":id", $id);
+            $stmt->execute();
+
+            return ["ok" => true];
+        } catch(PDOException $e) {
+            error_log("Erro PDO ao excluir categoria: " . $e->getMessage());
+            return ["ok" => false, "error" => "database_error"];
+        }
+        }
     }
 ?>

@@ -46,6 +46,25 @@ switch($action) {
         $controller->cadastrarProduto();
         break;
 
+    case "seedCardapio":
+        require_once "cardapioController.php";
+        $controller = new CardapioController();
+        $controller->seedCardapio();
+        break;
+
+    case "excluirCategoria":
+        require_once "cardapioController.php";
+        $controller = new CardapioController();
+        $controller->excluirCategoria();
+        break;
+
+    case "excluirProduto":
+        require_once "cardapioController.php";
+        $controller = new CardapioController();
+        $controller->excluirProduto();
+        break;
+
+
     case "logado":
         require_once "accessController.php";
         $controller = new AccessController();
