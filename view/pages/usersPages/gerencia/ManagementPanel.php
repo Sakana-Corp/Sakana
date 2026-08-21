@@ -40,10 +40,10 @@
     <div class="layout">
 
         <aside class="sidebar">
-            <a href="/Sakana/index.php?action=logadoGerencia&page=funcionarios" class="menu-btn">Funcionários</a>
-            <a href="/Sakana/index.php?action=logadoGerencia&page=pedidos" class="menu-btn">Pedidos</a>
-            <a href="/Sakana/index.php?action=logadoGerencia&page=cardapio" class="menu-btn">Cardápio</a>
-            <a href="/Sakana/index.php?action=logadoGerencia&page=mesas" class="menu-btn">Mesas</a>
+            <a href="/Sakana/index.php?action=logadoGerencia&page=funcionarios" class="menu-btn">FUNCIONÁRIOS</a>
+            <a href="/Sakana/index.php?action=logadoGerencia&page=pedidos" class="menu-btn">PEDIDOS</a>
+            <a href="/Sakana/index.php?action=logadoGerencia&page=cardapio" class="menu-btn">CARDÁPIO</a>
+            <a href="/Sakana/index.php?action=logadoGerencia&page=mesas" class="menu-btn">MESAS</a>
 
             <a href="/Sakana/index.php?action=painelAcesso" class="btn-setor">Trocar de setor</a>
         </aside>
