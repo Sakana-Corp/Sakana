@@ -7,15 +7,28 @@
             $this->requirePost("cadastrarFuncForm");
             $this->startSession();
             $this->validateCsrfOrRedirect("cadastrarFuncForm");
+            $this->requireSetor("gerencia");
 
             $nome = $_POST["nomeFunc"] ?? "";
             $cpf = preg_replace("/[^0-9]/", "", $_POST["cpf"] ?? "");
             $endereco = $_POST["endereco"] ?? "";
             $cargo = $_POST["cargo"] ?? "";
+            $email = trim($_POST["email"] ?? "");
+            $senha = $_POST["senha"] ?? "";
 
             // validações
-            if ($nome === "" || $cpf === "" || $endereco === "" || $cargo === "") {
-                $this->flashAndRedirect("warning", "Preencha todos os campos para continuar.", "cadastrarFuncForm");
+            if ($nome === "" || 
+                $cpf === "" || 
+                $endereco === "" || 
+                $cargo === "" ||
+                $email === "" || 
+                $senha === ""
+            ) {
+                $this->flashAndRedirect(
+                    "warning", 
+                    "Preencha todos os campos para continuar.", 
+                    "cadastrarFuncForm"
+                );
             }
 
             require_once __DIR__ . "/../service/inputValidator.php";
@@ -28,7 +41,14 @@
 
             require_once __DIR__ . "/../model/employeeModel.php";
             $employeeModel = new EmployeeModel();
-            $resultado = $employeeModel->cadastrarFunc($nome, $cpf, $endereco, $cargo);
+            $resultado = $employeeModel->cadastrarFunc(
+                $nome, 
+                $cpf, 
+                $endereco, 
+                $cargo, 
+                $email, 
+                $senha
+            );
 
             if ($resultado["ok"]) {
             // Renova token após sucesso para reduzir reutilização.
@@ -53,6 +73,7 @@
         }
 
         public function listarFuncionarios() {
+            $this->requireSetor("gerencia");
             $employeeModel = new EmployeeModel();
             $listaFuncionarios = $employeeModel->listarTodosFuncionario();
 

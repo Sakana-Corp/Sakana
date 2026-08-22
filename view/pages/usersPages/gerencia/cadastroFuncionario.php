@@ -28,11 +28,24 @@
            placeholder="Ex: Avenida Brasil, nº 100 - CEP: 00000-000">
 
     <label class="form-label">Cargo:</label>
-    <input type=""  
-           name="cargo" 
-           class="form-input" 
-           required 
-           placeholder="Ex: Garçonete">
+    <select name="cargo" class="form-input" required>
+       <option value="">Selecione o cargo</option>
+       <option value="Garçom">Garçom</option>
+       <option value="Cozinha">Cozinha</option>
+    </select>
+
+    <label class="form-label">Email do funcionário:</label>
+    <input type="email"
+           name="email"
+           class="form-input"
+           required>
+
+       <label class="form-label">Senha do funcionário:</label>
+       <input type="password"
+              name="senha"
+              class="form-input"
+              required
+              minlength="8">
 
     <button type="submit" class="btn-primary">Cadastrar colaborador</button>
 </form>
