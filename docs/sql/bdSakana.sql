@@ -5,36 +5,37 @@ use bdSakana;
 
 
 create table LoginUser(
-	  idUser int (11) auto_increment primary key,
-    nomeUser varchar (30) not null,
-    email varchar (50) unique not null,
+	idUser int(11) auto_increment primary key,
+    nomeUser varchar(30) not null,
+    email varchar(50) unique not null,
     senha varchar(255) not null,
-    fotoPerfil varchar(255) null
+    fotoPerfil varchar(255) null,
+    nivelAcesso enum('gerente', 'garcom', 'cozinha') not null default 'gerente'
 );
 
 create table imagem(
-	  nomeImg varchar (100) not null,
+	nomeImg varchar (100) not null,
     endpasta varchar (255) not null
 );
 
 create table cargo (
-	  idCargo int(11) auto_increment primary key,
+	idCargo int(11) auto_increment primary key,
     nomeCargo varchar(20) not null,
     salario decimal (7,2) not null
 );
 
 create table Funcionario (
-    idFuncionario int (11) auto_increment primary key,
+    idFuncionario int(11) auto_increment primary key,
     nomeFunc varchar(100) not null,
     cpf char(11) unique not null,
     endereco varchar(255) not null,
-    telefone char(11) unique not null,
+    telefone char(11) unique null,
     dataCadastro timestamp default current_timestamp,
     idUser int(11) not null unique,
     constraint fkFunc_user foreign key (idUser) references LoginUser(idUser),
     idCargo int(11) not null,
     constraint fkFunc_cargo foreign key (idCargo) references cargo(idCargo),
-    idDepartamento int(11) not null
+    idDepartamento int(11) null
 );
 
 create table categoria(
@@ -70,6 +71,11 @@ create table pedido (
     Quantidade int(5) not null,
     Valor decimal (7,2) not null
 );
+
+insert into cargo (nomeCargo, salario) values
+('Gerente', 0.00),
+('Garçom', 0.00),
+('Cozinha', 0.00);
 
 select * from imagem;
 select * from LoginUser;

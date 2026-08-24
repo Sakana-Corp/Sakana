@@ -1,9 +1,23 @@
+<?php
+$setorAtual = $_SESSION["setorAtual"] ?? null;
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerência | Sakana</title>
+
+    <?php
+    $titulosSetor = [
+        "gerencia" => "Gerência",
+        "atendimento" => "Atendimento",
+        "cozinha" => "Cozinha"
+    ];
+    $tituloSetor = $titulosSetor[$setorAtual] ?? "Sistema";
+    ?>
+    <title><?= htmlspecialchars($tituloSetor, ENT_QUOTES, "UTF-8") ?> | Sakana</title>
 
     <link rel="stylesheet" href="/Sakana/view/css/style.css">
     <link rel="stylesheet" href="/Sakana/view/css/gerencia.css?v=1">
@@ -25,27 +39,62 @@
 
         <div class="user-area">
             <span><?php if (isset($_SESSION['nomeUser'])): ?>
-                <?= htmlspecialchars($_SESSION['nomeUser'], ENT_QUOTES, 'UTF-8') ?>
-            <?php else: ?>
-                Usuário não logado
-            <?php endif; ?>
-        </span>
-        <a href="/Sakana/index.php?action=editarPerfil" class="user-profile-link">
-            <img src="<?= htmlspecialchars($_SESSION['fotoPerfil'] ?? '/Sakana/view/images/user.png', ENT_QUOTES, 'UTF-8') ?>" alt="Usuário" class="user-icon">
-        </a>
-            
+                    <?= htmlspecialchars($_SESSION['nomeUser'], ENT_QUOTES, 'UTF-8') ?>
+                <?php else: ?>
+                    Usuário não logado
+                <?php endif; ?>
+            </span>
+            <a href="/Sakana/index.php?action=editarPerfil" class="user-profile-link">
+                <img src="<?= htmlspecialchars($_SESSION['fotoPerfil'] ?? '/Sakana/view/images/user.png', ENT_QUOTES, 'UTF-8') ?>" alt="Usuário" class="user-icon">
+            </a>
+
         </div>
     </header>
 
     <div class="layout">
-
         <aside class="sidebar">
             <a href="/Sakana/index.php?action=logadoGerencia&page=funcionarios" class="menu-btn">FUNCIONÁRIOS</a>
             <a href="/Sakana/index.php?action=logadoGerencia&page=pedidos" class="menu-btn">PEDIDOS</a>
             <a href="/Sakana/index.php?action=logadoGerencia&page=cardapio" class="menu-btn">CARDÁPIO</a>
             <a href="/Sakana/index.php?action=logadoGerencia&page=mesas" class="menu-btn">MESAS</a>
 
-            <a href="/Sakana/index.php?action=painelAcesso" class="btn-setor">Trocar de setor</a>
+            <?php if ($setorAtual === "gerencia"): ?>
+                <a href="/Sakana/index.php?action=logadoGerencia&page=funcionarios"
+                    class="menu-btn">
+                    Funcionários
+                </a>
+            <?php endif; ?>
+
+            <?php if (
+                $setorAtual === "gerencia" ||
+                $setorAtual === "atendimento" ||
+                $setorAtual === "cozinha"
+            ): ?>
+                <a href="/Sakana/index.php?action=logadoGerencia&page=pedidos"
+                    class="menu-btn">
+                    Pedidos
+                </a>
+            <?php endif; ?>
+
+            <?php if (
+                $setorAtual === "gerencia" ||
+                $setorAtual === "atendimento"
+            ): ?>
+                <a href="/Sakana/index.php?action=logadoGerencia&page=cardapio"
+                    class="menu-btn">
+                    Cardápio
+                </a>
+
+                <a href="/Sakana/index.php?action=logadoGerencia&page=mesas"
+                    class="menu-btn">
+                    Mesas
+                </a>
+            <?php endif; ?>
+
+            <a href="/Sakana/index.php?action=painelAcesso"
+                class="btn-setor">
+                Trocar de setor
+            </a>
         </aside>
 
         <main class="conteudo">
@@ -66,4 +115,5 @@
     </div>
 
 </body>
+
 </html>

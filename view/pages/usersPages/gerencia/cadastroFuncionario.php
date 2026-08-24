@@ -24,6 +24,25 @@
         </div>
     </div>
 
+    <label class="form-label">Cargo:</label>
+    <select name="cargo" class="form-input" required>
+       <option value="">Selecione o cargo</option>
+       <option value="Garçom">Garçom</option>
+       <option value="Cozinha">Cozinha</option>
+    </select>
+
+    <label class="form-label">Email do funcionário:</label>
+    <input type="email"
+           name="email"
+           class="form-input"
+           required>
+
+       <label class="form-label">Senha do funcionário:</label>
+       <input type="password"
+              name="senha"
+              class="form-input"
+              required
+              minlength="8">
     <div class="form-field">
         <label class="form-label" for="endereco">Endereço</label>
         <input type="text" id="endereco" name="endereco" class="form-input" required

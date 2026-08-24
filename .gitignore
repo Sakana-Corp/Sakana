@@ -1,0 +1,7 @@
+# Arquivo de conexao local
+/config/conexao.php
+
+# Imagens enviadas ou geradas
+/view/images/perfis/
+/view/images/categorias/
+/view/images/produtos/
