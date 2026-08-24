@@ -9,7 +9,7 @@
     align-items: center;
     overflow: hidden;
     min-height: 100vh;
-    background-image: url("/Sakana/view/images/img_background-tela_login.png");
+    background-image: url("/Sakana/view/images/fundo_branco.png");
 }
 
 /* Página Home */
@@ -19,7 +19,7 @@
     align-items: center;
     overflow: hidden;
     min-height: 100vh;
-    background-image: url("/Sakana/view/images/img_background-tela_inicial.png");
+    background-image: url("/Sakana/view/images/fundo_branco.png");
 }
 
 /* Página Login */
@@ -45,7 +45,7 @@
 /* Página de Gerência */
 .page-gerencia {
     min-height: 100vh;
-    background-image: url("/Sakana/view/images/img_background-tela_gerencia.jpeg");
+    background-image: url("/Sakana/view/images/fundo_azul.jpeg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

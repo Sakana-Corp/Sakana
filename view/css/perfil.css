@@ -2,17 +2,17 @@
    PERFIL - ESTILOS ESPECÍFICOS
    
    NOTA: Este arquivo estende os estilos globais
-   de style.css com customizações específicas
-   da página de perfil.
+   de components.css/style.css com customizações
+   específicas da página de perfil.
 ========================================*/
 
 /* Variáveis de Perfil */
 :root {
-    --perfil-surface: rgba(245, 241, 227, 0.96);
-    --perfil-border: rgba(159, 116, 88, 0.18);
-    --perfil-text: #1f3345;
-    --perfil-muted: #5d6f7c;
-    --perfil-shadow: 0 18px 45px rgba(20, 40, 60, 0.18);
+    --perfil-surface: #ffffff;
+    --perfil-border: #e2e8ee;
+    --perfil-text: var(--dark-blue);
+    --perfil-muted: #6b7c8c;
+    --perfil-shadow: 0 8px 24px rgba(23, 48, 74, 0.12);
 }
 
 /* Página de Perfil */
@@ -29,30 +29,36 @@
     gap: 24px;
     padding: 28px 30px;
     margin-bottom: 18px;
-    border-radius: 24px;
-    background: linear-gradient(135deg, rgba(155, 15, 71, 0.95), rgba(95, 15, 48, 0.9));
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary-wine), var(--primary-wine-dark));
     color: #fffdf8;
     box-shadow: var(--perfil-shadow);
 }
 
 .perfil-kicker,
 .perfil-side-kicker {
-    font-size: 0.8rem;
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1.8px;
+    letter-spacing: 1.4px;
     margin-bottom: 8px;
-    opacity: 0.95;
+    opacity: 0.9;
 }
 
 .perfil-title {
-    font-size: 2rem;
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 600;
     margin-bottom: 8px;
 }
 
 .perfil-description {
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
     max-width: 650px;
     line-height: 1.6;
-    color: rgba(255, 253, 248, 0.9);
+    font-size: 0.9rem;
+    color: rgba(255, 253, 248, 0.85);
 }
 
 /* Avatar Card */
@@ -60,33 +66,34 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 14px 18px;
-    border-radius: 18px;
+    padding: 12px 16px;
+    border-radius: 8px;
     background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(4px);
 }
 
 .perfil-avatar {
-    width: 68px;
-    height: 68px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid rgba(255, 255, 255, 0.88);
+    border: 2px solid rgba(255, 255, 255, 0.85);
 }
 
 .perfil-avatar-card strong,
 .perfil-avatar-card span {
     display: block;
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
 }
 
 .perfil-avatar-card strong {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
+    font-weight: 600;
 }
 
 .perfil-avatar-card span {
-    margin-top: 4px;
-    color: rgba(255, 253, 248, 0.88);
-    font-size: 0.95rem;
+    margin-top: 3px;
+    color: rgba(255, 253, 248, 0.8);
+    font-size: 0.82rem;
 }
 
 /* Layout de Perfil */
@@ -103,10 +110,10 @@
     max-width: 980px;
 }
 
-/* Form - Já em forms.css, mas customizado para perfil */
+/* Form de Perfil */
 .perfil-form {
     background: var(--perfil-surface);
-    border-radius: 24px;
+    border-radius: 10px;
     box-shadow: var(--perfil-shadow);
     border: 1px solid var(--perfil-border);
     padding: 28px;
@@ -118,16 +125,20 @@
     align-items: end;
     gap: 20px;
     padding-top: 18px;
-    border-top: 1px solid rgba(159, 116, 88, 0.14);
+    border-top: 1px solid var(--perfil-border);
 }
 
 .perfil-note-title {
-    font-weight: 700;
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
     color: var(--perfil-text);
     margin-bottom: 6px;
 }
 
 .perfil-note {
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 0.85rem;
     color: var(--perfil-muted);
     line-height: 1.5;
     max-width: 420px;
@@ -144,7 +155,7 @@
 /* Side Card - Card Lateral */
 .perfil-side-card {
     background: var(--perfil-surface);
-    border-radius: 24px;
+    border-radius: 10px;
     box-shadow: var(--perfil-shadow);
     border: 1px solid var(--perfil-border);
     padding: 28px;
@@ -152,8 +163,10 @@
 }
 
 .perfil-side-card h2 {
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-weight: 600;
     margin-bottom: 18px;
-    font-size: 1.35rem;
+    font-size: 1.15rem;
 }
 
 /* Info List */
@@ -162,6 +175,7 @@
     display: grid;
     gap: 14px;
     margin-bottom: 22px;
+    padding: 0;
 }
 
 .perfil-info-list li {
@@ -170,27 +184,36 @@
     align-items: center;
     gap: 12px;
     padding-bottom: 12px;
-    border-bottom: 1px solid rgba(159, 116, 88, 0.12);
+    border-bottom: 1px solid var(--perfil-border);
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 0.88rem;
     color: var(--perfil-muted);
 }
 
 .perfil-info-list li strong {
     color: var(--perfil-text);
+    font-weight: 600;
 }
 
 /* Side Tip */
 .perfil-side-tip {
-    padding: 18px;
-    border-radius: 18px;
-    background: rgba(155, 15, 71, 0.08);
+    padding: 16px;
+    border-radius: 8px;
+    background: rgba(155, 15, 71, 0.06);
+    border: 1px solid rgba(155, 15, 71, 0.12);
 }
 
 .perfil-side-tip h3 {
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-weight: 600;
     margin-bottom: 8px;
-    font-size: 1rem;
+    font-size: 0.92rem;
+    color: var(--perfil-text);
 }
 
 .perfil-side-tip p {
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 0.85rem;
     color: var(--perfil-muted);
     line-height: 1.6;
 }

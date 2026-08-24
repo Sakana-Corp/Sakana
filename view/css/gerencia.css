@@ -39,14 +39,7 @@
 .menu-btn {
     /* Já em menu.css, mas customizado para gerência */
     width: 240px;
-    background: #96073d;
-    transition: 0.2s ease;
-    border-radius: 12px;
-}
-
-.menu-btn:hover {
-    background: #ac0a47;
-    transform: scale(1.02);
+    border-radius: 8px;
 }
 
 .conteudo {

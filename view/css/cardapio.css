@@ -2,8 +2,8 @@
    CARDÁPIO - ESTILOS ESPECÍFICOS
    
    NOTA: Este arquivo estende os estilos globais
-   de style.css com customizações específicas
-   do cardápio e formulários de cadastro.
+   de components.css/style.css com customizações
+   específicas do cardápio e formulários de cadastro.
 ========================================*/
 
 /* Container de Cardápio */
@@ -11,74 +11,99 @@
     padding: 30px;
 }
 
-.titulo-pagina {
-    text-align: center;
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #2c3e50;
+.cardapio-conteudo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 /* Ações de Cardápio */
 .acoes-cardapio {
     display: flex;
-    justify-content: space-between;
+    gap: 16px;
     margin-bottom: 25px;
 }
 
-.card-mod{
-    width: 50%;
+.card-mod {
     display: flex;
-    justify-content: left;
-    gap: 15px;
+    gap: 16px;
 }
-.card-visualizar{
-    width:30%;
+
+.card-visualizar {
     display: flex;
-    justify-content: right;
-    gap: 15px;
+    gap: 16px;
 }
-/* CARD DE OPÇÃO - Já em cards.css, mantém-se aqui o extra */
-.card-opcao {
+
+.card-mod .card-opcao,
+.card-visualizar .card-opcao {
+    flex: none;
+}
+
+/* Cards de ação mais compactos, alinhados à esquerda */
+.acoes-cardapio .card-opcao {
+    width: 180px;
+    padding: 8px;
+    gap: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+}
+
+.acoes-cardapio .card-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 15px;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.acoes-cardapio .card-opcao h3 {
+    font-size: 12.5px;
+    margin: 0;
+    text-align: left;
+}
+
+/* Card de opção compacto (barra horizontal ícone + texto) */
+.card-opcao-mini {
     width: 200px;
     height: 60px;
-    background: white;
-    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid #e2e8ee;
+    border-radius: 10px;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 15px;
+    padding: 0 16px;
     text-decoration: none;
-    color: #333;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    color: var(--dark-blue);
+    box-shadow: 0 4px 12px rgba(23, 48, 74, 0.08);
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card-opcao:hover {
+.card-opcao-mini:hover {
+    border-color: var(--primary-wine);
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 20px rgba(155, 15, 71, 0.12);
 }
 
-.card-icon {
-    font-size: 30px;
-    margin-bottom: 10px;
+.card-opcao-mini .card-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
 }
 
-.card-opcao h3 {
-    font-size: 15px;
-    margin-bottom: 5px;
-    color: #5a7a99;
+.card-opcao-mini h3 {
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--dark-blue);
 }
 
-
-/* Título de Formulário */
-.titulo-form {
-    text-align: center;
-    color: #ffffff;
-    font-size: 28px;
-    margin-bottom: 25px;
-}
-
-/*CATEGORIAS*/
+/* CATEGORIAS */
 .imagem-categoria {
     height: 80%;
     aspect-ratio: 1/1;
@@ -89,48 +114,56 @@
 .cardapio-header {
     width: 100%;
     align-items: center;
-    display: grid;
-    grid-template-columns: 7fr 3fr;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 14px 20px;
     margin-bottom: 25px;
-    background: rgba(168, 143, 143, 0.95);
-    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #e2e8ee;
+    border-radius: 10px;
 }
 
 .cardapio-body {
     width: 100%;
-    height: 80%;
+    min-height: 120px;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
     gap: 25px;
 }
 
 .cardapio-categoria {
-    max-width: 90%;
+    flex: 1;
+    min-width: 0;
+    max-width: none;
     display: flex;
     flex-direction: row;
     align-items: center;
+    overflow-x: auto;
     border-radius: 12px;
-    padding: 15px;
-    gap: 15px;
+    padding: 4px 0;
+    gap: 12px;
 }
 
 .aba-categoria {
     width: 200px;
     height: 60px;
-    background: #fffefc;
+    background: #ffffff;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    border: 2px solid #753047;
-    border-radius: 15px;
-    transition: all 0.3s ease;
+    border: 1.5px solid var(--primary-wine);
+    border-radius: var(--btn-radius, 6px);
+    transition: all 0.2s ease;
 }
 
 .aba-categoria.aba-ativa {
     width: 200px;
-    background: #753047;
+    background: var(--primary-wine);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -138,30 +171,55 @@
     gap: 10px;
 }
 
-.aba-categoria p{
-    font-size: 18px;
-    color: #753047;
+.aba-categoria p {
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: var(--primary-wine);
     font-weight: 600;
 }
 
-.aba-categoria.aba-ativa p{
-    font-size: 15px;
-    color: #fff9fb;
-    font-weight: 700;
+.aba-categoria.aba-ativa p {
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 600;
 }
 
 .aba-categoria:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(155, 15, 71, 0.15);
 }
 
-/*PSQUISAR*/
+/* PESQUISAR */
 .cardapio-pesquisa {
-    width: 90%;
+    width: 280px;
+    flex-shrink: 0;
 }
 
-/*PRODUTOS*/
-.produto-frame {    
+.cardapio-pesquisa input {
+    height: 42px;
+    border-radius: 8px;
+}
+
+/* Estado vazio: categorias */
+.cardapio-vazio-categoria {
+    flex: 1;
+    text-align: left;
+    font-size: 14px;
+    color: var(--text-muted, #6b7c8c);
+}
+
+/* Estado vazio: produtos */
+.cardapio-vazio-produtos {
+    width: 100%;
+    text-align: center;
+    padding: 50px 20px;
+    font-size: 15px;
+    color: var(--text-muted, #6b7c8c);
+}
+
+/* PRODUTOS */
+.produto-frame {
     width: 10%;
     height: 200px;
     aspect-ratio: 1/2;
@@ -170,9 +228,16 @@
     align-items: center;
     gap: 15px;
     padding: 15px;
-    border-radius: 12px;
-    background-color: #fffbf2;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8ee;
+    box-shadow: 0 4px 12px rgba(23, 48, 74, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.produto-frame:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(23, 48, 74, 0.12);
 }
 
 .produto-info {
@@ -180,15 +245,19 @@
     flex-direction: column;
     align-items: center;
 }
+
 .produto-nome {
-    font-size: 18px;
-    color: #000000;
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    color: var(--dark-blue);
     font-weight: 600;
     text-align: center;
 }
+
 .produto-valor {
-    font-size: 16px;
-    color: #000000;
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: var(--primary-wine);
     font-weight: 700;
 }
 
@@ -198,27 +267,8 @@
     object-fit: cover;
     border-radius: 8px;
 }
-/* FORMULÁRIOS - Estilos específicos */
 
-
-/* Grupo de Formulário */
-.form-grupo {
-    width: 90%;
-    max-width: 750px;
-    margin: 35px auto;
-    padding: 30px;
-    background: rgba(255, 240, 240, 0.92);
-    border-radius: 18px;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
-}
-
-/* Label de Formulário */
-.form-label {
-    display: block;
-    margin-bottom: 8px;
-    color: #284b63;
-    font-weight: 600;
-}
+/* FORMULÁRIOS - Upload de arquivo */
 
 .form-inputFile {
     display: none;
@@ -237,108 +287,65 @@
     align-items: center;
     justify-content: center;
     padding: 0.75rem 1.5rem;
-    background-color: #693d4e;
+    background-color: var(--primary-wine);
     color: #ffffff;
-    font-size: 0.9rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    border-radius: 0.5rem;
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: var(--btn-radius, 6px);
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: background-color 0.2s ease;
     user-select: none;
 }
 
 .custom-file-upload:hover {
-    background-color: #572c3c;
+    background-color: var(--primary-wine-hover);
 }
 
 .file-name {
-    color: #284b63;
-    font-size: 0.95rem;
+    color: var(--dark-blue);
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 0.85rem;
     min-width: 180px;
 }
-
-/* Input de Formulário */
-.form-input {
-    width: 100%;
-    height: 48px;
-    margin-bottom: 18px;
-    padding: 0 15px;
-    font-size: 15px;
-    outline: none;
-    transition: var(--transition);
-}
-
-.form-input:focus {
-    border-color: #000000;
-    box-shadow: 0 0 0 3px rgba(90, 122, 153, 0.18);
-}
-
 
 input[type="file"]::file-selector-button {
   border: none;
   padding: 0.75rem 1.5rem;
-  background-color: #693d4e;
+  background-color: var(--primary-wine);
   color: #ffffff;
+  font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
   font-size: 0.75rem;
   line-height: 1rem;
-  font-weight: 700;
+  font-weight: 600;
   text-align: center;
   cursor: pointer;
-  text-transform: uppercase;
   vertical-align: middle;
   align-items: center;
-  border-radius: 0.5rem;
+  border-radius: var(--btn-radius, 6px);
   user-select: none;
   gap: 0.75rem;
-  box-shadow:
-    0 4px 6px -1px #488aec31,
-    0 2px 4px -1px #488aec17;
-  transition: all 0.6s ease;
+  transition: background-color 0.2s ease;
 }
 
 input[type="file"]::file-selector-button:hover {
-    box-shadow:
-    0 10px 15px -3px #488aec4f,
-    0 4px 6px -2px #488aec17;
+    background-color: var(--primary-wine-hover);
 }
 
 input[type="file"]::file-selector-button:focus,
 input[type="file"]::file-selector-button:active {
     opacity: 0.85;
-    box-shadow: none;
-}
-input[type="file"]::file-selector-button:svg {
-    width: 1.25rem;
-    height: 1.25rem;
 }
 
 .perfil-upload-help {
-    font-size: 0.85rem;
-    color: #000000;
-    font-weight: 700;
+    font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 0.8rem;
+    color: var(--text-muted, #6b7c8c);
+    font-weight: 500;
 }
 
 .form-separador {
     margin-bottom: 30px;
-}
-
-/* Botão Primário em Formulários */
-.btn-primary {
-    width: 100%;
-    height: 48px;
-    border: none;
-    border-radius: 12px;
-    background: #5a7a99;
-    color: white;
-    font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.btn-primary:hover {
-    background: #486982;
 }
 
 /* Responsividade */
@@ -348,15 +355,65 @@ input[type="file"]::file-selector-button:svg {
     }
 
     .acoes-cardapio {
+        flex-direction: column;
         gap: 15px;
     }
 
-    .card-opcao {
+    .card-mod,
+    .card-visualizar {
+        width: 100%;
+    }
+
+    .card-opcao-mini {
         width: 100%;
         max-width: 220px;
     }
+}
 
-    .form-grupo {
-        width: 95%;
+/* AÇÕES - FUNCIONÁRIOS (cards com descrição) */
+.acoes-funcionarios {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 25px;
+}
+.acoes-funcionarios .card-opcao-desc {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 24px 18px;
+    text-align: center;
+}
+
+.acoes-funcionarios .card-opcao-desc .card-icon {
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    flex-shrink: 0;
+}
+.card-opcao-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.card-opcao-texto h3 {
+    text-align: center;
+    margin: 0;
+}
+
+.card-opcao-texto p {
+    text-align: center;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .acoes-funcionarios {
+        flex-direction: column;
+    }
+
+    .acoes-funcionarios .card-opcao-desc {
+        width: 100%;
     }
 }
