@@ -53,11 +53,6 @@ $setorAtual = $_SESSION["setorAtual"] ?? null;
 
     <div class="layout">
         <aside class="sidebar">
-            <a href="/Sakana/index.php?action=logadoGerencia&page=funcionarios" class="menu-btn">FUNCIONÁRIOS</a>
-            <a href="/Sakana/index.php?action=logadoGerencia&page=pedidos" class="menu-btn">PEDIDOS</a>
-            <a href="/Sakana/index.php?action=logadoGerencia&page=cardapio" class="menu-btn">CARDÁPIO</a>
-            <a href="/Sakana/index.php?action=logadoGerencia&page=mesas" class="menu-btn">MESAS</a>
-
             <?php if ($setorAtual === "gerencia"): ?>
                 <a href="/Sakana/index.php?action=logadoGerencia&page=funcionarios"
                     class="menu-btn">
