@@ -44,33 +44,21 @@
             try{
                 $conexao = Conexao::getConn();
 
-                $sql = "SELECT u.idUser,
-                               u.nomeUser,
-                               u.email,
-                               u.senha,
-                               u.fotoPerfil,
-                               u.nivelAcesso,
-                               f.idFuncionario,
-                               f.nomeFunc,
-                               c.nomeCargo
-                        FROM LoginUser u
-                        LEFT JOIN Funcionario f ON u.idUser = f.idUser
-                        LEFT JOIN cargo c ON f.idCargo = c.idCargo
-                        WHERE u.email = :email LIMIT 1";
+                $sql = "SELECT * FROM LoginUser WHERE email = :email LIMIT 1";
                 $stmt = $conexao->prepare($sql);
                 $stmt->bindParam(":email", $email);
                 $stmt->execute();
 
-                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if (!$user || !password_verify($senha, $user["senha"])){
-                    return ["ok" => false, "error" => "invalid_credentials"];
+                if ($usuario && password_verify($senha, $usuario["senha"])){
+                    return ["ok" => true, "user" => $usuario];
                 }
 
-                return ["ok" => true, "user" => $user];
+                return ["ok" => false, "error" => "invalid_credentials"];
 
             } catch(PDOException $e){
-                error_log("Erro ao fazer login: " . $e->getMessage());
+                error_log("Erro PFO ao logar usuário: " . $e->getMessage());
                 return ["ok" => false, "error" => "database_error"];
             } catch(Throwable $e) {
                 error_log("Erro inesperado ao logar usuário: " . $e->getMessage());

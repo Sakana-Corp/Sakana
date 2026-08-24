@@ -1,11 +1,9 @@
 <?php
 require_once __DIR__ . "/baseController.php";
 
-class UsersController extends BaseController
-{
+class UsersController extends BaseController {
 
-    private function renderPainel(string $pagina = "home", array $dados = []): void
-    {
+    private function renderGerencia(string $pagina = "home", array $dados = []): void {
         SessionHelper::gerarToken();
         $mapaPaginas = [
             "home" => null,
@@ -37,8 +35,7 @@ class UsersController extends BaseController
         require_once __DIR__ . "/../view/pages/usersPages/gerencia/ManagementPanel.php";
     }
 
-    public function editarPerfil(): void
-    {
+    public function editarPerfil(): void {
         $this->requireAuth("login");
         $this->startSession();
 
@@ -47,7 +44,7 @@ class UsersController extends BaseController
 
             if (!SessionHelper::validarToken()) {
                 SessionHelper::setFlash("error", "Tentativa de requisição inválida.");
-                $this->renderPainel("editarPerfil", []);
+                $this->renderGerencia("editarPerfil", []);
                 return;
             }
 
@@ -56,7 +53,7 @@ class UsersController extends BaseController
 
             if ($nome === "" || $email === "") {
                 SessionHelper::setFlash("warning", "Preencha nome e email para continuar.");
-                $this->renderPainel("editarPerfil", []);
+                $this->renderGerencia("editarPerfil", []);
                 return;
             }
 
@@ -69,13 +66,13 @@ class UsersController extends BaseController
 
                 if ($usuarioAtual === null) {
                     SessionHelper::setFlash("error", "Não foi possível localizar o usuário atual.");
-                    $this->renderPainel("editarPerfil", []);
+                    $this->renderGerencia("editarPerfil", []);
                     return;
                 }
 
                 if ($email !== $usuarioAtual["email"] && $accountRepository->emailExists($email)) {
                     SessionHelper::setFlash("error", "Este email já está sendo usado por outro usuário.");
-                    $this->renderPainel("editarPerfil", []);
+                    $this->renderGerencia("editarPerfil", []);
                     return;
                 }
 
@@ -87,20 +84,20 @@ class UsersController extends BaseController
 
                     if (!in_array($extensao, $permitidas, true)) {
                         SessionHelper::setFlash("warning", "A imagem deve ser JPG, JPEG, PNG ou WEBP.");
-                        $this->renderPainel("editarPerfil", []);
+                        $this->renderGerencia("editarPerfil", []);
                         return;
                     }
 
                     if ($_FILES["fotoPerfil"]["size"] > 2 * 1024 * 1024) {
                         SessionHelper::setFlash("warning", "A imagem deve ter no máximo 2MB.");
-                        $this->renderPainel("editarPerfil", []);
+                        $this->renderGerencia("editarPerfil", []);
                         return;
                     }
 
                     $dirDestino = __DIR__ . "/../view/images/perfis";
                     if (!is_dir($dirDestino) && !mkdir($dirDestino, 0755, true) && !is_dir($dirDestino)) {
                         SessionHelper::setFlash("error", "Não foi possível preparar a pasta de imagens.");
-                        $this->renderPainel("editarPerfil", []);
+                        $this->renderGerencia("editarPerfil", []);
                         return;
                     }
 
@@ -109,7 +106,7 @@ class UsersController extends BaseController
 
                     if (!move_uploaded_file($_FILES["fotoPerfil"]["tmp_name"], $caminhoDestino)) {
                         SessionHelper::setFlash("error", "Não foi possível salvar a imagem de perfil.");
-                        $this->renderPainel("editarPerfil", []);
+                        $this->renderGerencia("editarPerfil", []);
                         return;
                     }
 
@@ -130,65 +127,22 @@ class UsersController extends BaseController
                 SessionHelper::setFlash("error", "Erro ao atualizar o perfil. Tente novamente.");
             }
 
-            $this->renderPainel("editarPerfil", []);
+            $this->renderGerencia("editarPerfil", [] );
             return;
         }
 
         SessionHelper::gerarToken();
-        $this->renderPainel("editarPerfil", []);
+        $this->renderGerencia("editarPerfil", []);
     }
 
-    public function logarGerencia(): void
-    {
-        $this->requireSetor("gerencia");
-        $this->renderPainel("home", []);
+    public function logarGerencia(): void {
+        $this->requireAuth("login");
+        $this->renderGerencia("home", []);
     }
 
-    public function logadoGerencia(string $pagina = "home"): void
-    {
-        $this->requireAnySetor([
-            "gerencia",
-            "atendimento",
-            "cozinha"
-        ]);
-
+    public function logadoGerencia(string $pagina = "home"): void {
+        $this->requireAuth("login");
         $dados = [];
-
-        if ($pagina === "funcionarios") {
-            $this->requireSetor("gerencia");
-        }
-
-        if ($pagina === "pedidos") {
-            $this->requireAnySetor([
-                "gerencia",
-                "atendimento",
-                "cozinha"
-            ]);
-        }
-
-        if (
-            $pagina === "cardapio" ||
-            $pagina === "consultaCardapio"
-        ) {
-            $this->requireAnySetor([
-                "gerencia",
-                "atendimento"
-            ]);
-        }
-
-        if ($pagina === "mesas") {
-            $this->requireAnySetor([
-                "gerencia",
-                "atendimento"
-            ]);
-        }
-
-        if (
-            $pagina === "cadastroProduto" ||
-            $pagina === "cadastroCategoria"
-        ) {
-            $this->requireSetor("gerencia");
-        }
 
         if ($pagina === "consultaFuncionario") {
             require_once __DIR__ . "/../model/employeeModel.php";
@@ -205,12 +159,13 @@ class UsersController extends BaseController
             $dados["listaProdutos"] = $produtoModel->listarProdutos();
         }
 
-        if ($pagina === "cadastroProduto") {
+        if($pagina === "cadastroProduto") {
             require_once __DIR__ . "/../model/categoriaModel.php";
             $categoriaModel = new CategoriaModel();
             $dados["listaCategorias"] = $categoriaModel->listarCategorias();
         }
 
-        $this->renderPainel($pagina, $dados ?? []);
+        $this->renderGerencia($pagina, $dados ?? []);
     }
 }
+?>

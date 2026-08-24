@@ -92,18 +92,6 @@ switch($action) {
         $controller = new AccessController();
         $controller->atualizarSenha();
         break;
-    
-    case "loginSetor":
-        require_once "accessController.php";
-        $controller = new AccessController();
-        $controller->loginSetorForm($_GET["setor"] ?? "");
-    break;
-
-    case "entrarSetor":
-        require_once "accessController.php";
-        $controller = new AccessController();
-        $controller->entrarSetor();
-    break;
 
     default:
         require_once "homeController.php";
