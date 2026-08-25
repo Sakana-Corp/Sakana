@@ -151,9 +151,14 @@
     }
 
         public function listarTodosFuncionario() {
-            $sql = "SELECT f.idFuncionario, f.nomeFunc, f.cpf, f.endereco, f.idCargo                                      
-                    FROM Funcionario f
-                    ORDER BY f.idFuncionario ASC";
+            $sql = "SELECT f.idFuncionario,
+                   f.nomeFunc,
+                   f.cpf,
+                   f.endereco,
+                   c.nomeCargo AS cargo
+            FROM Funcionario f
+            LEFT JOIN cargo c ON f.idCargo = c.idCargo
+            ORDER BY f.idFuncionario ASC";
 
             $stmt = Conexao::getConn()->prepare($sql);
             $stmt->execute();

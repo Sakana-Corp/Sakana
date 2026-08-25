@@ -7,9 +7,8 @@
         <div class="consulta-filtros">
             <div class="abas-cargo">
                 <button class="aba-cargo aba-ativa" onclick="filtrarCategoria('todos')">Todos</button>
-                <button class="aba-cargo" onclick="filtrarCategoria('garcom')">Garçom</button>
+                <button class="aba-cargo" onclick="filtrarCategoria('garçom')">Garçom</button>
                 <button class="aba-cargo" onclick="filtrarCategoria('cozinha')">Cozinha</button>
-                <button class="aba-cargo" onclick="filtrarCategoria('atendente')">Atendente</button>
             </div>
 
             <div class="barra-pesquisa-wrapper">
@@ -38,7 +37,7 @@
                             <span><?= htmlspecialchars($f['nomeFunc']) ?></span>
                         </td>
                         <td><?= htmlspecialchars($f['cpf']) ?></td>
-                        <td><?= htmlspecialchars($f['cargo']) ?></td>
+                        <td><?= htmlspecialchars($f['cargo'] ?? 'Sem cargo') ?></td>
                     </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
