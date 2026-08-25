@@ -1,42 +1,154 @@
 <?php
     require_once __DIR__ . "/../config/conexao.php";
     class EmployeeModel {
-        public function cadastrarFunc($nome, $cpf, $endereco, $cargo) {
+        public function cadastrarFunc(
+            $nome,
+            $cpf,
+            $endereco,
+            $cargo,
+            $email,
+            $senha
+        ) {
+            $conexao = null;
 
-            try {
-                $conexao = Conexao::getConn();
+        try {
+            $conexao = Conexao::getConn();
 
-                // verificação cpf existente
-                $sqlCheck = "SELECT COUNT(*) as count FROM Funcionario WHERE cpf = :cpf";
-                $stmtCheck = $conexao->prepare($sqlCheck);
-                $stmtCheck->bindParam(":cpf", $cpf);
-                $stmtCheck->execute();
-                $result = $stmtCheck->fetch(PDO::FETCH_ASSOC);
+            $nivelAcesso = match ($cargo) {
+                "Garçom" => "garcom",
+                "Cozinha" => "cozinha",
+                default => null
+            };
 
-                if ($result["count"] > 0) {
-                    return ["ok" => false, "error" => "cpf_exists"];
-                }
-
-                $sql = "INSERT INTO Funcionario (nomeFunc, cpf, endereco, cargo) VALUES (:nome, :cpf, :endereco, :cargo)";
-                $stmt = $conexao->prepare($sql);
-                $stmt->bindParam(":nome", $nome);
-                $stmt->bindParam(":cpf", $cpf);
-                $stmt->bindParam(":endereco", $endereco);
-                $stmt->bindParam(":cargo", $cargo);
-                $stmt->execute();
-
-                return ["ok" => true];
-            } catch(PDOException $e){
-                if ($e->getCode() == 23000) {
-                    return ["ok" => false, "error" => "cpf_exists"];
-                }
-                error_log("Erro PDO ao cadastrar funcionário: " . $e->getMessage());
-                return ["ok" => false, "error" => "database_error"];
-            } catch(Throwable $e) {
-                error_log("Erro inesperado ao cadastrar funcionário: " . $e->getMessage());
-                return ["ok" => false, "error" => "database_error"];
+            if ($nivelAcesso === null) {
+                return [
+                    "ok" => false,
+                    "error" => "invalid_cargo"
+                ];
             }
+
+            $sqlCpf = "SELECT COUNT(*)
+                    FROM Funcionario
+                    WHERE cpf = :cpf";
+
+            $stmtCpf = $conexao->prepare($sqlCpf);
+            $stmtCpf->execute([
+                ":cpf" => $cpf
+            ]);
+
+            if ((int) $stmtCpf->fetchColumn() > 0) {
+                return [
+                    "ok" => false,
+                    "error" => "cpf_exists"
+                ];
+            }
+
+            $sqlEmail = "SELECT COUNT(*)
+                        FROM LoginUser
+                        WHERE email = :email";
+
+            $stmtEmail = $conexao->prepare($sqlEmail);
+            $stmtEmail->execute([
+                ":email" => $email
+            ]);
+
+            if ((int) $stmtEmail->fetchColumn() > 0) {
+                return [
+                    "ok" => false,
+                    "error" => "email_exists"
+                ];
+            }
+
+            $sqlCargo = "SELECT idCargo
+                        FROM cargo
+                        WHERE nomeCargo = :cargo
+                        LIMIT 1";
+
+            $stmtCargo = $conexao->prepare($sqlCargo);
+            $stmtCargo->execute([
+                ":cargo" => $cargo
+            ]);
+
+            $idCargo = $stmtCargo->fetchColumn();
+
+            if (!$idCargo) {
+                return [
+                    "ok" => false,
+                    "error" => "cargo_not_found"
+                ];
+            }
+
+            $conexao->beginTransaction();
+
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+
+            $sqlUser = "INSERT INTO LoginUser
+                        (nomeUser, email, senha, nivelAcesso)
+                        VALUES (:nome, :email, :senha, :nivelAcesso)";
+
+            $stmtUser = $conexao->prepare($sqlUser);
+            $stmtUser->execute([
+                ":nome" => $nome,
+                ":email" => $email,
+                ":senha" => $senhaHash,
+                ":nivelAcesso" => $nivelAcesso
+            ]);
+
+            $idUser = $conexao->lastInsertId();
+
+            $sqlFuncionario = "INSERT INTO Funcionario
+                            (nomeFunc, cpf, endereco, idUser, idCargo)
+                            VALUES (:nome, :cpf, :endereco, :idUser, :idCargo)";
+
+            $stmtFuncionario = $conexao->prepare($sqlFuncionario);
+            $stmtFuncionario->execute([
+                ":nome" => $nome,
+                ":cpf" => $cpf,
+                ":endereco" => $endereco,
+                ":idUser" => $idUser,
+                ":idCargo" => $idCargo
+            ]);
+
+            $conexao->commit();
+
+            return [
+                "ok" => true
+            ];
+        } catch (PDOException $e) {
+            if ($conexao !== null && $conexao->inTransaction()) {
+                $conexao->rollBack();
+            }
+
+            if ($e->getCode() === "23000") {
+                return [
+                    "ok" => false,
+                    "error" => "duplicate_data"
+                ];
+            }
+
+            error_log(
+                "Erro PDO ao cadastrar funcionário: " . $e->getMessage()
+            );
+
+            return [
+                "ok" => false,
+                "error" => "database_error"
+            ];
+        } catch (Throwable $e) {
+            if ($conexao !== null && $conexao->inTransaction()) {
+                $conexao->rollBack();
+            }
+
+            error_log(
+                "Erro inesperado ao cadastrar funcionário: " . $e->getMessage()
+            );
+
+            return [
+                "ok" => false,
+                "error" => "database_error"
+            ];
         }
+    }
 
         public function listarTodosFuncionario() {
             $sql = "SELECT f.idFuncionario, f.nomeFunc, f.cpf, f.endereco, f.idCargo                                      

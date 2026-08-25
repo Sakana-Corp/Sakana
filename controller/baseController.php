@@ -33,5 +33,31 @@
                 $this->flashAndRedirect("info", "Sessão expirada. Faça login novamente.", $fallbackAction);
             }
         }
+
+        protected function requireSetor(string $setor): void {
+            $this->requireAuth("login");
+
+            if (($_SESSION["setorAtual"] ?? null) !== $setor) {
+                $this->flashAndRedirect(
+                "error", 
+                "Você não tem permissão para acessar este setor.", 
+                "painelAcesso"
+                );
+            }
+        }
+
+        protected function requireAnySetor(array $setores): void {
+            $this->requireAuth("login");
+
+            $setorAtual = $_SESSION["setorAtual"] ?? null;
+
+            if (!in_array($setorAtual, $setores, true)) {
+                $this->flashAndRedirect(
+                    "error",
+                    "Você não possui acesso a esta área.",
+                    "painelAcesso"
+                );
+            }
+        }
     }
 ?>

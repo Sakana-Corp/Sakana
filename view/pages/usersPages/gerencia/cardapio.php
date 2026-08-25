@@ -1,39 +1,25 @@
-<script src="/Sakana/view/js/searchProducts.js" defer></script>
-
-<link rel="stylesheet" href="/Sakana/view/css/cardapio.css">
 <div class="cardapio-container">
 
     <h2 class="titulo-pagina">Cardápio</h2>
 
     <div class="acoes-cardapio">
         <div class="card-mod">
-
             <a href="/Sakana/index.php?action=logadoGerencia&page=cadastroProduto" class="card-opcao">
                 <div class="card-icon">🍣</div>
-                <h3>Cadastrar Produtos</h3>
+                <h3>Cadastrar produtos</h3>
             </a>
-
             <a href="/Sakana/index.php?action=logadoGerencia&page=cadastroCategoria" class="card-opcao">
                 <div class="card-icon">🍱</div>
                 <h3>Cadastrar categorias</h3>
             </a>
-        </div>
-        <div class="card-visualizar">
             <a href="/Sakana/index.php?action=logadoGerencia&page=consultarCardapio" class="card-opcao">
                 <div class="card-icon">📋</div>
                 <h3>Visualizar cardápio</h3>
             </a>
-        </div>
-        <form action="/Sakana/index.php?action=seedCardapio" method="POST">
-            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-            <button type="submit" class="card-opcao">
-                <div class="card-icon">✨</div>
-                <h3>Cadastrar Exemplo</h3>
-            </button>
-        </form>
+</div>
     </div>
 
-    <div class="cardapio-container">
+    <div class="cardapio-conteudo">
         <div class="cardapio-header">
             <div class="cardapio-categoria">
                 <?php if (isset($listaCategorias) && count($listaCategorias) > 0): ?>
@@ -42,7 +28,7 @@
                     </button>
                     <?php foreach($listaCategorias as $c): ?>
                         <button class="aba-categoria" data-categoria="<?php echo htmlspecialchars($c['nomeCategoria'], ENT_QUOTES, 'UTF-8'); ?>" onclick="filtrarCategoria(this.dataset.categoria)">
-                            <img class="imagem-categoria" src="<?php echo htmlspecialchars($c['imgCategoria'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($c['nomeCategoria'], ENT_QUOTES, 'UTF-8'); ?>" class="categoria-icon">
+                            <img class="imagem-categoria" src="<?php echo htmlspecialchars($c['imgCategoria'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($c['nomeCategoria'], ENT_QUOTES, 'UTF-8'); ?>">
                             <p class="categoria-nome"><?php echo htmlspecialchars($c['nomeCategoria'], ENT_QUOTES, 'UTF-8'); ?></p>
                         </button>
                         <form action="/Sakana/index.php?action=excluirCategoria" method="POST" 
@@ -52,10 +38,10 @@
                             <button type="submit" class="btn-excluir">🗑️</button>
                         </form>
                     <?php endforeach; ?>
-            </div>
                 <?php else: ?>
-                    <div class="tabela-vazia">Nenhuma categoria registrada.</div>
+                    <div class="cardapio-vazio-categoria">Nenhuma categoria registrada.</div>
                 <?php endif; ?>
+            </div>
             <div class="cardapio-pesquisa">
                 <input type="text" id="pesquisa-produtos" placeholder="Pesquisar produtos..." onkeyup="buscar()">
             </div>
@@ -79,13 +65,9 @@
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <div class="tabela-vazia">Nenhuma categoria registrada.</div>
+                <div class="cardapio-vazio-produtos">Nenhum produto cadastrado.</div>
             <?php endif; ?>
         </div>
     </div>
 
-
 </div>
-
-    
-    
