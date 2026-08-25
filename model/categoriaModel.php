@@ -24,8 +24,9 @@
                 $stmt->bindParam(":foto", $foto);
                 $stmt->execute();
 
-    
-                return ["ok" => true, "id" => $conexao->lastInsertId()];
+
+
+                return ["ok" => true];
             } catch(PDOException $e){
                 error_log("Erro PDO ao cadastrar categoria: " . $e->getMessage());
                 return ["ok" => false, "error" => "database_error"];
@@ -42,32 +43,5 @@
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-    
-
-    public function excluirCategoria($id) {
-        try {
-            $conexao = Conexao::getConn();
-
-            $sqlCheck = "SELECT COUNT(*) AS count FROM produto WHERE idCategoria = :id";
-            $stmtCheck = $conexao->prepare($sqlCheck);
-            $stmtCheck->bindParam(":id", $id);
-            $stmtCheck->execute();
-            $result = $stmtCheck->fetch(PDO::FETCH_ASSOC);
-
-            if (($result["count"] ?? 0) > 0) {
-                return ["ok" => false, "error" => "has_products"];
-            }
-
-            $sql = "DELETE FROM categoria WHERE idCategoria = :id";
-            $stmt = $conexao->prepare($sql);
-            $stmt->bindParam(":id", $id);
-            $stmt->execute();
-
-            return ["ok" => true];
-        } catch(PDOException $e) {
-            error_log("Erro PDO ao excluir categoria: " . $e->getMessage());
-            return ["ok" => false, "error" => "database_error"];
-        }
-    }
     }
 ?>
