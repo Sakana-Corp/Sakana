@@ -20,7 +20,7 @@ $setorAtual = $_SESSION["setorAtual"] ?? null;
     <title><?= htmlspecialchars($tituloSetor, ENT_QUOTES, "UTF-8") ?> | Sakana</title>
 
     <link rel="stylesheet" href="/Sakana/view/css/style.css">
-    <link rel="stylesheet" href="/Sakana/view/css/gerencia.css?v=1">
+    <link rel="stylesheet" href="/Sakana/view/css/gerencia.css?v=2">
     <link rel="stylesheet" href="/Sakana/view/css/perfil.css?v=1">
     <link rel="stylesheet" href="/Sakana/view/css/alerts.css">
 </head>
