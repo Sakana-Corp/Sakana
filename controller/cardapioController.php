@@ -79,7 +79,7 @@ class CardapioController extends BaseController
         $categoriaModel = new CategoriaModel();
         $listaCategorias = $categoriaModel->listarCategorias();
 
-        require_once __DIR__ . "/../view/pages/pages/gerencia/cardapio.php";
+        require_once __DIR__ . "/../view/pages/usersPages/gerencia/cardapio.php";
     }
 
     public function cadastrarProduto()
@@ -160,7 +160,7 @@ class CardapioController extends BaseController
         $produtoModel = new ProdutoModel();
         $listaProdutos = $produtoModel->listarProdutos();
 
-        require_once __DIR__ . "/../view/pages/pages/gerencia/cardapio.php";
+        require_once __DIR__ . "/../view/pages/usersPages/gerencia/cardapio.php";
     }
 
     public function seedCardapio() {
@@ -206,6 +206,68 @@ class CardapioController extends BaseController
 
         $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
         $this->flashAndRedirect("success", "Cardápio de exemplo cadastrado!", "logadoGerencia&page=cardapio");
+    }
+
+    public function excluirExemplosCardapio(): void
+    {
+        $this->requirePost("logadoGerencia&page=cardapio");
+        $this->startSession();
+        $this->validateCsrfOrRedirect("logadoGerencia&page=cardapio");
+        $this->requireSetor("gerencia");
+
+        $nomesProdutos = [
+            "Coca-Cola 350ml",
+            "Guaraná Antarctica 350ml",
+            "Combinado 20 peças",
+            "Combinado 10 peças",
+            "Temaki Salmão Cru",
+            "Temaki Salmão Grelhado"
+        ];
+        $nomesCategorias = ["Bebidas", "Sushis", "Temakis"];
+
+        try {
+            $conexao = Conexao::getConn();
+            $conexao->beginTransaction();
+
+            $placeholdersProdutos = implode(", ", array_fill(0, count($nomesProdutos), "?"));
+            $stmtProdutos = $conexao->prepare(
+                "DELETE FROM produto WHERE nomeProduto IN ($placeholdersProdutos)"
+            );
+            $stmtProdutos->execute($nomesProdutos);
+
+            $stmtCategoria = $conexao->prepare(
+                "SELECT idCategoria FROM categoria WHERE nomeCategoria = ?"
+            );
+            $stmtProdutosCategoria = $conexao->prepare(
+                "SELECT COUNT(*) FROM produto WHERE idCategoria = ?"
+            );
+            $stmtExcluirCategoria = $conexao->prepare(
+                "DELETE FROM categoria WHERE idCategoria = ?"
+            );
+
+            foreach ($nomesCategorias as $nomeCategoria) {
+                $stmtCategoria->execute([$nomeCategoria]);
+                $idCategoria = $stmtCategoria->fetchColumn();
+
+                if ($idCategoria === false) {
+                    continue;
+                }
+
+                $stmtProdutosCategoria->execute([$idCategoria]);
+                if ((int) $stmtProdutosCategoria->fetchColumn() === 0) {
+                    $stmtExcluirCategoria->execute([$idCategoria]);
+                }
+            }
+
+            $conexao->commit();
+            $this->flashAndRedirect("success", "Exemplos do cardápio excluídos!", "logadoGerencia&page=cardapio");
+        } catch (PDOException $e) {
+            if (isset($conexao) && $conexao->inTransaction()) {
+                $conexao->rollBack();
+            }
+
+            $this->flashAndRedirect("error", "Não foi possível excluir os exemplos.", "logadoGerencia&page=cardapio");
+        }
     }
 
     public function excluirCategoria() {

@@ -1,8 +1,16 @@
+<script src="/Sakana/view/js/searchProducts.js?v=2" defer></script>
+<link rel="stylesheet" href="/Sakana/view/css/cardapio.css?v=5">
+
 <div class="cardapio-container">
 
     <h2 class="titulo-pagina">Cardápio</h2>
 
-    <div class="acoes-cardapio">
+    <details class="acoes-cardapio">
+        <summary class="acoes-cardapio-toggle">
+            <span class="acoes-cardapio-icon">☰</span>
+            <span>Ações do cardápio</span>
+            <span class="acoes-cardapio-chevron"></span>
+        </summary>
         <div class="card-mod">
             <a href="/Sakana/index.php?action=logadoGerencia&page=cadastroProduto" class="card-opcao">
                 <div class="card-icon">🍣</div>
@@ -12,7 +20,7 @@
                 <div class="card-icon">🍱</div>
                 <h3>Cadastrar categorias</h3>
             </a>
-            <a href="/Sakana/index.php?action=logadoGerencia&page=consultarCardapio" class="card-opcao">
+            <a href="/Sakana/index.php?action=logadoGerencia&page=consultaCardapio" class="card-opcao">
                 <div class="card-icon">📋</div>
                 <h3>Visualizar cardápio</h3>
             </a>
@@ -23,8 +31,16 @@
                     <h3>Cadastrar Exemplo</h3>
                 </button>
             </form>
+            <form action="/Sakana/index.php?action=excluirExemplosCardapio" method="POST"
+                onsubmit="return confirm('Deseja excluir os exemplos do cardápio?');">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                <button type="submit" class="card-opcao card-opcao-danger">
+                    <div class="card-icon">🗑️</div>
+                    <h3>Excluir Exemplos</h3>
+                </button>
+            </form>
         </div>
-    </div>
+    </details>
 
     <div class="cardapio-conteudo">
         <div class="cardapio-header">

@@ -25,7 +25,9 @@ class UsersController extends BaseController{
 
             "cadastroCategoria" => __DIR__ . "/../view/pages/usersPages/gerencia/cadastroCategoria.php",
 
-            "consultaCardapio" => __DIR__ . "/../view/pages/usersPages/gerencia/consultaCardapio.php",
+            "consultaCardapio" => __DIR__ . "/../view/pages/usersPages/gerencia/cardapio.php",
+
+            "consultarCardapio" => __DIR__ . "/../view/pages/usersPages/gerencia/cardapio.php",
 
             "mesas" => __DIR__ . "/../view/pages/usersPages/gerencia/mesas.php",
 
@@ -301,7 +303,7 @@ class UsersController extends BaseController{
 
     if (
         $pagina === "cardapio" ||
-        $pagina === "consultaCardapio" ||
+        ($pagina === "consultaCardapio" || $pagina === "consultarCardapio") ||
         $pagina === "mesas"
     ) {
         $this->requireAnySetor([
@@ -329,7 +331,10 @@ class UsersController extends BaseController{
     }
 
     // Cardápio
-    if ($pagina === "cardapio") {
+    if (
+        $pagina === "cardapio" ||
+        ($pagina === "consultaCardapio" || $pagina === "consultarCardapio")
+    ) {
 
         require_once __DIR__ . "/../model/categoriaModel.php";
 

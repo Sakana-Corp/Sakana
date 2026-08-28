@@ -1,17 +1,21 @@
-<link rel="stylesheet" href="/Sakana/view/css/cardapio.css">
+<link rel="stylesheet" href="/Sakana/view/css/cardapio.css?v=3">
 <h2 class="titulo-form">Cadastrar Itens do Cardápio</h2>
 
-<form action="/Sakana/index.php?action=cadastrarProduto" method="POST" enctype="multipart/form-data" class="form-grupo">
+<form action="/Sakana/index.php?action=cadastrarProduto" method="POST" enctype="multipart/form-data" class="form-grupo cardapio-form">
     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
-    <label class="form-label">Nome do Produto:</label>
-    <input type="text" name="nomeProduto" class="form-input" required placeholder="Ex: Temaki">
+  <div class="cardapio-field">
+    <label class="form-label" for="nomeProduto">Nome do produto</label>
+    <input type="text" id="nomeProduto" name="nomeProduto" class="form-input" required placeholder="Ex: Temaki">
+  </div>
 
-    <label class="form-label">Descrição do produto:</label>
-    <input type="text" name="descProduto" class="form-input" required placeholder="Ex: Temaki de salmão com cream cheese">
+  <div class="cardapio-field cardapio-field-wide">
+    <label class="form-label" for="descProduto">Descrição do produto</label>
+    <input type="text" id="descProduto" name="descProduto" class="form-input" required placeholder="Ex: Temaki de salmão com cream cheese">
+  </div>
     
-    <div class="form-separador">
-        <label class="form-label">URL da foto do produto (obrigatório):</label>
+    <div class="form-separador cardapio-field-wide">
+      <label class="form-label" for="fotoProduto">Foto do produto</label>
         <div class="file-upload-group">
             <input type="file" id="fotoProduto" name="fotoProduto" class="form-inputFile" accept="image/png, image/jpeg, image/webp, image/jpg">
             <label for="fotoProduto" class="custom-file-upload">Selecionar arquivo</label>
@@ -20,20 +24,23 @@
         <small class="perfil-upload-help">Formatos aceitos: JPG, JPEG, PNG ou WEBP. Tamanho máximo: 2MB.</small>
     </div>
 
-    <label class="form-label">Categoria:</label>
-    <select name="idCategoria" class="form-input" required>
+    <div class="cardapio-field">
+      <label class="form-label" for="idCategoria">Categoria</label>
+      <select id="idCategoria" name="idCategoria" class="form-input" required>
         <option value="">Selecione...</option>
         <?php foreach($listaCategorias as $c): ?>
-            <option value="<?=$c['idCategoria']?>">
-                <?= $c['nomeCategoria']?></option>
+          <option value="<?=$c['idCategoria']?>">
+            <?= $c['nomeCategoria']?></option>
         <?php endforeach; ?>
-    </select>
+      </select>
+    </div>
     
-    <label class="form-label">Valor:</label>
-    <input type="number" step="0.01" name="valorProduto" class="form-input" required placeholder="Ex: 25,90">
+    <div class="cardapio-field">
+      <label class="form-label" for="valorProduto">Valor</label>
+      <input type="number" id="valorProduto" step="0.01" name="valorProduto" class="form-input" required placeholder="Ex: 25,90">
+    </div>
 
-    
-    <button type="submit" class="btn-primary">Cadastrar Produto</button>
+    <button type="submit" class="btn-primary cardapio-submit">Cadastrar produto</button>
 
 </form>
 

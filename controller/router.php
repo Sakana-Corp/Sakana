@@ -52,6 +52,12 @@ switch($action) {
         $controller->seedCardapio();
         break;
 
+    case "excluirExemplosCardapio":
+        require_once "cardapioController.php";
+        $controller = new CardapioController();
+        $controller->excluirExemplosCardapio();
+        break;
+
     case "excluirCategoria":
         require_once "cardapioController.php";
         $controller = new CardapioController();
