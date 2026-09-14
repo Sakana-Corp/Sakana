@@ -73,14 +73,30 @@ class Mesa{
     public function excluirMesa($idMesa){
         try {
 
+            $this->pdo->beginTransaction();
+
+            // Remove primeiro os pedidos vinculados à mesa, já que a
+            // tabela pedido tem uma FK para mesa (fkPed_Mesa).
+            $sqlPedidos = "DELETE FROM pedido WHERE idMesa = :idMesa";
+            $stmtPedidos = $this->pdo->prepare($sqlPedidos);
+            $stmtPedidos->bindValue(':idMesa', $idMesa, PDO::PARAM_INT);
+            $stmtPedidos->execute();
+
             $sql = "DELETE FROM mesa
                     WHERE idMesa = :idMesa";
 
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(':idMesa', $idMesa, PDO::PARAM_INT);
-            return $stmt->execute();
+            $stmt->execute();
+
+            $this->pdo->commit();
+            return true;
 
         } catch (PDOException $e) {
+
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
 
             return false;
         }

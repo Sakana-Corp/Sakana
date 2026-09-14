@@ -169,6 +169,31 @@ switch($action) {
         $controller->fecharMesa();
     break;
 
+    // CASES DE PEDIDO
+    case "novoPedido":
+        require_once "pedidoController.php";
+        $controller = new PedidoController();
+        $controller->novoPedido();
+    break;
+
+    case "salvarPedido":
+        require_once "pedidoController.php";
+        $controller = new PedidoController();
+        $controller->salvarPedido();
+    break;
+
+    case "verResumoPedido":
+        require_once "pedidoController.php";
+        $controller = new PedidoController();
+        $controller->verResumo();
+    break;
+
+    case "fecharMesaPedido":
+        require_once "pedidoController.php";
+        $controller = new PedidoController();
+        $controller->fecharMesaPedido();
+    break;
+
     default:
         require_once "homeController.php";
         $controller = new HomeController();

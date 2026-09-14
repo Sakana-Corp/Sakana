@@ -205,6 +205,36 @@
     text-align: center;
 }
 
+.consulta-header-acoes {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.consulta-header-acoes .consulta-titulo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+}
+
+.consulta-header-botoes {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.consulta-header-botoes .btn-fechar,
+.consulta-header-botoes .btn-secondary {
+    padding: 10px 18px;
+    border: 0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 /* Filtros e Abas */
 .consulta-filtros {
     display: flex;
@@ -326,6 +356,21 @@
 .consulta-tabela td {
     padding: 14px;
     color: #3d3d3d;
+}
+
+.tabela-total {
+    font-weight: 700;
+    color: var(--dark-blue);
+    background: #f5f1e8;
+}
+
+.tabela-total td {
+    padding: 16px 14px;
+    border-top: 2px solid #d4ccc0;
+}
+
+.tabela-total td:last-child {
+    color: var(--primary-wine);
 }
 
 /* Célula com Nome e Avatar */
@@ -634,6 +679,16 @@
 
 .btn-excluir:hover {
     background: #edcece;
+}
+
+.btn-resumo {
+    background: #e8eff5;
+    color: #3d6382;
+}
+
+.btn-resumo:hover {
+    background: #d7e4ef;
+    color: #294e6d;
 }
 
 .mesas-vazio {

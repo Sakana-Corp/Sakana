@@ -19,6 +19,10 @@ class UsersController extends BaseController{
 
             "pedidos" => __DIR__ . "/../view/pages/usersPages/gerencia/pedidos.php",
 
+            "novoPedido" => __DIR__ . "/../view/pages/usersPages/gerencia/novoPedido.php",
+
+            "resumoPedido" => __DIR__ . "/../view/pages/usersPages/gerencia/resumoPedido.php",
+
             "cardapio" => __DIR__ . "/../view/pages/usersPages/gerencia/cardapio.php",
 
             "cadastroProduto" => __DIR__ . "/../view/pages/usersPages/gerencia/cadastroProduto.php",
@@ -363,7 +367,7 @@ class UsersController extends BaseController{
     }
 
     // Mesas
-    if ($pagina === "mesas") {
+    if ($pagina === "mesas" || $pagina === "pedidos") {
 
         require_once __DIR__ . "/../model/mesaModel.php";
 
