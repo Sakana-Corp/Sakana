@@ -56,10 +56,10 @@ create table produto (
 );
 
 create table mesa (
-    idMesa int (11) auto_increment primary key,
-    horarioIni datetime,
-    horarioFim datetime,
-    ValorTotal decimal (7,2) not null
+    idmesa int auto_increment primary key,
+    numeromesa int not null unique,
+    lugares int not null,
+    status enum('Disponivel', 'Indisponivel') not null default 'Disponivel'
 );
 
 create table pedido (

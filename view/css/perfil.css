@@ -18,7 +18,7 @@
 /* Página de Perfil */
 .perfil-page {
     min-height: calc(100vh - 110px);
-    padding: 10px 12px 24px;
+    padding: 24px 22px 34px;
 }
 
 /* Header Card - Cabeçalho do Perfil */
@@ -27,8 +27,8 @@
     justify-content: space-between;
     align-items: center;
     gap: 24px;
-    padding: 28px 30px;
-    margin-bottom: 18px;
+    padding: 30px 34px;
+    margin-bottom: 22px;
     border-radius: 10px;
     background: linear-gradient(135deg, var(--primary-wine), var(--primary-wine-dark));
     color: #fffdf8;
@@ -48,7 +48,7 @@
 
 .perfil-title {
     font-family: 'Poppins', -apple-system, 'Segoe UI', sans-serif;
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-weight: 600;
     margin-bottom: 8px;
 }
@@ -66,14 +66,15 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 12px 16px;
+    min-width: 190px;
+    padding: 14px 17px;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.12);
 }
 
 .perfil-avatar {
-    width: 60px;
-    height: 60px;
+    width: 68px;
+    height: 68px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid rgba(255, 255, 255, 0.85);
@@ -112,11 +113,67 @@
 
 /* Form de Perfil */
 .perfil-form {
-    background: var(--perfil-surface);
+    background: rgba(255, 255, 255, 0.97);
     border-radius: 10px;
     box-shadow: var(--perfil-shadow);
     border: 1px solid var(--perfil-border);
-    padding: 28px;
+    padding: 34px;
+}
+
+.perfil-form .form-grid {
+    gap: 22px;
+    margin-bottom: 24px;
+}
+
+.perfil-form .form-field {
+    gap: 9px;
+}
+
+.perfil-form .form-field span {
+    font-size: 0.88rem;
+    color: var(--perfil-text);
+}
+
+.perfil-form .form-input {
+    box-sizing: border-box;
+    border: 1px solid #cbd5dc;
+    border-radius: 8px;
+    background: #fbfcfd;
+    color: var(--perfil-text);
+    text-align: left;
+}
+
+.perfil-form .form-input:hover {
+    border-color: #9fb2c1;
+}
+
+.perfil-form .form-input:focus {
+    border-color: var(--medium-blue);
+    box-shadow: 0 0 0 3px rgba(93, 131, 167, 0.16);
+}
+
+.perfil-form input[type="file"] {
+    min-height: 48px;
+    padding: 8px;
+    background: #f1f5f6;
+    border-style: dashed;
+}
+
+.perfil-form input[type="file"]::file-selector-button {
+    margin-right: 12px;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 6px;
+    color: #ffffff;
+    background: var(--primary-wine);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.perfil-upload-help {
+    display: block;
+    margin-top: 2px;
+    line-height: 1.5;
 }
 
 .perfil-form-footer {
@@ -150,6 +207,29 @@
     gap: 12px;
     flex-wrap: wrap;
     justify-content: flex-end;
+    padding-top: 22px;
+    border-top: 1px solid var(--perfil-border);
+}
+
+.perfil-actions a,
+.perfil-actions button {
+    min-width: 145px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.perfil-actions .btn-secondary {
+    color: var(--perfil-muted);
+    background: #edf1f3;
+}
+
+.perfil-actions .btn-secondary:hover {
+    background: #dfe7eb;
 }
 
 /* Side Card - Card Lateral */
@@ -234,5 +314,34 @@
     .perfil-actions {
         margin-top: 18px;
         justify-content: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .perfil-page {
+        padding: 16px 12px 24px;
+    }
+
+    .perfil-header-card,
+    .perfil-form {
+        padding: 24px 20px;
+    }
+
+    .perfil-title {
+        font-size: 1.65rem;
+    }
+
+    .perfil-form .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .perfil-actions {
+        flex-direction: column-reverse;
+    }
+
+    .perfil-actions a,
+    .perfil-actions button {
+        width: 100%;
     }
 }

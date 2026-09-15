@@ -52,6 +52,12 @@ switch($action) {
         $controller->seedCardapio();
         break;
 
+    case "excluirExemplosCardapio":
+        require_once "cardapioController.php";
+        $controller = new CardapioController();
+        $controller->excluirExemplosCardapio();
+        break;
+
     case "excluirCategoria":
         require_once "cardapioController.php";
         $controller = new CardapioController();
@@ -77,11 +83,6 @@ switch($action) {
         $controller->logadoGerencia($_GET["page"] ?? "home");
         break;
 
-    case 'mesas':
-        require_once "usersController.php";
-        $controller = new UsersController();
-        $controller->logadoGerencia($action);
-        break;
     case "painelAcesso":
         require_once "accessController.php";
         $controller = new AccessController();
@@ -122,6 +123,50 @@ switch($action) {
         require_once "accessController.php";
         $controller = new AccessController();
         $controller->entrarSetor();
+    break;
+
+    // CASES DE MESA
+    case "cadastrarMesa":
+        require_once "mesaController.php";
+        $controller = new MesaController();
+        $controller->abrirCadastro();
+    break;
+
+    case "salvarMesa":
+        require_once "mesaController.php";
+        $controller = new MesaController();
+        $controller->salvarMesa();
+    break;
+
+    case "editarMesa":
+        require_once "mesaController.php";
+        $controller = new MesaController();
+        $controller->editarMesa();
+    break;
+
+    case "atualizarMesa":
+        require_once "mesaController.php";
+        $controller = new MesaController();
+        $controller->atualizarMesa();
+    break;
+
+    case "excluirMesa":
+        require_once "mesaController.php";
+        $controller = new MesaController();
+        $controller->excluirMesa();
+    break;
+
+    case "abrirMesa":
+        require_once "mesaController.php";
+        $controller = new MesaController();
+        $controller->abrirMesa();
+    break;
+
+
+    case "fecharMesa":
+        require_once "mesaController.php";
+        $controller = new MesaController();
+        $controller->fecharMesa();
     break;
 
     default:
