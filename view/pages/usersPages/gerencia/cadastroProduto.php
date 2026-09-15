@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/Sakana/view/css/cardapio.css?v=3">
+<script src="/Sakana/view/js/inputMasks.js" defer></script>
 <h2 class="titulo-form">Cadastrar Itens do Cardápio</h2>
 
 <form action="/Sakana/index.php?action=cadastrarProduto" method="POST" enctype="multipart/form-data" class="form-grupo cardapio-form">
@@ -37,7 +38,8 @@
     
     <div class="cardapio-field">
       <label class="form-label" for="valorProduto">Valor</label>
-      <input type="number" id="valorProduto" step="0.01" name="valorProduto" class="form-input" required placeholder="Ex: 25,90">
+            <input type="text" id="valorProduto" name="valorProduto" class="form-input" required
+              inputmode="decimal" autocomplete="off" placeholder="Ex: 25,90">
     </div>
 
     <button type="submit" class="btn-primary cardapio-submit">Cadastrar produto</button>
