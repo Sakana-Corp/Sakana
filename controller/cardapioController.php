@@ -121,7 +121,9 @@ class CardapioController extends BaseController
         $nomeProduto = $_POST["nomeProduto"] ?? "";
         $descProduto = $_POST["descProduto"] ?? "";
         $categoriaId = $_POST["idCategoria"] ?? "";
-        $valorProduto = $_POST["valorProduto"] ?? "";
+        $valorProduto = trim($_POST["valorProduto"] ?? "");
+        $valorProduto = str_replace('.', '', $valorProduto);
+        $valorProduto = str_replace(',', '.', $valorProduto);
         $fotoProduto = $caminhoWeb;
 
         if ($nomeProduto === "" || $descProduto === "" || $fotoProduto === null || $categoriaId === "" || $valorProduto === "") {

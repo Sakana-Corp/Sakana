@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/Sakana/view/css/cardapio.css">
+<script src="/Sakana/view/js/inputMasks.js" defer></script>
 
 <form action="/Sakana/index.php?action=cadastrarFunc" method="POST" class="form-grupo">
     <h2 class="titulo-form">Cadastrar funcionários na equipe</h2>
@@ -14,7 +15,7 @@
         <div class="form-field">
             <label class="form-label" for="cpf">CPF</label>
             <input type="text" id="cpf" name="cpf" class="form-input" required
-                   placeholder="000.000.000-00" minlength="11" maxlength="14"
+                   placeholder="000.000.000-00" minlength="14" maxlength="14"
                    pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}">
         </div>
     </div>

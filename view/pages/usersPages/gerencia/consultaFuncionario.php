@@ -36,7 +36,13 @@
                         <td class="celula-nome">
                             <span><?= htmlspecialchars($f['nomeFunc']) ?></span>
                         </td>
-                        <td><?= htmlspecialchars($f['cpf']) ?></td>
+                        <?php
+                            $cpf = preg_replace('/\D/', '', (string) ($f['cpf'] ?? ''));
+                            $cpfFormatado = strlen($cpf) === 11
+                                ? substr($cpf, 0, 3) . '.' . substr($cpf, 3, 3) . '.' . substr($cpf, 6, 3) . '-' . substr($cpf, 9, 2)
+                                : ($f['cpf'] ?? '');
+                        ?>
+                        <td><?= htmlspecialchars($cpfFormatado) ?></td>
                         <td><?= htmlspecialchars($f['cargo'] ?? 'Sem cargo') ?></td>
                     </tr>
                     <?php endforeach; ?>
