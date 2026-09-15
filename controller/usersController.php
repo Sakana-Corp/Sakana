@@ -2,8 +2,10 @@
 
 require_once __DIR__ . "/baseController.php";
 
-class UsersController extends BaseController{
-    private function renderPainel(string $pagina = "home", array $dados = []): void{
+class UsersController extends BaseController
+{
+    private function renderPainel(string $pagina = "home", array $dados = []): void
+    {
         SessionHelper::gerarToken();
 
         $mapaPaginas = [
@@ -242,7 +244,6 @@ class UsersController extends BaseController{
                         "success",
                         "Perfil atualizado com sucesso."
                     );
-
                 } else {
 
                     SessionHelper::setFlash(
@@ -250,7 +251,6 @@ class UsersController extends BaseController{
                         "Não foi possível atualizar o perfil."
                     );
                 }
-
             } catch (RuntimeException $e) {
 
                 SessionHelper::setFlash(
@@ -269,8 +269,75 @@ class UsersController extends BaseController{
         $this->renderPainel("editarPerfil", []);
     }
 
+    public function alterarSenha(): void
+    {
+        $voltar = "editarPerfil";
 
-    public function logarGerencia(): void{
+        $this->requirePost($voltar);
+        $this->startSession();
+        $this->validateCsrfOrRedirect($voltar);
+        $this->requireAuth("login");
+
+        $senhaAtual     = $_POST["senhaAtual"] ?? "";
+        $novaSenha      = $_POST["novaSenha"] ?? "";
+        $confirmarSenha = $_POST["confirmarSenha"] ?? "";
+
+        // Campos enviados como array (name="novaSenha[]") não são senhas válidas.
+        if (!is_string($senhaAtual) || !is_string($novaSenha) || !is_string($confirmarSenha)) {
+            $this->flashAndRedirect("warning", "Dados inválidos.", $voltar);
+        }
+
+        if ($senhaAtual === "" || $novaSenha === "" || $confirmarSenha === "") {
+            $this->flashAndRedirect("warning", "Preencha todos os campos de senha.", $voltar);
+        }
+
+        if (strlen($novaSenha) < 8) {
+            $this->flashAndRedirect("warning", "A nova senha deve ter pelo menos 8 caracteres.", $voltar);
+        }
+
+        if (strlen($novaSenha) > 72) {
+            $this->flashAndRedirect("warning", "A nova senha deve ter no máximo 72 caracteres.", $voltar);
+        }
+
+        if ($novaSenha !== $confirmarSenha) {
+            $this->flashAndRedirect("warning", "A confirmação não confere com a nova senha.", $voltar);
+        }
+
+        if ($novaSenha === $senhaAtual) {
+            $this->flashAndRedirect("warning", "A nova senha deve ser diferente da atual.", $voltar);
+        }
+
+        require_once __DIR__ . "/../model/accountRepository.php";
+
+        try {
+            $accountRepository = new AccountRepository();
+            $idUser = (int) $_SESSION["idUser"];
+
+            $hashAtual = $accountRepository->findPasswordHashById($idUser);
+
+            if ($hashAtual === null || !password_verify($senhaAtual, $hashAtual)) {
+                $this->flashAndRedirect("error", "Senha atual incorreta.", $voltar);
+            }
+
+            $novoHash = password_hash($novaSenha, PASSWORD_DEFAULT);
+
+            if (!$accountRepository->updatePasswordById($idUser, $novoHash)) {
+                $this->flashAndRedirect("error", "Não foi possível alterar a senha.", $voltar);
+            }
+        } catch (RuntimeException $e) {
+            $this->flashAndRedirect("error", "Erro ao alterar a senha. Tente novamente mais tarde.", $voltar);
+        }
+
+        // Credencial mudou: renova o id da sessão e o token CSRF.
+        session_regenerate_id(true);
+        $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+
+        $this->flashAndRedirect("success", "Senha alterada com sucesso!", $voltar);
+    }
+
+
+    public function logarGerencia(): void
+    {
         $this->requireSetor("gerencia");
 
         $this->renderPainel("home", []);
@@ -278,106 +345,77 @@ class UsersController extends BaseController{
 
     // ACESSO ÀS PÁGINAS DE GERÊNCIA / ATENDIMENTO
     public function logadoGerencia(string $pagina = "home", array $dados = []): void
-{
-    $this->requireAnySetor([
-        "gerencia",
-        "atendimento",
-        "cozinha"
-    ]);
+    {
+        $this->requireAnySetor(["gerencia", "atendimento", "cozinha"]);
 
-    // Permissões
-    if ($pagina === "funcionarios") {
-        $this->requireSetor("gerencia");
+        $todos    = ["gerencia", "atendimento", "cozinha"];
+        $salao    = ["gerencia", "atendimento"];
+        $gerencia = ["gerencia"];
+
+        $permissoes = [
+            "home"                => $todos,
+            "pedidos"             => $todos,
+            "novoPedido"          => $todos,
+            "resumoPedido"        => $todos,
+
+            "cardapio"            => $salao,
+            "consultaCardapio"    => $salao,
+            "consultarCardapio"   => $salao,
+            "mesas"               => $salao,
+
+            "funcionarios"        => $gerencia,
+            "consultaFuncionario" => $gerencia,
+            "cadastroFuncionario" => $gerencia,
+            "cadastroProduto"     => $gerencia,
+            "cadastroCategoria"   => $gerencia,
+            "cadastroMesa"        => $gerencia,
+            "editarMesa"          => $gerencia,
+        ];
+
+        if (!array_key_exists($pagina, $permissoes)) {
+            $pagina = "home";
+        }
+
+        $this->requireAnySetor($permissoes[$pagina], "logadoGerencia");
+
+        $paginasQuePrecisamDeMesa = [
+            "novoPedido"   => "logadoGerencia&page=pedidos",
+            "resumoPedido" => "logadoGerencia&page=pedidos",
+            "editarMesa"   => "logadoGerencia&page=mesas",
+        ];
+
+        if (isset($paginasQuePrecisamDeMesa[$pagina]) && empty($dados["mesa"])) {
+            $this->flashAndRedirect(
+                "warning",
+                "Selecione uma mesa primeiro.",
+                $paginasQuePrecisamDeMesa[$pagina]
+            );
+        }
+
+        if ($pagina === "consultaFuncionario") {
+            require_once __DIR__ . "/../model/employeeModel.php";
+            $employeeModel = new EmployeeModel();
+            $dados["listaFuncionarios"] = $employeeModel->listarTodosFuncionario();
+        }
+
+        if (in_array($pagina, ["cardapio", "consultaCardapio", "consultarCardapio"], true)) {
+            require_once __DIR__ . "/../model/categoriaModel.php";
+            require_once __DIR__ . "/../model/produtoModel.php";
+
+            $dados["listaCategorias"] = (new CategoriaModel())->listarCategorias();
+            $dados["listaProdutos"]   = (new ProdutoModel())->listarProdutos();
+        }
+
+        if ($pagina === "cadastroProduto") {
+            require_once __DIR__ . "/../model/categoriaModel.php";
+            $dados["listaCategorias"] = (new CategoriaModel())->listarCategorias();
+        }
+
+        if ($pagina === "mesas" || $pagina === "pedidos") {
+            require_once __DIR__ . "/../model/mesaModel.php";
+            $dados["listaMesas"] = (new Mesa())->listarMesas();
+        }
+
+        $this->renderPainel($pagina, $dados);
     }
-
-    if (
-        $pagina === "cadastroMesa" ||
-        $pagina === "editarMesa"
-    ) {
-        $this->requireSetor("gerencia");
-    }
-
-    if ($pagina === "pedidos") {
-        $this->requireAnySetor([
-            "gerencia",
-            "atendimento",
-            "cozinha"
-        ]);
-    }
-
-    if (
-        $pagina === "cardapio" ||
-        ($pagina === "consultaCardapio" || $pagina === "consultarCardapio") ||
-        $pagina === "mesas"
-    ) {
-        $this->requireAnySetor([
-            "gerencia",
-            "atendimento"
-        ]);
-    }
-
-    if (
-        $pagina === "cadastroProduto" ||
-        $pagina === "cadastroCategoria"
-    ) {
-        $this->requireSetor("gerencia");
-    }
-
-    // Funcionários
-    if ($pagina === "consultaFuncionario") {
-
-        require_once __DIR__ . "/../model/employeeModel.php";
-
-        $employeeModel = new EmployeeModel();
-
-        $dados["listaFuncionarios"] =
-            $employeeModel->listarTodosFuncionario();
-    }
-
-    // Cardápio
-    if (
-        $pagina === "cardapio" ||
-        ($pagina === "consultaCardapio" || $pagina === "consultarCardapio")
-    ) {
-
-        require_once __DIR__ . "/../model/categoriaModel.php";
-
-        $categoriaModel = new CategoriaModel();
-
-        $dados["listaCategorias"] =
-            $categoriaModel->listarCategorias();
-
-        require_once __DIR__ . "/../model/produtoModel.php";
-
-        $produtoModel = new ProdutoModel();
-
-        $dados["listaProdutos"] =
-            $produtoModel->listarProdutos();
-    }
-
-    // Cadastro de produto
-    if ($pagina === "cadastroProduto") {
-
-        require_once __DIR__ . "/../model/categoriaModel.php";
-
-        $categoriaModel = new CategoriaModel();
-
-        $dados["listaCategorias"] =
-            $categoriaModel->listarCategorias();
-    }
-
-    // Mesas
-    if ($pagina === "mesas" || $pagina === "pedidos") {
-
-        require_once __DIR__ . "/../model/mesaModel.php";
-
-        $mesaModel = new Mesa();
-
-        $dados["listaMesas"] =
-            $mesaModel->listarMesas();
-    }
-
-    // Finalmente renderiza a página
-    $this->renderPainel($pagina, $dados);
-}
 }

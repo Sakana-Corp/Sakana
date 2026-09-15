@@ -1,13 +1,16 @@
 <?php
-class AccountRepository {
+class AccountRepository
+{
     private $conexao;
 
-    public function __construct() {
+    public function __construct()
+    {
         require_once __DIR__ . "/../config/conexao.php";
         $this->conexao = Conexao::getConn();
     }
 
-    public function emailExists(string $email): bool {
+    public function emailExists(string $email): bool
+    {
         try {
             $sql = "SELECT COUNT(*) as count FROM LoginUser WHERE email = :email";
             $stmt = $this->conexao->prepare($sql);
@@ -22,7 +25,8 @@ class AccountRepository {
         }
     }
 
-    public function create(string $nome, string $email, string $senhaHash): bool {
+    public function create(string $nome, string $email, string $senhaHash): bool
+    {
         try {
             $sql = "INSERT INTO LoginUser (nomeUser, email, senha) VALUES (:nome, :email, :senha)";
             $stmt = $this->conexao->prepare($sql);
@@ -40,7 +44,8 @@ class AccountRepository {
         }
     }
 
-    public function findByEmail(string $email): ?array {
+    public function findByEmail(string $email): ?array
+    {
         try {
             $sql = "SELECT idUser, nomeUser, email, senha, fotoPerfil FROM LoginUser WHERE email = :email LIMIT 1";
             $stmt = $this->conexao->prepare($sql);
@@ -56,12 +61,30 @@ class AccountRepository {
         }
     }
 
-    public function updatePassword(string $email, string $senhaHash): bool {
+    public function findPasswordHashById(int $idUser): ?string
+    {
         try {
-            $sql = "UPDATE LoginUser SET senha = :senha WHERE email = :email";
+            $sql = "SELECT senha FROM LoginUser WHERE idUser = :idUser LIMIT 1";
             $stmt = $this->conexao->prepare($sql);
-            $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+            $stmt->bindParam(":idUser", $idUser, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $hash = $stmt->fetchColumn();
+
+            return $hash === false ? null : $hash;
+        } catch (PDOException $e) {
+            error_log("Erro ao buscar senha: " . $e->getMessage());
+            throw new RuntimeException("database_error");
+        }
+    }
+
+    public function updatePasswordById(int $idUser, string $senhaHash): bool
+    {
+        try {
+            $sql = "UPDATE LoginUser SET senha = :senha WHERE idUser = :idUser";
+            $stmt = $this->conexao->prepare($sql);
             $stmt->bindParam(":senha", $senhaHash, PDO::PARAM_STR);
+            $stmt->bindParam(":idUser", $idUser, PDO::PARAM_INT);
 
             return $stmt->execute();
         } catch (PDOException $e) {
@@ -70,7 +93,8 @@ class AccountRepository {
         }
     }
 
-    public function updateProfile(int $idUser, string $nome, string $email, ?string $fotoPerfil = null): bool {
+    public function updateProfile(int $idUser, string $nome, string $email, ?string $fotoPerfil = null): bool
+    {
         try {
             $sql = "UPDATE LoginUser SET nomeUser = :nome, email = :email, fotoPerfil = :fotoPerfil WHERE idUser = :idUser";
             $stmt = $this->conexao->prepare($sql);

@@ -21,16 +21,15 @@ $mesa = $mesa ?? null;
     <form
         action="/Sakana/index.php?action=<?= $mesa ? 'atualizarMesa' : 'salvarMesa' ?>"
         method="POST"
-        class="mesa-form"
-    >
+        class="mesa-form">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
 
         <?php if ($mesa): ?>
 
             <input
                 type="hidden"
                 name="idMesa"
-                value="<?= htmlspecialchars($mesa['idmesa']) ?>"
-            >
+                value="<?= htmlspecialchars($mesa['idmesa']) ?>">
 
         <?php endif; ?>
 

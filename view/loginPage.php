@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Login | Sakana</title>
+    <title>Login | Sakana</title>
 
-<link rel="stylesheet" href="/Sakana/view/css/style.css">
+    <link rel="stylesheet" href="/Sakana/view/css/style.css">
 </head>
 
 <body class="page">
 
     <?php
-        SessionHelper::garanteSessaoIniciada();
-        $flash = SessionHelper::getFlash();
+    SessionHelper::garanteSessaoIniciada();
+    $flash = SessionHelper::getFlash();
 
-        if ($flash && !in_array($flash["type"], ["error", "warning", "info"])) {
-            $flash = null;
-        }
+    if ($flash && !in_array($flash["type"], ["error", "warning", "info"])) {
+        $flash = null;
+    }
     ?>
 
     <?php if ($flash): ?>
@@ -38,18 +39,17 @@
                 <input type="password" name="txtSenha" placeholder="Senha" minlength="8" maxlength="16" autocomplete="new-password" required>
 
                 <button type="submit" class="btn-primary">LOGAR</button>
-               
+
             </form>
 
             <a href="/Sakana/index.php?action=cadastro" class="btn-primary" style="width: 100%; background-color: var(--dark-blue);">
                 CADASTRAR
             </a>
-             <a href="/Sakana/index.php?action=recuperarSenha" class="btn-link" style="margin-top: 10px; font-size: 0.9em;">
-                Esqueci minha senha
-            </a>
+
         </div>
     </div>
 
     <script src="/Sakana/view/js/alerts.js" defer></script>
 </body>
+
 </html>

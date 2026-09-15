@@ -3,7 +3,7 @@
 <form action="/Sakana/index.php?action=cadastrarFunc" method="POST" class="form-grupo">
     <h2 class="titulo-form">Cadastrar funcionários na equipe</h2>
 
-    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? ''; ?>">
+    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
 
     <div class="form-field">
         <label class="form-label" for="nomeFunc">Nome completo do funcionário</label>

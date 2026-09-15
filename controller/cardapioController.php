@@ -163,10 +163,12 @@ class CardapioController extends BaseController
         require_once __DIR__ . "/../view/pages/usersPages/gerencia/cardapio.php";
     }
 
-    public function seedCardapio() {
+    public function seedCardapio()
+    {
         $this->requirePost("logadoGerencia&page=cadastroCategoria");
         $this->startSession();
         $this->validateCsrfOrRedirect("logadoGerencia&page=cadastroCategoria");
+        $this->requireSetor("gerencia", "logadoGerencia&page=cardapio");
 
         require_once __DIR__ . "/../model/categoriaModel.php";
         require_once __DIR__ . "/../model/produtoModel.php";
@@ -184,7 +186,7 @@ class CardapioController extends BaseController
         foreach ($categoriasExemplo as [$nome, $desc, $foto]) {
             $resultado = $categoriaModel->cadastrarCategoria($nome, $desc, $foto);
             if ($resultado["ok"]) {
-                $idsCategorias[$nome] = $resultado["id"]; 
+                $idsCategorias[$nome] = $resultado["id"];
             }
         }
 
@@ -213,7 +215,7 @@ class CardapioController extends BaseController
         $this->requirePost("logadoGerencia&page=cardapio");
         $this->startSession();
         $this->validateCsrfOrRedirect("logadoGerencia&page=cardapio");
-        $this->requireSetor("gerencia");
+        $this->requireSetor("gerencia", "logadoGerencia&page=cardapio");
 
         $nomesProdutos = [
             "Coca-Cola 350ml",
@@ -270,10 +272,12 @@ class CardapioController extends BaseController
         }
     }
 
-    public function excluirCategoria() {
+    public function excluirCategoria()
+    {
         $this->requirePost("logadoGerencia&page=cardapio");
         $this->startSession();
         $this->validateCsrfOrRedirect("logadoGerencia&page=cardapio");
+        $this->requireSetor("gerencia", "logadoGerencia&page=cardapio");
 
         $idCategoria = $_POST["idCategoria"] ?? "";
 
@@ -303,15 +307,17 @@ class CardapioController extends BaseController
         $this->flashAndRedirect("error", $msg, "logadoGerencia&page=cardapio");
     }
 
-    public function excluirProduto() {
+    public function excluirProduto()
+    {
         $this->requirePost("logadoGerencia&page=cardapio");
         $this->startSession();
         $this->validateCsrfOrRedirect("logadoGerencia&page=cardapio");
+        $this->requireSetor("gerencia", "logadoGerencia&page=cardapio");
 
         $idProduto = $_POST["idProduto"] ?? "";
 
         if ($idProduto === "") {
-            $this->flashAndRedirect("warning", "Pr inválida.", "logadoGerencia&page=cardapio");
+            $this->flashAndRedirect("warning", "Produto inválido.", "logadoGerencia&page=cardapio");
         }
 
         require_once __DIR__ . "/../model/produtoModel.php";
@@ -323,11 +329,14 @@ class CardapioController extends BaseController
             $this->flashAndRedirect("success", "Produto excluído com sucesso!", "logadoGerencia&page=cardapio");
         }
 
+        $error = $resultado["error"] ?? "unknown_error";
+
         if ($error === "database_error") {
             $msg = "Banco de dados indisponível. Tente mais tarde.";
         } else {
-            $msg = "Erro ao excluir categoria.";
+            $msg = "Erro ao excluir produto.";
         }
 
+        $this->flashAndRedirect("error", $msg, "logadoGerencia&page=cardapio");
     }
 }

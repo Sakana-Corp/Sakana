@@ -101,17 +101,11 @@ switch($action) {
         $controller->logout();
         break;
 
-    case "recuperarSenha":
-        require_once "accessController.php";
-        $controller = new AccessController();
-        $controller->recuperarSenhaForm();
-        break;
-
-    case "atualizarSenha":
-        require_once "accessController.php";
-        $controller = new AccessController();
-        $controller->atualizarSenha();
-        break;
+    case "alterarSenha":
+    require_once "usersController.php";
+    $controller = new UsersController();
+    $controller->alterarSenha();
+    break;
     
     case "loginSetor":
         require_once "accessController.php";

@@ -25,5 +25,36 @@
             <a href="/Sakana/index.php?action=logadoGerencia" class="btn-secondary">Cancelar</a>
             <button type="submit" class="btn-primary">Salvar alterações</button>
         </div>
+</form>
+
+<form class="perfil-form" method="post" action="/Sakana/index.php?action=alterarSenha">
+    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+
+    <h2 class="perfil-title">Alterar senha</h2>
+
+    <div class="form-grid">
+        <label class="form-field">
+            <span>Senha atual</span>
+            <input type="password" name="senhaAtual" class="form-input"
+                   autocomplete="current-password" required>
+        </label>
+    </div>
+
+    <div class="form-grid">
+        <label class="form-field">
+            <span>Nova senha</span>
+            <input type="password" name="novaSenha" class="form-input"
+                   autocomplete="new-password" minlength="8" maxlength="72" required>
+        </label>
+
+        <label class="form-field">
+            <span>Confirmar nova senha</span>
+            <input type="password" name="confirmarSenha" class="form-input"
+                   autocomplete="new-password" minlength="8" maxlength="72" required>
+        </label>
+    </div>
+
+    <div class="perfil-actions">
+        <button type="submit" class="btn-primary">Alterar senha</button>
     </div>
 </form>
