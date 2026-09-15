@@ -17,11 +17,6 @@
                    placeholder="000.000.000-00" minlength="11" maxlength="14"
                    pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}">
         </div>
-
-        <div class="form-field">
-            <label class="form-label" for="cargo">Cargo</label>
-            <input type="text" id="cargo" name="cargo" class="form-input" required placeholder="Ex: Garçonete">
-        </div>
     </div>
 
     <label class="form-label">Cargo:</label>
