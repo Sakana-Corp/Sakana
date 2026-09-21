@@ -39,6 +39,15 @@ class EmployeeController extends BaseController
         require_once __DIR__ . "/../service/inputValidator.php";
         $validator = new InputValidator();
         $validator->notEmpty("cpf", $cpf)->cpf("cpf", $cpf);
+        $validator->email("email", $email);
+
+        if (strlen($senha) < 8) {
+            $this->flashAndRedirect(
+                "warning",
+                "A senha deve ter no mínimo 8 caracteres.",
+                $voltar
+            );
+        }
 
         if (!$validator->isValid()) {
             $this->flashAndRedirect("warning", $validator->getFirstError(), "logadoGerencia&page=cadastroFuncionario");
@@ -65,6 +74,10 @@ class EmployeeController extends BaseController
 
         if ($error === "cpf_exists") {
             $msg = "Este CPF já está cadastrado.";
+        } elseif ($error === "email_exists") {
+            $msg = "Este email já está em uso.";
+        } elseif ($error === "invalid_cargo") {
+            $msg = "Selecione um cargo válido.";
         } elseif ($error === "database_error") {
             $msg = "Banco de dados indisponível. Tente mais tarde.";
         } else {

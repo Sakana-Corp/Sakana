@@ -430,6 +430,15 @@
     text-align: left;
 }
 
+.page-gerencia .titulo-form-func {
+    width: min(100%, 760px);
+    margin: 5px auto 18px;
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+}
+
 .page-gerencia .form-grupo {
     display: grid;
     width: min(100%, 760px);

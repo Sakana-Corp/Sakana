@@ -72,6 +72,8 @@ create table pedido (
     Valor decimal (7,2) not null
 );
 
+
+
 insert into cargo (nomeCargo, salario) values
 ('Gerente', 0.00),
 ('Garçom', 0.00),
