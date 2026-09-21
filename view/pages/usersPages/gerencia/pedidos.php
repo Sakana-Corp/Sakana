@@ -59,7 +59,7 @@ $listaMesas = $listaMesas ?? [];
 
                     <div class="mesa-acoes">
 
-                        <?php if ($mesa['status'] === 'Disponivel'): ?>
+                        <?php if ($mesa['status'] === 'Disponivel' && $_SESSION['setorAtual'] == "gerencia" || $_SESSION['setorAtual'] == "atendimento"): ?>
 
                             <a href="/Sakana/index.php?action=novoPedido&id=<?= $mesa['idmesa'] ?>"
                                class="btn-abrir">
