@@ -162,7 +162,13 @@
             $sql = "SELECT f.idFuncionario,
                    f.nomeFunc,
                    f.cpf,
-                   f.endereco,
+                   f.cep,
+                   f.logradouro,
+                   f.numero,
+                   f.complemento,
+                   f.bairro,
+                   f.cidade,
+                   f.uf,
                    c.nomeCargo AS cargo
             FROM Funcionario f
             LEFT JOIN cargo c ON f.idCargo = c.idCargo

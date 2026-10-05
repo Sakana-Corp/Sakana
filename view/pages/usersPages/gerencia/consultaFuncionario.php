@@ -12,7 +12,7 @@
             </div>
 
             <div class="barra-pesquisa-wrapper">
-                <input type="text" class="barra-pesquisa" id="pesquisaFuncionario" placeholder="Nome ou CPF do Funcionario" onkeyup="buscar()">
+                <input type="text" class="barra-pesquisa" id="pesquisaFuncionario" placeholder="Nome, CPF ou endereço do funcionário" onkeyup="buscar()">
             </div>
         </div>
     </div>
@@ -24,6 +24,7 @@
                     <th>idFuncionario</th>
                     <th>Nome</th>
                     <th>CPF</th>
+                    <th>Endereço</th>
                     <th>Cargo</th>
                 </tr>
             </thead>
@@ -43,12 +44,29 @@
                                 : ($f['cpf'] ?? '');
                         ?>
                         <td><?= htmlspecialchars($cpfFormatado) ?></td>
+                        <?php
+                            $rua = trim(($f['logradouro'] ?? '') . ', ' . ($f['numero'] ?? ''), ', ');
+                            if (!empty($f['complemento'])) {
+                                $rua .= ' - ' . $f['complemento'];
+                            }
+                            $local = trim(($f['bairro'] ?? '') . ' - ' . ($f['cidade'] ?? '') . '/' . ($f['uf'] ?? ''), ' -/');
+                            $cep = preg_replace('/\D/', '', (string) ($f['cep'] ?? ''));
+                            $cepFormatado = strlen($cep) === 8 ? substr($cep, 0, 5) . '-' . substr($cep, 5) : '';
+                        ?>
+                        <td class="celula-endereco">
+                            <?php if ($rua === '' && $local === ''): ?>
+                                Não informado
+                            <?php else: ?>
+                                <span><?= htmlspecialchars($rua) ?></span><br>
+                                <small><?= htmlspecialchars($local) ?><?= $cepFormatado !== '' ? ' · CEP ' . $cepFormatado : '' ?></small>
+                            <?php endif; ?>
+                        </td>
                         <td><?= htmlspecialchars($f['cargo'] ?? 'Sem cargo') ?></td>
                     </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr class="tabela-vazia">
-                        <td colspan="4">Nenhum registro para exibir.</td>
+                        <td colspan="5">Nenhum registro para exibir.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
