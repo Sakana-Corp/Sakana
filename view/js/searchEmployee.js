@@ -7,10 +7,11 @@ function buscar() {
     cards.forEach(linha => {
         const nome = linha.querySelector('.celula-nome')?.innerText.toLowerCase() || "";
         const cpf = linha.querySelectorAll('td')[2]?.innerText.toLowerCase() || "";
+        const endereco = linha.querySelector('.celula-endereco')?.innerText.toLowerCase() || "";
 
         const cargoLinha = linha.getAttribute("data-cargo");
 
-        const bateBusca = nome.includes(input) || cpf.includes(input);
+        const bateBusca = nome.includes(input) || cpf.includes(input) || endereco.includes(input);
         const bateCategoria = (FuncionarioAtivo === "todos" || cargoLinha === FuncionarioAtivo);
 
         linha.style.display = (bateBusca && bateCategoria) ? "table-row" : "none";

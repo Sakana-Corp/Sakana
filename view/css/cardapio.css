@@ -490,6 +490,20 @@
     box-shadow: 0 0 0 3px rgba(93, 131, 167, 0.16);
 }
 
+.page-gerencia .form-grupo .form-hint {
+    min-height: 16px;
+    color: #5f6b75;
+    font-size: 12px;
+}
+
+.page-gerencia .form-grupo .form-hint-ok {
+    color: #2e7d4f;
+}
+
+.page-gerencia .form-grupo .form-hint-erro {
+    color: #b3261e;
+}
+
 .page-gerencia .form-grupo .form-separador {
     margin: 0;
     padding: 16px;

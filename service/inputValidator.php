@@ -29,13 +29,13 @@ class InputValidator {
             return $this;
         }
 
-        /* // Verifica se não é uma sequência repetida (ex 111.111.111-11)
-        if (preg_match("/^(\d)\1{10}$/", $cpf)) {
+        // Verifica se não é uma sequência repetida (ex 111.111.111-11)
+        if (preg_match('/^(\d)\1{10}$/', $cpf)) {
             $this->errors[$fieldName] = "CPF inválido.";
             return $this;
-        } */
+        }
 
-        /* // Calcula o primeiro dígito verificador
+        // Calcula o primeiro dígito verificador
         $soma = 0;
         for ($i = 0; $i < 9; $i++) {
             $soma += $cpf[$i] * (10 - $i);
@@ -62,8 +62,29 @@ class InputValidator {
         if ($cpf[10] != $segundoDigito) {
             $this->errors[$fieldName] = "CPF inválido.";
             return $this;
-        } */
+        }
 
+        return $this;
+    }
+
+    public function cep(string $fieldName, string $value): self {
+        $cep = preg_replace("/[^0-9]/", "", $value);
+
+        if (strlen($cep) !== 8) {
+            $this->errors[$fieldName] = "CEP deve conter 8 dígitos.";
+        }
+        return $this;
+    }
+
+    public function uf(string $fieldName, string $value): self {
+        $ufs = [
+            "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA",
+            "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"
+        ];
+
+        if (!in_array(strtoupper(trim($value)), $ufs, true)) {
+            $this->errors[$fieldName] = "UF inválida.";
+        }
         return $this;
     }
 
