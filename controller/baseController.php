@@ -8,7 +8,7 @@ class BaseController
 
     protected function redirectToAction(string $action): void
     {
-        header("Location: /Sakana/index.php?action={$action}");
+        header("Location: " . app_url("index.php?action={$action}"));
         exit;
     }
 

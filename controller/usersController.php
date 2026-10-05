@@ -223,8 +223,7 @@ class UsersController extends BaseController
                         return;
                     }
 
-                    $fotoPerfil =
-                        "/Sakana/view/images/perfis/" . $nomeArquivo;
+                    $fotoPerfil = app_url("view/images/perfis/" . $nomeArquivo);
                 }
 
                 $ok = $accountRepository->updateProfile(

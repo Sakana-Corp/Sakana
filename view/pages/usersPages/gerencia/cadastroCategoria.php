@@ -1,7 +1,7 @@
-<link rel="stylesheet" href="/Sakana/view/css/cardapio.css?v=3">
+<link rel="stylesheet" href="view/css/cardapio.css?v=3">
 <h2 class="titulo-form">Cadastrar Categoria do Cardápio</h2>
 
-<form action="/Sakana/index.php?action=cadastrarCategoria" method="POST" enctype="multipart/form-data" class="form-grupo cardapio-form">
+<form action="<?= app_url('index.php?action=cadastrarCategoria') ?>" method="POST" enctype="multipart/form-data" class="form-grupo cardapio-form">
     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
     <div class="cardapio-field">

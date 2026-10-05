@@ -9,7 +9,7 @@ $titulos = [
 
 $titulo = $titulos[$setor] ?? "Login do setor";
 ?>
-<link rel="stylesheet" href="/Sakana/view/css/style.css">
+<link rel="stylesheet" href="view/css/style.css">
 <body class="page">
     <?php
         SessionHelper::garanteSessaoIniciada();
@@ -31,7 +31,7 @@ $titulo = $titulos[$setor] ?? "Login do setor";
         <div class="card">
             <h2><?= htmlspecialchars($titulo, ENT_QUOTES, "UTF-8") ?></h2>
 
-            <form action="/Sakana/index.php?action=entrarSetor" method="post" class="input-group">
+            <form action="<?= app_url('index.php?action=entrarSetor') ?>" method="post" class="input-group">
                 <input type="hidden"
                     name="csrf_token"
                     value="<?= htmlspecialchars($_SESSION["csrf_token"] ?? "", ENT_QUOTES, "UTF-8") ?>">
@@ -51,4 +51,4 @@ $titulo = $titulos[$setor] ?? "Login do setor";
         </div>
     </div>
 </body>
-<script src="/Sakana/view/js/alerts.js" defer></script>
+<script src="<?= app_url('view/js/alerts.js') ?>" defer></script>

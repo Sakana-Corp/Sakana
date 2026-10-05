@@ -1,4 +1,4 @@
-<script src="/Sakana/view/js/searchEmployee.js" defer></script>
+<script src="<?= app_url('view/js/searchEmployee.js') ?>" defer></script>
 
 <div class="consulta-container">
     <div class="consulta-header">

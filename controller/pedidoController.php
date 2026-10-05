@@ -26,7 +26,7 @@ class PedidoController extends BaseController
      */
     public function novoPedido()
     {
-        $this->requireAnySetor(["gerencia", "atendimento", "cozinha"]);
+        $this->requireAnySetor(["gerencia", "atendimento"]);
         $this->startSession();
 
         $idMesa = $_GET['id'] ?? '';
@@ -65,7 +65,7 @@ class PedidoController extends BaseController
         $this->requirePost("logadoGerencia&page=pedidos");
         $this->startSession();
         $this->validateCsrfOrRedirect("logadoGerencia&page=pedidos");
-        $this->requireAnySetor(["gerencia", "atendimento", "cozinha"]);
+        $this->requireAnySetor(["gerencia", "atendimento"]);
 
         $idMesa = $_POST['idMesa'] ?? '';
         $quantidades = $_POST['quantidade'] ?? [];
@@ -134,7 +134,7 @@ class PedidoController extends BaseController
         $this->requirePost("logadoGerencia&page=pedidos");
         $this->startSession();
         $this->validateCsrfOrRedirect("logadoGerencia&page=pedidos");
-        $this->requireAnySetor(["gerencia", "atendimento", "cozinha"]);
+        $this->requireAnySetor(["gerencia", "atendimento"]);
 
         $idMesa = $_POST['idMesa'] ?? '';
 

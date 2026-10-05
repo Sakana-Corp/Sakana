@@ -14,7 +14,7 @@ $setorAtual = $_SESSION["setorAtual"] ?? null;
 
         <?php if ($setorAtual === "gerencia"): ?>
 
-            <a href="/Sakana/index.php?action=cadastrarMesa"
+            <a href="<?= app_url('index.php?action=cadastrarMesa') ?>"
                 class="btn-primary">
                 Cadastrar mesa
             </a>
@@ -39,7 +39,7 @@ $setorAtual = $_SESSION["setorAtual"] ?? null;
                 <div class="mesa-card">
 
                     <img
-                        src="/Sakana/view/images/mesa.png"
+                        src="<?= app_url('view/images/mesa.png') ?>"
                         alt="Mesa <?= htmlspecialchars($mesa['numeromesa']) ?>"
                         class="mesa-imagem">
 
@@ -72,7 +72,7 @@ $setorAtual = $_SESSION["setorAtual"] ?? null;
 
                             <?php if ($mesa['status'] === 'Disponivel'): ?>
 
-                                <form action="/Sakana/index.php?action=abrirMesa" method="POST" class="form-inline">
+                                <form action="<?= app_url('index.php?action=abrirMesa') ?>" method="POST" class="form-inline">
                                     <input type="hidden" name="idMesa" value="<?= (int) $mesa['idmesa'] ?>">
                                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                                     <button type="submit" class="btn-abrir">Abrir mesa</button>
@@ -80,7 +80,7 @@ $setorAtual = $_SESSION["setorAtual"] ?? null;
 
                             <?php else: ?>
 
-                                <form action="/Sakana/index.php?action=fecharMesa" method="POST" class="form-inline">
+                                <form action="<?= app_url('index.php?action=fecharMesa') ?>" method="POST" class="form-inline">
                                     <input type="hidden" name="idMesa" value="<?= (int) $mesa['idmesa'] ?>">
                                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                                     <button type="submit" class="btn-fechar">Fechar mesa</button>
@@ -93,12 +93,12 @@ $setorAtual = $_SESSION["setorAtual"] ?? null;
 
                         <?php if ($setorAtual === "gerencia"): ?>
 
-                            <a href="/Sakana/index.php?action=editarMesa&id=<?= $mesa['idmesa'] ?>"
+                            <a href="<?= app_url('index.php?action=editarMesa&id=' . $mesa['idmesa']) ?>"
                                 class="btn-editar">
                                 Editar
                             </a>
 
-                            <form action="/Sakana/index.php?action=excluirMesa" method="POST" class="form-inline"
+                            <form action="<?= app_url('index.php?action=excluirMesa') ?>" method="POST" class="form-inline"
                                 onsubmit="return confirm('Deseja realmente excluir esta mesa?');">
                                 <input type="hidden" name="idMesa" value="<?= (int) $mesa['idmesa'] ?>">
                                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">

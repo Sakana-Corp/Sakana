@@ -3,7 +3,7 @@
 ======================================== */
 @font-face {
     font-family: 'Hogback';
-    src: url('/Sakana/view/fonts/principal/Hogback Demo Version.otf') format('truetype');
+    src: url('../fonts/principal/Hogback Demo Version.otf') format('opentype');
 }
 
 /* ========================================

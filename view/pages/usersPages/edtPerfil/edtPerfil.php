@@ -2,7 +2,7 @@
 $flash = SessionHelper::getFlash();
 $nomeUsuario = htmlspecialchars($_SESSION["nomeUser"] ?? "", ENT_QUOTES, "UTF-8");
 $emailUsuario = htmlspecialchars($_SESSION["emailUser"] ?? "", ENT_QUOTES, "UTF-8");
-$avatarAtual = htmlspecialchars($_SESSION["fotoPerfil"] ?? "/Sakana/view/images/user.png", ENT_QUOTES, "UTF-8");
+$avatarAtual = htmlspecialchars(app_asset_url(($_SESSION["fotoPerfil"] ?? "") ?: app_url("view/images/user.png")), ENT_QUOTES, "UTF-8");
 ?>
 
 <section class="perfil-page">

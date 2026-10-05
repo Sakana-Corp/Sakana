@@ -7,7 +7,7 @@
 
     <title>Login | Sakana</title>
 
-    <link rel="stylesheet" href="/Sakana/view/css/style.css">
+    <link rel="stylesheet" href="view/css/style.css">
 </head>
 
 <body class="page">
@@ -32,7 +32,7 @@
         <div class="card">
             <h2 style="color: var(--dark-blue);">LOGAR</h2>
 
-            <form class="input-group" action="/Sakana/index.php?action=logado" method="POST">
+            <form class="input-group" action="<?= app_url('index.php?action=logado') ?>" method="POST">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"] ?? "", ENT_QUOTES, "UTF-8") ?>">
 
                 <input type="email" name="txtEmail" placeholder="Email" maxlength="50" required>
@@ -42,14 +42,14 @@
 
             </form>
 
-            <a href="/Sakana/index.php?action=cadastro" class="btn-primary" style="width: 100%; background-color: var(--dark-blue);">
+            <a href="<?= app_url('index.php?action=cadastro') ?>" class="btn-primary" style="width: 100%; background-color: var(--dark-blue);">
                 CADASTRAR
             </a>
 
         </div>
     </div>
 
-    <script src="/Sakana/view/js/alerts.js" defer></script>
+    <script src="<?= app_url('view/js/alerts.js') ?>" defer></script>
 </body>
 
 </html>

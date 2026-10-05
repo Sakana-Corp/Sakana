@@ -29,7 +29,7 @@ $listaMesas = $listaMesas ?? [];
                 <div class="mesa-card">
 
                     <img
-                        src="/Sakana/view/images/mesa.png"
+                        src="<?= app_url('view/images/mesa.png') ?>"
                         alt="Mesa <?= htmlspecialchars($mesa['numeromesa']) ?>"
                         class="mesa-imagem"
                     >
@@ -59,16 +59,16 @@ $listaMesas = $listaMesas ?? [];
 
                     <div class="mesa-acoes">
 
-                        <?php if ($mesa['status'] === 'Disponivel'): ?>
+                        <?php if ($mesa['status'] === 'Disponivel' && $_SESSION['setorAtual'] == "gerencia" || $_SESSION['setorAtual'] == "atendimento"): ?>
 
-                            <a href="/Sakana/index.php?action=novoPedido&id=<?= $mesa['idmesa'] ?>"
+                            <a href="<?= app_url('index.php?action=novoPedido&id=' . $mesa['idmesa']) ?>"
                                class="btn-abrir">
                                 Pedido
                             </a>
 
                         <?php endif; ?>
 
-                        <a href="/Sakana/index.php?action=verResumoPedido&id=<?= $mesa['idmesa'] ?>"
+                        <a href="<?= app_url('index.php?action=verResumoPedido&id=' . $mesa['idmesa']) ?>"
                            class="btn-resumo">
                             Ver resumo
                         </a>

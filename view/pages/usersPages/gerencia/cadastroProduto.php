@@ -1,8 +1,8 @@
-<link rel="stylesheet" href="/Sakana/view/css/cardapio.css?v=3">
-<script src="/Sakana/view/js/inputMasks.js" defer></script>
+<link rel="stylesheet" href="view/css/cardapio.css?v=3">
+<script src="<?= app_url('view/js/inputMasks.js') ?>" defer></script>
 <h2 class="titulo-form">Cadastrar Itens do Cardápio</h2>
 
-<form action="/Sakana/index.php?action=cadastrarProduto" method="POST" enctype="multipart/form-data" class="form-grupo cardapio-form">
+<form action="<?= app_url('index.php?action=cadastrarProduto') ?>" method="POST" enctype="multipart/form-data" class="form-grupo cardapio-form">
     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
   <div class="cardapio-field">

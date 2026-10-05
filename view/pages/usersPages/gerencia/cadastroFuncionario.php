@@ -1,9 +1,9 @@
-<link rel="stylesheet" href="/Sakana/view/css/cardapio.css?v=3">
-<script src="/Sakana/view/js/inputMasks.js" defer></script>
+<link rel="stylesheet" href="view/css/cardapio.css?v=3">
+<script src="<?= app_url('view/js/inputMasks.js') ?>" defer></script>
 
 <h2 class="titulo-form-func">Cadastrar funcionários na equipe</h2>
 
-<form action="/Sakana/index.php?action=cadastrarFunc" method="POST" class="form-grupo">
+<form action="<?= app_url('index.php?action=cadastrarFunc') ?>" method="POST" class="form-grupo">
     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
     <div class="cardapio-field cardapio-field-wide">

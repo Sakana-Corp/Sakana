@@ -37,7 +37,7 @@ class CardapioController extends BaseController
             exit;
         }
 
-        $caminhoWeb = '/Sakana/view/images/categorias/' . $nomeFoto;
+        $caminhoWeb = app_url('view/images/categorias/' . $nomeFoto);
 
         $nomeCategoria = $_POST["nomeCategoria"] ?? "";
         $descCategoria = $_POST["descCategoria"] ?? "";
@@ -116,7 +116,7 @@ class CardapioController extends BaseController
             exit;
         }
 
-        $caminhoWeb = '/Sakana/view/images/produtos/' . $nomeFoto;
+        $caminhoWeb = app_url('view/images/produtos/' . $nomeFoto);
 
         $nomeProduto = $_POST["nomeProduto"] ?? "";
         $descProduto = $_POST["descProduto"] ?? "";
@@ -179,9 +179,9 @@ class CardapioController extends BaseController
         $produtoModel = new ProdutoModel();
 
         $categoriasExemplo = [
-            ["Bebidas", "Sucos, refrigerantes e drinks", "/Sakana/view/images/seed/categorias/bebidas.jpg"],
-            ["Sushis", "Combinados e peças avulsas", "/Sakana/view/images/seed/categorias/sushis.jpg"],
-            ["Temakis", "Enrolado em forma de cone recheado", "/Sakana/view/images/seed/categorias/temakis.jpg"],
+            ["Bebidas", "Sucos, refrigerantes e drinks", app_url("view/images/seed/categorias/bebidas.jpg")],
+            ["Sushis", "Combinados e peças avulsas", app_url("view/images/seed/categorias/sushis.jpg")],
+            ["Temakis", "Enrolado em forma de cone recheado", app_url("view/images/seed/categorias/temakis.jpg")],
         ];
 
         $idsCategorias = [];
@@ -193,12 +193,12 @@ class CardapioController extends BaseController
         }
 
         $produtosExemplo = [
-            ["Coca-Cola 350ml", "Lata gelada de Coca-Cola", "/Sakana/view/images/seed/produtos/cocacola.jpg", "Bebidas", 6.00],
-            ["Guaraná Antarctica 350ml", "Lata gelada de Guarana", "/Sakana/view/images/seed/produtos/guarana.jpg", "Bebidas", 6.00],
-            ["Combinado 20 peças", "Sushi e sashimi variados", "/Sakana/view/images/seed/produtos/combinado20.jpg", "Sushis", 45.00],
-            ["Combinado 10 peças", "Sushis variados", "/Sakana/view/images/seed/produtos/combinado10.jpg", "Sushis", 25.00],
-            ["Temaki Salmão Cru", "Temaki cru", "/Sakana/view/images/seed/produtos/temakiCru.jpg", "Temakis", 15.00],
-            ["Temaki Salmão Grelhado", "Temaki grelhado", "/Sakana/view/images/seed/produtos/temakiGrelhado.jpg", "Temakis", 15.00],
+            ["Coca-Cola 350ml", "Lata gelada de Coca-Cola", app_url("view/images/seed/produtos/cocacola.jpg"), "Bebidas", 6.00],
+            ["Guaraná Antarctica 350ml", "Lata gelada de Guarana", app_url("view/images/seed/produtos/guarana.jpg"), "Bebidas", 6.00],
+            ["Combinado 20 peças", "Sushi e sashimi variados", app_url("view/images/seed/produtos/combinado20.jpg"), "Sushis", 45.00],
+            ["Combinado 10 peças", "Sushis variados", app_url("view/images/seed/produtos/combinado10.jpg"), "Sushis", 25.00],
+            ["Temaki Salmão Cru", "Temaki cru", app_url("view/images/seed/produtos/temakiCru.jpg"), "Temakis", 15.00],
+            ["Temaki Salmão Grelhado", "Temaki grelhado", app_url("view/images/seed/produtos/temakiGrelhado.jpg"), "Temakis", 15.00],
         ];
 
         foreach ($produtosExemplo as [$nome, $desc, $foto, $nomeCategoria, $valor]) {

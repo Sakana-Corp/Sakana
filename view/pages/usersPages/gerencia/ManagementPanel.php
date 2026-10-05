@@ -19,17 +19,17 @@ $setorAtual = $_SESSION["setorAtual"] ?? null;
     ?>
     <title><?= htmlspecialchars($tituloSetor, ENT_QUOTES, "UTF-8") ?> | Sakana</title>
 
-    <link rel="stylesheet" href="/Sakana/view/css/style.css?v=4">
-    <link rel="stylesheet" href="/Sakana/view/css/gerencia.css?v=3">
-    <link rel="stylesheet" href="/Sakana/view/css/perfil.css?v=1">
-    <link rel="stylesheet" href="/Sakana/view/css/alerts.css">
+    <link rel="stylesheet" href="view/css/style.css?v=4">
+    <link rel="stylesheet" href="view/css/gerencia.css?v=3">
+    <link rel="stylesheet" href="view/css/perfil.css?v=1">
+    <link rel="stylesheet" href="view/css/alerts.css">
 </head>
 
 <body class="page-gerencia">
 
     <header class="topbar">
         <div class="logo-area">
-            <img src="/Sakana/view/images/logo.png" alt="Logo Sakana" class="logo">
+            <img src="<?= app_url('view/images/logo.png') ?>" alt="Logo Sakana" class="logo">
             <span class="logo-text">SAKANA</span>
         </div>
 
@@ -44,8 +44,8 @@ $setorAtual = $_SESSION["setorAtual"] ?? null;
                     Usuário não logado
                 <?php endif; ?>
             </span>
-            <a href="/Sakana/index.php?action=editarPerfil" class="user-profile-link">
-                <img src="<?= htmlspecialchars($_SESSION['fotoPerfil'] ?? '/Sakana/view/images/user.png', ENT_QUOTES, 'UTF-8') ?>" alt="Usuário" class="user-icon">
+            <a href="<?= app_url('index.php?action=editarPerfil') ?>" class="user-profile-link">
+                <img src="<?= htmlspecialchars(app_asset_url(($_SESSION['fotoPerfil'] ?? '') ?: app_url('view/images/user.png')), ENT_QUOTES, 'UTF-8') ?>" alt="Usuário" class="user-icon">
             </a>
 
         </div>
@@ -54,7 +54,7 @@ $setorAtual = $_SESSION["setorAtual"] ?? null;
     <div class="layout">
         <aside class="sidebar">
             <?php if ($setorAtual === "gerencia"): ?>
-                <a href="/Sakana/index.php?action=logadoGerencia&page=funcionarios"
+                <a href="<?= app_url('index.php?action=logadoGerencia&page=funcionarios') ?>"
                     class="menu-btn">
                     Funcionários
                 </a>
@@ -65,7 +65,7 @@ $setorAtual = $_SESSION["setorAtual"] ?? null;
                 $setorAtual === "atendimento" ||
                 $setorAtual === "cozinha"
             ): ?>
-                <a href="/Sakana/index.php?action=logadoGerencia&page=pedidos"
+                <a href="<?= app_url('index.php?action=logadoGerencia&page=pedidos') ?>"
                     class="menu-btn">
                     Pedidos
                 </a>
@@ -75,18 +75,18 @@ $setorAtual = $_SESSION["setorAtual"] ?? null;
                 $setorAtual === "gerencia" ||
                 $setorAtual === "atendimento"
             ): ?>
-                <a href="/Sakana/index.php?action=logadoGerencia&page=cardapio"
+                <a href="<?= app_url('index.php?action=logadoGerencia&page=cardapio') ?>"
                     class="menu-btn">
                     Cardápio
                 </a>
 
-                <a href="/Sakana/index.php?action=logadoGerencia&page=mesas"
+                <a href="<?= app_url('index.php?action=logadoGerencia&page=mesas') ?>"
                     class="menu-btn">
                     Mesas
                 </a>
             <?php endif; ?>
 
-            <a href="/Sakana/index.php?action=painelAcesso"
+            <a href="<?= app_url('index.php?action=painelAcesso') ?>"
                 class="btn-setor">
                 Trocar de setor
             </a>

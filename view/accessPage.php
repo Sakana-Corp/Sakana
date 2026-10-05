@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acesso | Sakana</title>
-    <link rel="stylesheet" href="/Sakana/view/css/style.css">
+    <link rel="stylesheet" href="view/css/style.css">
 </head>
 <body class="page">
 
@@ -16,28 +16,28 @@
         <div class="card">
             
             <div class="input-group">
-                <a href="/Sakana/index.php?action=loginSetor&setor=gerencia" 
+                <a href="<?= app_url('index.php?action=loginSetor&setor=gerencia') ?>" 
                    style="text-decoration: none; width: 100%;">
                     <button class="btn-primary" style="width: 100%; margin-bottom: 15px;">
                         GERÊNCIA
                     </button>
                 </a>
 
-                <a href="/Sakana/index.php?action=loginSetor&setor=atendimento" 
+                <a href="<?= app_url('index.php?action=loginSetor&setor=atendimento') ?>" 
                    style="text-decoration: none; width: 100%;">
                     <button class="btn-primary" style="width: 100%; margin-bottom: 15px;">
                         ATENDIMENTO
                     </button>
                 </a>
                 
-                <a href="/Sakana/index.php?action=loginSetor&setor=cozinha" 
+                <a href="<?= app_url('index.php?action=loginSetor&setor=cozinha') ?>" 
                    style="text-decoration: none; width: 100%;">
                     <button class="btn-primary" style="width: 100%;">
                         COZINHA
                     </button>
                 </a>
 
-                <a href="/Sakana/index.php?action=logout" class="link-voltar" style="margin-top: 20px;">Sair</a>
+                <a href="<?= app_url('index.php?action=logout') ?>" class="link-voltar" style="margin-top: 20px;">Sair</a>
                 
             </div>
         </div>

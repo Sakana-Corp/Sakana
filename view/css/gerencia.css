@@ -21,7 +21,7 @@
 .layout {
     /* Já em layout.css, mas para gerência */
     padding-top: 65px;
-    background-image: url("/Sakana/view/images/img_background-tela_gerencia.jpeg");
+    background-image: url("../images/fundo_azul.jpeg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

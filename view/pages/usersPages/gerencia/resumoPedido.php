@@ -21,7 +21,7 @@ $mesaDisponivel = ($mesa['status'] ?? '') === 'Disponivel';
         <div class="consulta-header-botoes">
 
             <?php if ($mesaDisponivel): ?>
-                <form action="/Sakana/index.php?action=fecharMesaPedido" method="POST"
+                <form action="<?= app_url('index.php?action=fecharMesaPedido') ?>" method="POST"
                     onsubmit="return confirm('Deseja realmente fechar esta mesa?');">
                     <input type="hidden" name="idMesa" value="<?= htmlspecialchars($mesa['idmesa'] ?? '') ?>">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
@@ -29,7 +29,7 @@ $mesaDisponivel = ($mesa['status'] ?? '') === 'Disponivel';
                 </form>
             <?php endif; ?>
 
-            <a href="/Sakana/index.php?action=logadoGerencia&page=pedidos" class="btn-secondary">
+            <a href="<?= app_url('index.php?action=logadoGerencia&page=pedidos') ?>" class="btn-secondary">
                 Voltar
             </a>
 

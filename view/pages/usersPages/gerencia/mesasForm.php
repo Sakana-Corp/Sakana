@@ -19,7 +19,7 @@ $mesa = $mesa ?? null;
 
 
     <form
-        action="/Sakana/index.php?action=<?= $mesa ? 'atualizarMesa' : 'salvarMesa' ?>"
+        action="<?= app_url('index.php?action=' . ($mesa ? 'atualizarMesa' : 'salvarMesa')) ?>"
         method="POST"
         class="mesa-form">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
@@ -69,7 +69,7 @@ $mesa = $mesa ?? null;
         <div class="form-acoes">
 
             <a
-                href="/Sakana/index.php?action=logadoGerencia&page=mesas"
+                href="<?= app_url('index.php?action=logadoGerencia&page=mesas') ?>"
                 class="btn-secondary">Cancelar
             </a>
 

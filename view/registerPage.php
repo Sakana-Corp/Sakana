@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Sakana/view/css/style.css">
+    <link rel="stylesheet" href="view/css/style.css">
     <title>Cadastro | Sakana</title>
 </head>
 <body class="page">
@@ -25,7 +25,7 @@
 
             <h2 style="color: var(--dark-blue);">CADASTRAR</h2>
 
-            <form class="input-group" action="/Sakana/index.php?action=cadastrar" method="POST">
+            <form class="input-group" action="<?= app_url('index.php?action=cadastrar') ?>" method="POST">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION["csrf_token"] ?? "", ENT_QUOTES, "UTF-8") ?>">
 
                 <input type="text" name="txtNome" placeholder="Nome" minlength="2" maxlength="30" required>
@@ -35,7 +35,7 @@
 
                 <button type="submit" name="btnEnviar" class="btn-primary">CADASTRAR</button>
 
-                <a href="/Sakana/index.php?action=login" class="btn-link" style="margin-top: 10px; font-size: 0.9em;">
+                <a href="<?= app_url('index.php?action=login') ?>" class="btn-link" style="margin-top: 10px; font-size: 0.9em;">
                 Voltar para login
                 </a>
             </form>
@@ -43,6 +43,6 @@
     </div>
 
 
-    <script src="/Sakana/view/js/alerts.js" defer></script>
+    <script src="<?= app_url('view/js/alerts.js') ?>" defer></script>
 </body>
 </html>

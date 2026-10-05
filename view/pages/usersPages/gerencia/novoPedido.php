@@ -4,8 +4,8 @@ $listaProdutos = $listaProdutos ?? [];
 $listaCategorias = $listaCategorias ?? [];
 ?>
 
-<script src="/Sakana/view/js/searchProducts.js?v=2" defer></script>
-<link rel="stylesheet" href="/Sakana/view/css/cardapio.css?v=5">
+<script src="<?= app_url('view/js/searchProducts.js?v=2') ?>" defer></script>
+<link rel="stylesheet" href="view/css/cardapio.css?v=5">
 
 <div class="cardapio-container">
 
@@ -15,12 +15,12 @@ $listaCategorias = $listaCategorias ?? [];
             <p>Escolha os produtos e as quantidades para esta mesa.</p>
         </div>
 
-        <a href="/Sakana/index.php?action=logadoGerencia&page=pedidos" class="btn-secondary">
+        <a href="<?= app_url('index.php?action=logadoGerencia&page=pedidos') ?>" class="btn-secondary">
             Voltar
         </a>
     </div>
 
-    <form action="/Sakana/index.php?action=salvarPedido" method="POST" class="pedido-form">
+    <form action="<?= app_url('index.php?action=salvarPedido') ?>" method="POST" class="pedido-form">
 
         <input type="hidden" name="idMesa" value="<?= htmlspecialchars($mesa['idmesa'] ?? '') ?>">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
@@ -34,7 +34,7 @@ $listaCategorias = $listaCategorias ?? [];
                         </button>
                         <?php foreach ($listaCategorias as $c): ?>
                             <button type="button" class="aba-categoria" data-categoria="<?= htmlspecialchars($c['nomeCategoria'], ENT_QUOTES, 'UTF-8') ?>" onclick="filtrarCategoria(this.dataset.categoria)">
-                                <img class="imagem-categoria" src="<?= htmlspecialchars($c['imgCategoria'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($c['nomeCategoria'], ENT_QUOTES, 'UTF-8') ?>">
+                                <img class="imagem-categoria" src="<?= htmlspecialchars(app_asset_url($c['imgCategoria']), ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($c['nomeCategoria'], ENT_QUOTES, 'UTF-8') ?>">
                                 <p class="categoria-nome"><?= htmlspecialchars($c['nomeCategoria'], ENT_QUOTES, 'UTF-8') ?></p>
                             </button>
                         <?php endforeach; ?>
@@ -51,7 +51,7 @@ $listaCategorias = $listaCategorias ?? [];
                 <?php if (count($listaProdutos) > 0): ?>
                     <?php foreach ($listaProdutos as $p): ?>
                         <div class="produto-frame" data-categoria="<?= htmlspecialchars($p['nomeCategoria'], ENT_QUOTES, 'UTF-8') ?>">
-                            <img src="<?= htmlspecialchars($p['imgProduto'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($p['nomeProduto'], ENT_QUOTES, 'UTF-8') ?>" class="imagem-produto">
+                            <img src="<?= htmlspecialchars(app_asset_url($p['imgProduto']), ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($p['nomeProduto'], ENT_QUOTES, 'UTF-8') ?>" class="imagem-produto">
                             <div class="produto-info">
                                 <h3 class="produto-nome"><?= htmlspecialchars($p['nomeProduto'], ENT_QUOTES, 'UTF-8') ?></h3>
                                 <p class="produto-descricao"><?= htmlspecialchars($p['descProduto'], ENT_QUOTES, 'UTF-8') ?></p>
@@ -77,7 +77,7 @@ $listaCategorias = $listaCategorias ?? [];
         </div>
 
         <div class="form-acoes">
-            <a href="/Sakana/index.php?action=logadoGerencia&page=pedidos" class="btn-secondary">
+            <a href="<?= app_url('index.php?action=logadoGerencia&page=pedidos') ?>" class="btn-secondary">
                 Cancelar
             </a>
 

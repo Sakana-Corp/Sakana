@@ -1,4 +1,22 @@
 <?php
+    if (!defined("APP_BASE_PATH")) {
+        $scriptDirectory = str_replace("\\", "/", dirname($_SERVER["SCRIPT_NAME"] ?? ""));
+        define("APP_BASE_PATH", $scriptDirectory === "/" ? "" : rtrim($scriptDirectory, "/"));
+    }
+
+    function app_url(string $path = ""): string {
+        return APP_BASE_PATH . "/" . ltrim($path, "/");
+    }
+
+    function app_asset_url(string $path): string {
+        $legacyPrefix = "/Sakana/";
+        if (substr($path, 0, strlen($legacyPrefix)) === $legacyPrefix) {
+            return app_url(substr($path, strlen($legacyPrefix)));
+        }
+
+        return $path;
+    }
+
     class SessionHelper {
         public static function setFlash($type, $message) {
             // Define uma mensagem temporária na sessão (usada uma única vez).
