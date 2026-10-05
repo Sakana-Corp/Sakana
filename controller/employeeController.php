@@ -15,16 +15,29 @@ class EmployeeController extends BaseController
 
         $nome = $_POST["nomeFunc"] ?? "";
         $cpf = preg_replace("/[^0-9]/", "", $_POST["cpf"] ?? "");
-        $endereco = $_POST["endereco"] ?? "";
+        $endereco = [
+            "cep" => preg_replace("/[^0-9]/", "", $_POST["cep"] ?? ""),
+            "logradouro" => trim($_POST["logradouro"] ?? ""),
+            "numero" => trim($_POST["numero"] ?? ""),
+            "complemento" => trim($_POST["complemento"] ?? ""),
+            "bairro" => trim($_POST["bairro"] ?? ""),
+            "cidade" => trim($_POST["cidade"] ?? ""),
+            "uf" => strtoupper(trim($_POST["uf"] ?? ""))
+        ];
         $cargo = $_POST["cargo"] ?? "";
         $email = trim($_POST["email"] ?? "");
         $senha = $_POST["senha"] ?? "";
 
-        // validações
+        // validações (complemento é opcional)
         if (
             $nome === "" ||
             $cpf === "" ||
-            $endereco === "" ||
+            $endereco["cep"] === "" ||
+            $endereco["logradouro"] === "" ||
+            $endereco["numero"] === "" ||
+            $endereco["bairro"] === "" ||
+            $endereco["cidade"] === "" ||
+            $endereco["uf"] === "" ||
             $cargo === "" ||
             $email === "" ||
             $senha === ""
@@ -39,6 +52,7 @@ class EmployeeController extends BaseController
         require_once __DIR__ . "/../service/inputValidator.php";
         $validator = new InputValidator();
         $validator->notEmpty("cpf", $cpf)->cpf("cpf", $cpf);
+        $validator->cep("cep", $endereco["cep"])->uf("uf", $endereco["uf"]);
         $validator->email("email", $email);
 
         if (strlen($senha) < 8) {

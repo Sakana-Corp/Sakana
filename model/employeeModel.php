@@ -97,14 +97,22 @@
             $idUser = $conexao->lastInsertId();
 
             $sqlFuncionario = "INSERT INTO Funcionario
-                            (nomeFunc, cpf, endereco, idUser, idCargo)
-                            VALUES (:nome, :cpf, :endereco, :idUser, :idCargo)";
+                            (nomeFunc, cpf, cep, logradouro, numero, complemento,
+                             bairro, cidade, uf, idUser, idCargo)
+                            VALUES (:nome, :cpf, :cep, :logradouro, :numero, :complemento,
+                                    :bairro, :cidade, :uf, :idUser, :idCargo)";
 
             $stmtFuncionario = $conexao->prepare($sqlFuncionario);
             $stmtFuncionario->execute([
                 ":nome" => $nome,
                 ":cpf" => $cpf,
-                ":endereco" => $endereco,
+                ":cep" => $endereco["cep"],
+                ":logradouro" => $endereco["logradouro"],
+                ":numero" => $endereco["numero"],
+                ":complemento" => $endereco["complemento"] !== "" ? $endereco["complemento"] : null,
+                ":bairro" => $endereco["bairro"],
+                ":cidade" => $endereco["cidade"],
+                ":uf" => $endereco["uf"],
                 ":idUser" => $idUser,
                 ":idCargo" => $idCargo
             ]);
