@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAKANA | Simulador</title>
+    <title>SAKANA | Simulador de restaurante</title>
     <link rel="stylesheet" href="view/css/style.css">
 </head>
 <body class="page-home">
@@ -12,26 +12,35 @@
         <section class="home-brand" aria-label="Sakana">
             <img src="view/images/logo.png" alt="Logo Sakana" id="logo">
             <h1 class="titulo">SAKANA</h1>
-            <h2 class="subtitulo">SIMULADOR GERENCIAL</h2>
+            <h2 class="subtitulo">SIMULADOR DE ROTINA DE RESTAURANTE</h2>
+            <p class="home-intro">Simulador acadêmico para conhecer e exercitar rotinas de gerência, atendimento e cozinha.</p>
 
             <div class="home-actions">
                 <a class="btn-primary" href="index.php?action=login">
                     Iniciar Simulador
                 </a>
                 <button class="btn-secondary" type="button" id="about-toggle" aria-expanded="false" aria-controls="about-panel">
-                    Quem Somos
+                    Sobre e como usar
                 </button>
             </div>
         </section>
 
         <section class="about-panel" id="about-panel" aria-labelledby="about-title" hidden>
-            <h2 id="about-title">Quem Somos</h2>
-            <p>Somos alunos do <strong>
-                3º ano do curso Técnico em Informática da ETEC de Franco da Rocha</strong> 
-                e desenvolvemos este projeto como parte da nossa formação acadêmica.</p>
-            <p>Este site é um <strong>simulador de um sistema de gerenciamento</strong>, criado com o objetivo de colocar em prática os conhecimentos adquiridos durante o curso, especialmente nas áreas de 
-            <strong>programação, banco de dados, desenvolvimento web e engenharia de software</strong>.</p>
-            <p>Por meio do simulador, buscamos representar de forma prática o funcionamento de uma plataforma de gerenciamento, proporcionando uma experiência próxima à utilização de um sistema real.</p>
+            <h2 id="about-title">Conheça o Sakana</h2>
+            <p><strong>O que é:</strong> um simulador acadêmico de rotinas de restaurante. Os pedidos são registrados para mesas e podem ser consultados por mesa.</p>
+            <p><strong>Para quem:</strong> estudantes e pessoas que querem conhecer as tarefas disponíveis nos setores de gerência, atendimento e cozinha.</p>
+
+            <h3>Como usar</h3>
+            <ol class="home-steps">
+                <li>Cadastre a conta inicial da gerência ou entre com uma conta já cadastrada.</li>
+                <li>Na gerência, cadastre colaboradores, mesas e itens do cardápio. Os colaboradores cadastrados podem entrar nos setores de atendimento ou cozinha com suas próprias credenciais.</li>
+                <li>No atendimento, selecione uma mesa disponível e registre os produtos. Na cozinha, consulte os pedidos e o resumo por mesa.</li>
+                <li>No resumo, confira os produtos e o total; ao fechar a mesa, ela fica marcada como indisponível.</li>
+            </ol>
+            <p class="home-project-note">O Sakana é um projeto acadêmico desenvolvido por estudantes do curso Técnico em Informática da ETEC de Franco da Rocha.</p>
+            <a class="home-privacy-link" href="index.php?action=politicaPrivacidade">Política de Privacidade</a>
+            <br><br>
+            <a class="btn-link" href="index.php?action=institucional">Origem do projeto e contato</a>
         </section>
     </main>
 
@@ -52,7 +61,7 @@
             }
 
             aboutToggle.setAttribute('aria-expanded', String(!isOpen));
-            aboutToggle.textContent = isOpen ? 'Quem Somos' : 'Fechar';
+            aboutToggle.textContent = isOpen ? 'Sobre e como usar' : 'Fechar';
 
             const finishClosing = () => {
                 if (aboutToggle.getAttribute('aria-expanded') === 'false') {

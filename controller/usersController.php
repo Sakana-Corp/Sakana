@@ -401,7 +401,9 @@ class UsersController extends BaseController
             require_once __DIR__ . "/../model/categoriaModel.php";
             require_once __DIR__ . "/../model/produtoModel.php";
 
-            $dados["listaCategorias"] = (new CategoriaModel())->listarCategorias();
+            $categoriaModel = new CategoriaModel();
+            $dados["listaCategorias"] = $categoriaModel->listarCategoriasComProdutos();
+            $dados["listaTodasCategorias"] = $categoriaModel->listarCategorias();
             $dados["listaProdutos"]   = (new ProdutoModel())->listarProdutos();
         }
 

@@ -19,6 +19,13 @@ class AccountController extends BaseController {
         $senha = $_POST["txtSenha"] ?? "";
         $confirmaSenha = $_POST["txtConfirmaSenha"] ?? "";
 
+        if (($_POST["aceitaPolitica"] ?? "") !== "1") {
+            $this->flashAndRedirect(
+                "warning",
+                "Leia e aceite a Política de Privacidade para continuar.",
+                "cadastro"
+            );
+        }
 
         // validações
         if ($nome === "" || $email === "" || $senha === "" || $confirmaSenha === "") {

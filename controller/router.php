@@ -10,6 +10,18 @@ switch($action) {
         $controller->index();
         break;
 
+    case "institucional":
+        require_once "homeController.php";
+        $controller = new HomeController();
+        $controller->institucional();
+        break;
+
+    case "politicaPrivacidade":
+        require_once "homeController.php";
+        $controller = new HomeController();
+        $controller->politicaPrivacidade();
+        break;
+
     case "login":
         require_once "accessController.php";
         $controller = new AccessController();
@@ -195,5 +207,3 @@ switch($action) {
         break;
 }
 ?>
-
-

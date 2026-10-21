@@ -1,4 +1,11 @@
 <?php $ehGerencia = ($_SESSION["setorAtual"] ?? null) === "gerencia"; ?>
+<?php
+$idsCategoriasComProdutos = array_column($listaCategorias ?? [], 'idCategoria');
+$categoriasVazias = array_filter(
+    $listaTodasCategorias ?? [],
+    static fn($categoria) => !in_array($categoria['idCategoria'], $idsCategoriasComProdutos)
+);
+?>
 <script src="<?= app_url('view/js/searchProducts.js?v=2') ?>" defer></script>
 <link rel="stylesheet" href="view/css/cardapio.css?v=5">
 
@@ -65,7 +72,24 @@
                         <?php endif; ?>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <div class="cardapio-vazio-categoria">Nenhuma categoria registrada.</div>
+                    <div class="cardapio-vazio-categoria">Nenhuma categoria com produtos.</div>
+                <?php endif; ?>
+                <?php if ($ehGerencia && count($categoriasVazias) > 0): ?>
+                    <details class="acoes-cardapio">
+                        <summary class="acoes-cardapio-toggle">
+                            <span>Categorias sem produtos</span>
+                            <span class="acoes-cardapio-chevron"></span>
+                        </summary>
+                        <?php foreach ($categoriasVazias as $c): ?>
+                            <form action="<?= app_url('index.php?action=excluirCategoria') ?>" method="POST"
+                                onsubmit="return confirm('Tem certeza que deseja excluir esta categoria?');">
+                                <input type="hidden" name="idCategoria" value="<?php echo htmlspecialchars($c['idCategoria'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                                <span><?php echo htmlspecialchars($c['nomeCategoria'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                <button type="submit" class="btn-excluir">🗑️</button>
+                            </form>
+                        <?php endforeach; ?>
+                    </details>
                 <?php endif; ?>
             </div>
             <div class="cardapio-pesquisa">

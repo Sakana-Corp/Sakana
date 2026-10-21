@@ -50,7 +50,7 @@ class PedidoController extends BaseController
         $controller->logadoGerencia('novoPedido', [
             'mesa' => $mesa,
             'listaProdutos' => $this->produtoModel->listarProdutos(),
-            'listaCategorias' => $this->categoriaModel->listarCategorias()
+            'listaCategorias' => $this->categoriaModel->listarCategoriasComProdutos()
         ]);
     }
 

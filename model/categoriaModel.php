@@ -42,6 +42,21 @@
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        public function listarCategoriasComProdutos() {
+            $sql = "SELECT c.*
+                FROM categoria c
+                WHERE EXISTS (
+                    SELECT 1
+                    FROM produto p
+                    WHERE p.idCategoria = c.idCategoria
+                )
+                ORDER BY c.idCategoria ASC";
+            $stmt = Conexao::getConn()->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
     
 
     public function excluirCategoria($id) {

@@ -39,7 +39,7 @@ $listaCategorias = $listaCategorias ?? [];
                             </button>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <div class="cardapio-vazio-categoria">Nenhuma categoria registrada.</div>
+                        <div class="cardapio-vazio-categoria">Nenhuma categoria com produtos.</div>
                     <?php endif; ?>
                 </div>
                 <div class="cardapio-pesquisa">

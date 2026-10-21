@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,6 +32,11 @@
                 <input type="email" name="txtEmail" placeholder="Email" maxlength="50" required>
                 <input type="password" name="txtSenha" placeholder="Senha" minlength="8" maxlength="16" autocomplete="new-password" required>
                 <input type="password" name="txtConfirmaSenha" placeholder="Confirmar senha" minlength="8" maxlength="16" autocomplete="new-password" required>
+
+                <div class="privacy-consent">
+                    <input type="checkbox" id="aceita-politica" name="aceitaPolitica" value="1" required>
+                    <label for="aceita-politica">Li e aceito a <a href="<?= app_url('index.php?action=politicaPrivacidade') ?>" target="_blank" rel="noopener noreferrer">Política de Privacidade</a>.</label>
+                </div>
 
                 <button type="submit" name="btnEnviar" class="btn-primary">CADASTRAR</button>
 
