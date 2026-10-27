@@ -37,7 +37,9 @@
                     </button>
                 </a>
 
-                <a href="<?= app_url('index.php?action=logout') ?>" class="link-voltar" style="margin-top: 20px;">Sair</a>
+                <a href="<?= app_url('index.php?action=logout') ?>" class="btn-link" style="margin-top: 20px;">
+                    Voltar ao início
+                </a>
                 
             </div>
         </div>

@@ -53,15 +53,7 @@ class EmployeeController extends BaseController
         $validator = new InputValidator();
         $validator->notEmpty("cpf", $cpf)->cpf("cpf", $cpf);
         $validator->cep("cep", $endereco["cep"])->uf("uf", $endereco["uf"]);
-        $validator->email("email", $email);
-
-        if (strlen($senha) < 8) {
-            $this->flashAndRedirect(
-                "warning",
-                "A senha deve ter no mínimo 8 caracteres.",
-                $voltar
-            );
-        }
+        $validator->name("nome", $nome, 100)->email("email", $email)->strongPassword("senha", $senha);
 
         if (!$validator->isValid()) {
             $this->flashAndRedirect("warning", $validator->getFirstError(), "logadoGerencia&page=cadastroFuncionario");

@@ -11,6 +11,7 @@
 </head>
 
 <body class="page">
+    <?php $publicPage = 'login'; include __DIR__ . '/partials/publicHeader.php'; ?>
 
     <?php
     SessionHelper::garanteSessaoIniciada();
@@ -49,6 +50,7 @@
         </div>
     </div>
 
+    <?php include __DIR__ . '/partials/publicFooter.php'; ?>
     <script src="<?= app_url('view/js/alerts.js') ?>" defer></script>
 </body>
 
