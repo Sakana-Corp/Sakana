@@ -2,6 +2,109 @@
    LAYOUT - ESTRUTURA DO PROJETO
 ======================================== */
 
+/* Cabeçalho e rodapé públicos */
+body.page,
+body.page-home {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+body.page {
+    padding: 0;
+}
+
+body.page-home {
+    padding: 0;
+}
+
+body.page > .container {
+    flex: 1 0 auto;
+    width: 100%;
+    justify-content: center;
+}
+
+body.page-home > .home-container {
+    flex: 1 0 auto;
+}
+
+.public-header {
+    min-height: 68px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px 32px;
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.public-brand,
+.public-nav,
+.public-footer nav {
+    display: flex;
+    align-items: center;
+}
+
+.public-brand {
+    gap: 10px;
+    color: var(--dark-blue);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.public-brand-logo {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
+
+.public-nav {
+    gap: 8px;
+}
+
+.public-nav a,
+.public-footer a {
+    padding: 8px 12px;
+    color: var(--dark-blue);
+    text-decoration: none;
+}
+
+.public-nav a[aria-current="page"] {
+    border-radius: 6px;
+    background: var(--gold);
+    color: #fff;
+}
+
+.public-footer {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: var(--dark-blue);
+    color: #fff;
+}
+
+.public-footer p {
+    margin: 0;
+}
+
+.public-footer a {
+    color: #fff;
+}
+
+.page .public-footer,
+.page-home .public-footer {
+    margin-top: auto;
+}
+
 /* Container Principal */
 .container {
     display: flex;
@@ -46,6 +149,19 @@
 }
 
 @media (max-width: 768px) {
+    .public-header,
+    .public-footer {
+        flex-direction: column;
+        padding-inline: 16px;
+        text-align: center;
+    }
+
+    .public-nav,
+    .public-footer nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
     .layout {
         flex-direction: column;
         padding-top: 90px;
