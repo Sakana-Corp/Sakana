@@ -109,4 +109,68 @@ class EmployeeController extends BaseController
 
         require_once __DIR__ . "/../view/pages/usersPages/gerencia/consultaFuncionario.php";
     }
+
+    public function atualizar(): void
+    {
+        $voltar = "logadoGerencia&page=consultaFuncionario";
+        $this->requirePost($voltar);
+        $this->startSession();
+        $this->validateCsrfOrRedirect($voltar);
+        $this->requireSetor("gerencia", "logadoGerencia");
+
+        $idFuncionario = filter_input(INPUT_POST, "idFuncionario", FILTER_VALIDATE_INT);
+        $nome = trim($_POST["nomeFunc"] ?? "");
+        $email = trim($_POST["email"] ?? "");
+        $cargo = $_POST["cargo"] ?? "";
+        $senha = $_POST["senha"] ?? "";
+        $endereco = [
+            "cep" => preg_replace("/[^0-9]/", "", $_POST["cep"] ?? ""),
+            "logradouro" => trim($_POST["logradouro"] ?? ""),
+            "numero" => trim($_POST["numero"] ?? ""),
+            "complemento" => trim($_POST["complemento"] ?? ""),
+            "bairro" => trim($_POST["bairro"] ?? ""),
+            "cidade" => trim($_POST["cidade"] ?? ""),
+            "uf" => strtoupper(trim($_POST["uf"] ?? ""))
+        ];
+        if (!$idFuncionario || $nome === "" || !filter_var($email, FILTER_VALIDATE_EMAIL)
+            || $cargo === "" || $endereco["cep"] === "" || $endereco["logradouro"] === ""
+            || $endereco["numero"] === "" || $endereco["bairro"] === ""
+            || $endereco["cidade"] === "" || $endereco["uf"] === "") {
+            $this->flashAndRedirect("warning", "Preencha os dados corretamente.", "editarFuncionario&id=" . (int) $idFuncionario);
+        }
+        if ($senha !== "" && strlen($senha) < 8) {
+            $this->flashAndRedirect("warning", "A senha deve ter no mínimo 8 caracteres.", "editarFuncionario&id=" . (int) $idFuncionario);
+        }
+
+        $employeeModel = new EmployeeModel();
+        $resultado = $employeeModel->atualizar((int) $idFuncionario, $nome, $email, $endereco, $cargo, $senha);
+        if ($resultado !== "ok") {
+            $mensagens = [
+                "email_exists" => "Este email já está em uso.",
+                "invalid_cargo" => "Selecione um cargo válido.",
+                "not_found" => "Funcionário não encontrado.",
+                "database_error" => "Não foi possível atualizar o funcionário."
+            ];
+            $this->flashAndRedirect("error", $mensagens[$resultado] ?? "Erro ao atualizar funcionário.", "editarFuncionario&id=" . (int) $idFuncionario);
+        }
+        $this->flashAndRedirect("success", "Funcionário atualizado com sucesso.", $voltar);
+    }
+
+    public function excluir(): void
+    {
+        $voltar = "logadoGerencia&page=consultaFuncionario";
+        $this->requirePost($voltar);
+        $this->startSession();
+        $this->validateCsrfOrRedirect($voltar);
+        $this->requireSetor("gerencia", "logadoGerencia");
+        $idFuncionario = filter_input(INPUT_POST, "idFuncionario", FILTER_VALIDATE_INT);
+        if (!$idFuncionario) {
+            $this->flashAndRedirect("warning", "Funcionário inválido.", $voltar);
+        }
+        $resultado = (new EmployeeModel())->excluir((int) $idFuncionario);
+        if ($resultado !== "ok") {
+            $this->flashAndRedirect("error", "Não foi possível excluir o funcionário.", $voltar);
+        }
+        $this->flashAndRedirect("success", "Funcionário excluído com sucesso.", $voltar);
+    }
 }

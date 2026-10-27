@@ -40,6 +40,24 @@ switch($action) {
         $controller->cadastrar();
         break;
 
+    case "editarFuncionario":
+        require_once "usersController.php";
+        $controller = new UsersController();
+        $controller->editarFuncionario();
+        break;
+
+    case "atualizarFuncionario":
+        require_once "employeeController.php";
+        $controller = new EmployeeController();
+        $controller->atualizar();
+        break;
+
+    case "excluirFuncionario":
+        require_once "employeeController.php";
+        $controller = new EmployeeController();
+        $controller->excluir();
+        break;
+
     case "cadastro":
         require_once "accountController.php";
         $controller = new AccountController();
@@ -198,6 +216,12 @@ switch($action) {
         require_once "pedidoController.php";
         $controller = new PedidoController();
         $controller->fecharMesaPedido();
+    break;
+
+    case "marcarItemPreparado":
+        require_once "pedidoController.php";
+        $controller = new PedidoController();
+        $controller->marcarItemPreparado();
     break;
 
     default:

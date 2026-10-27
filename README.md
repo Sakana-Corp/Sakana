@@ -1,22 +1,36 @@
-<<<<<<< HEAD
 # Sakana
-🍽️ Simulador de Sistema de Gerenciamento de Restaurante
-📌 Sobre o Projeto
 
-Este projeto é um simulador de um sistema de gerenciamento de restaurante, desenvolvido com o objetivo de representar, de forma prática, o funcionamento interno de um restaurante por meio de diferentes níveis de acesso.
+Simulador de um sistema de gerenciamento de restaurante, com fluxos de gerente,
+garcom e cozinha.
 
-Ao iniciar o simulador, o usuário pode escolher qual papel deseja simular (Gerente, Garçom, Atendente ou Cliente). Cada perfil possui permissões específicas, refletindo as responsabilidades reais de cada função dentro do sistema.
+## Requisitos
 
-📚 Status do Projeto
+- PHP 8.0 ou superior, com PDO MySQL habilitado;
+- MySQL 8.0 ou MariaDB compatível;
+- Apache com `mod_rewrite` e `AllowOverride All` habilitados.
 
-🚧 Em desenvolvimento
+## Instalação local
 
-Novas funcionalidades podem ser adicionadas futuramente para tornar a simulação ainda mais completa.
+1. Crie o banco `bdSakana` e importe [`docs/sql/bdSakana.sql`](docs/sql/bdSakana.sql).
+2. Configure as credenciais em [`config/conexao.php`](config/conexao.php).
+3. Publique a pasta no Apache como `/Sakana`.
+4. Acesse `http://localhost/Sakana/`.
 
-👨‍💻 Autores
+O arquivo `.htaccess` desativa a listagem de diretórios, bloqueia pastas
+internas e direciona páginas inexistentes para a rota inicial.
 
+## Segurança e acesso
 
-Desenvolvido por Petrick Preite, Sojiro Takemura, Maria Bononi, Giovanna Ferreira e Matheus Marangoni.
-=======
-# Sakana
->>>>>>> e72fc123ff7aa8516b3077c0f4cabb5520b9e273
+- Senhas são armazenadas com `password_hash`;
+- formulários POST usam token CSRF;
+- após cinco tentativas inválidas, o login fica bloqueado por 15 minutos;
+- sessões autenticadas expiram após 15 minutos sem atividade;
+- o acesso às áreas é validado no servidor, inclusive para URLs digitadas
+  diretamente;
+- o gerente pode alterar o nível de acesso de funcionários na consulta de
+  funcionários.
+
+## Autores
+
+Petrick Preite, Sojiro Takemura, Maria Bononi, Giovanna Ferreira e Matheus
+Marangoni.

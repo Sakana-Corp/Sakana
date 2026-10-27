@@ -15,12 +15,18 @@ class AccessController extends BaseController
             $this->flashAndRedirect("warning", "Preencha email e senha para continuar.", "login");
         }
 
+        $chaveLogin = strtolower(trim($email));
+        if (SessionHelper::loginBloqueado($chaveLogin)) {
+            $this->flashAndRedirect("warning", "Login bloqueado por 15 minutos após tentativas inválidas.", "login");
+        }
+
         require_once __DIR__ . "/../model/accountModel.php";
         $accountModel = new AccountModel();
 
         $resultado = $accountModel->logarUser($email, $senha);
 
         if ($resultado["ok"]) {
+            SessionHelper::limparFalhasLogin($chaveLogin);
             session_regenerate_id(true);
 
             $_SESSION["idUserPrincipal"] = $resultado["user"]["idUser"];
@@ -35,13 +41,17 @@ class AccessController extends BaseController
             unset($_SESSION["setorAtual"]);
 
             $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+            $_SESSION["ultimaAtividade"] = time();
 
             $this->redirectToAction("painelAcesso");
         }
         $error = $resultado["error"] ?? "unknown_error";
 
         if ($error === "invalid_credentials") {
-            $msg = "Email ou senha incorretos. Tente novamente.";
+            $bloqueado = SessionHelper::registrarFalhaLogin($chaveLogin);
+            $msg = $bloqueado
+                ? "Login bloqueado por 15 minutos após 5 tentativas inválidas."
+                : "Email ou senha incorretos. Tente novamente.";
         } elseif ($error === "database_error") {
             $msg = "Banco de dados indisponível. Tente mais tarde.";
         } else {
@@ -116,6 +126,15 @@ class AccessController extends BaseController
             );
         }
 
+        $chaveLogin = strtolower($email);
+        if (SessionHelper::loginBloqueado($chaveLogin)) {
+            $this->flashAndRedirect(
+                "warning",
+                "Login bloqueado por 15 minutos após tentativas inválidas.",
+                "loginSetor&setor=" . urlencode($setor)
+            );
+        }
+
         if (
             !filter_var($email, FILTER_VALIDATE_EMAIL) ||
             !in_array($setor, $setoresPermitidos, true) ||
@@ -142,9 +161,12 @@ class AccessController extends BaseController
         }
 
         if (!$resultado["ok"]) {
+            $bloqueado = SessionHelper::registrarFalhaLogin($chaveLogin);
             $this->flashAndRedirect(
-                "error",
-                "Email ou senha incorretos.",
+                $bloqueado ? "warning" : "error",
+                $bloqueado
+                    ? "Login bloqueado por 15 minutos após 5 tentativas inválidas."
+                    : "Email ou senha incorretos.",
                 "loginSetor&setor=" . urlencode($setor)
             );
         }
@@ -185,6 +207,7 @@ class AccessController extends BaseController
         }
 
         session_regenerate_id(true);
+        SessionHelper::limparFalhasLogin($chaveLogin);
 
         $_SESSION["idUser"] = $usuario["idUser"];
         $_SESSION["nomeUser"] = $usuario["nomeUser"];
@@ -194,6 +217,7 @@ class AccessController extends BaseController
         $_SESSION["cargo"] = $usuario["nomeCargo"] ?? null;
 
         $_SESSION["setorAtual"] = $setor;
+        $_SESSION["ultimaAtividade"] = time();
 
         if ($setor === "gerencia") {
             $this->redirectToAction("logadoGerencia");
