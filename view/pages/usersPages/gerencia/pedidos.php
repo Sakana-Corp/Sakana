@@ -1,5 +1,6 @@
 <?php
 $listaMesas = $listaMesas ?? [];
+$itensCozinha = $itensCozinha ?? [];
 ?>
 
 <div class="mesas-container">
@@ -13,7 +14,38 @@ $listaMesas = $listaMesas ?? [];
 
     </div>
 
-
+    <?php if (($_SESSION['setorAtual'] ?? '') === 'cozinha'): ?>
+        <div class="consulta-tabela-wrapper">
+            <h2>Itens pendentes de preparo</h2>
+            <table class="consulta-tabela">
+                <thead>
+                    <tr><th>Pedido</th><th>Mesa</th><th>Produto</th><th>Quantidade</th><th>Data</th><th>Ação</th></tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($itensCozinha)): ?>
+                        <tr class="tabela-vazia"><td colspan="6">Nenhum item pendente.</td></tr>
+                    <?php else: ?>
+                        <?php foreach ($itensCozinha as $item): ?>
+                            <tr class="tabela-linha">
+                                <td>#<?= (int) $item['idPedido'] ?></td>
+                                <td><?= htmlspecialchars($item['numeromesa']) ?></td>
+                                <td><?= htmlspecialchars($item['nomeProduto']) ?></td>
+                                <td><?= (int) $item['quantidade'] ?></td>
+                                <td><?= htmlspecialchars($item['dataPedido']) ?></td>
+                                <td>
+                                    <form method="post" action="<?= app_url('index.php?action=marcarItemPreparado') ?>">
+                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
+                                        <input type="hidden" name="idItemPedido" value="<?= (int) $item['idItemPedido'] ?>">
+                                        <button type="submit" class="btn-primary">Marcar preparado</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php else: ?>
     <div class="mesas-grid">
 
         <?php if (empty($listaMesas)): ?>
@@ -59,7 +91,10 @@ $listaMesas = $listaMesas ?? [];
 
                     <div class="mesa-acoes">
 
-                        <?php if ($mesa['status'] === 'Disponivel' && $_SESSION['setorAtual'] == "gerencia" || $_SESSION['setorAtual'] == "atendimento"): ?>
+                        <?php if (
+                            $mesa['status'] === 'Disponivel' &&
+                            in_array($_SESSION['setorAtual'] ?? '', ['gerencia', 'atendimento'], true)
+                        ): ?>
 
                             <a href="<?= app_url('index.php?action=novoPedido&id=' . $mesa['idmesa']) ?>"
                                class="btn-abrir">
@@ -82,5 +117,6 @@ $listaMesas = $listaMesas ?? [];
         <?php endif; ?>
 
     </div>
+    <?php endif; ?>
 
 </div>

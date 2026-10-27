@@ -26,6 +26,7 @@
                     <th>CPF</th>
                     <th>Endereço</th>
                     <th>Cargo</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
 
@@ -62,11 +63,19 @@
                             <?php endif; ?>
                         </td>
                         <td><?= htmlspecialchars($f['cargo'] ?? 'Sem cargo') ?></td>
+                        <td>
+                            <a class="btn-primary" href="<?= app_url('index.php?action=editarFuncionario&id=' . (int) $f['idFuncionario']) ?>">Editar</a>
+                            <form method="post" action="<?= app_url('index.php?action=excluirFuncionario') ?>" onsubmit="return confirm('Deseja realmente excluir este funcionário?');">
+                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
+                                <input type="hidden" name="idFuncionario" value="<?= (int) $f['idFuncionario'] ?>">
+                                <button type="submit" class="btn-excluir">Excluir</button>
+                            </form>
+                        </td>
                     </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr class="tabela-vazia">
-                        <td colspan="5">Nenhum registro para exibir.</td>
+                        <td colspan="6">Nenhum registro para exibir.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>

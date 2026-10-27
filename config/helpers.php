@@ -43,6 +43,20 @@
             if (session_status() !== PHP_SESSION_ACTIVE) {
                 session_start();
             }
+
+            $ultimaAtividade = (int) ($_SESSION["ultimaAtividade"] ?? 0);
+            if (!empty($_SESSION["idUser"]) && $ultimaAtividade > 0
+                && (time() - $ultimaAtividade) >= 900) {
+                $_SESSION = [];
+                session_destroy();
+                session_start();
+                self::setFlash("info", "Sua sessão expirou por inatividade. Faça login novamente.");
+                return;
+            }
+
+            if (!empty($_SESSION["idUser"])) {
+                $_SESSION["ultimaAtividade"] = time();
+            }
         }
 
         public static function gerarToken() {
@@ -89,6 +103,37 @@
             );
            }
            session_destroy();
+        }
+
+        public static function loginBloqueado(string $chave): bool {
+            $tentativas = $_SESSION["tentativasLogin"][$chave] ?? null;
+            if (!is_array($tentativas)) {
+                return false;
+            }
+
+            if ((int) ($tentativas["bloqueadoAte"] ?? 0) <= time()) {
+                unset($_SESSION["tentativasLogin"][$chave]);
+                return false;
+            }
+
+            return (int) ($tentativas["quantidade"] ?? 0) >= 5;
+        }
+
+        public static function registrarFalhaLogin(string $chave): bool {
+            $tentativas = $_SESSION["tentativasLogin"][$chave] ?? [
+                "quantidade" => 0,
+                "bloqueadoAte" => 0
+            ];
+            $tentativas["quantidade"]++;
+            if ($tentativas["quantidade"] >= 5) {
+                $tentativas["bloqueadoAte"] = time() + 900;
+            }
+            $_SESSION["tentativasLogin"][$chave] = $tentativas;
+            return $tentativas["quantidade"] >= 5;
+        }
+
+        public static function limparFalhasLogin(string $chave): void {
+            unset($_SESSION["tentativasLogin"][$chave]);
         }
     }
 ?>

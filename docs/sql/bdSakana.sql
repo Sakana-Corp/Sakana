@@ -69,13 +69,24 @@ create table mesa (
 );
 
 create table pedido (
-    idPedido  int (11) auto_increment primary key,
-    idProduto int (11) not null,
-    constraint fkPed_Prod foreign key (idProduto) references produto(idProduto),
-    idMesa int (11) not null,
+    idPedido int(11) auto_increment primary key,
+    idMesa int(11) not null,
+    dataPedido datetime not null default current_timestamp,
+    status enum('aberto', 'em_preparo', 'concluido', 'cancelado') not null default 'aberto',
+    idGarcom int(11) null,
     constraint fkPed_Mesa foreign key (idMesa) references mesa(idMesa),
-    Quantidade int(5) not null,
-    Valor decimal (7,2) not null
+    constraint fkPed_Garcom foreign key (idGarcom) references Funcionario(idFuncionario)
+);
+
+create table itemPedido (
+    idItemPedido int(11) auto_increment primary key,
+    idPedido int(11) not null,
+    idProduto int(11) not null,
+    quantidade int(5) not null,
+    valor decimal(7,2) not null,
+    status enum('pendente', 'preparado') not null default 'pendente',
+    constraint fkItem_Pedido foreign key (idPedido) references pedido(idPedido) on delete cascade,
+    constraint fkItem_Produto foreign key (idProduto) references produto(idProduto)
 );
 
 
