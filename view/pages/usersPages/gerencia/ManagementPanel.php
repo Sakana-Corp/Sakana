@@ -109,6 +109,7 @@ $setorAtual = $_SESSION["setorAtual"] ?? null;
 
     </div>
 
+    <?php include __DIR__ . '/../../../partials/publicFooter.php'; ?>
 </body>
 
 </html>

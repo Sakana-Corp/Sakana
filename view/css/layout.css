@@ -19,6 +19,29 @@ body.page-home {
     padding: 0;
 }
 
+body.page-gerencia {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 100vh;
+}
+
+body.page-gerencia > .layout {
+    flex: 1 0 auto;
+}
+
+body.page-gerencia > .public-footer {
+    margin-top: 0;
+}
+
+body.access-selection-page > .container {
+    flex: 1 0 auto;
+}
+
+body.access-selection-page .access-home-link {
+    align-self: center;
+    margin-top: 20px;
+}
+
 body.page > .container {
     flex: 1 0 auto;
     width: 100%;

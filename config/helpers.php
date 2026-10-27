@@ -17,6 +17,24 @@
         return $path;
     }
 
+    function app_previous_url(string $fallback = "index.php?action=home"): string {
+        $referer = $_SERVER["HTTP_REFERER"] ?? "";
+        $parsed = is_string($referer) ? parse_url($referer) : false;
+        $currentHost = $_SERVER["HTTP_HOST"] ?? "";
+
+        if (is_array($parsed) && !empty($parsed["path"])) {
+            $refererHost = $parsed["host"] ?? $currentHost;
+            $path = $parsed["path"];
+            $basePath = APP_BASE_PATH === "" ? "/" : APP_BASE_PATH . "/";
+
+            if ($refererHost === $currentHost && str_starts_with($path, $basePath)) {
+                return $path . (!empty($parsed["query"]) ? "?" . $parsed["query"] : "");
+            }
+        }
+
+        return app_url($fallback);
+    }
+
     class SessionHelper {
         public static function setFlash($type, $message) {
             // Define uma mensagem temporária na sessão (usada uma única vez).

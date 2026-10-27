@@ -18,7 +18,6 @@ $titulo = $titulos[$setor] ?? "Login do setor";
     <link rel="stylesheet" href="<?= app_url('view/css/style.css') ?>">
 </head>
 <body class="page">
-    <?php $publicPage = 'login'; include dirname(__DIR__, 2) . '/partials/publicHeader.php'; ?>
     <?php
         SessionHelper::garanteSessaoIniciada();
         $flash = SessionHelper::getFlash();

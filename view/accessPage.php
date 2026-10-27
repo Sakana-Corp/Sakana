@@ -6,7 +6,7 @@
     <title>Acesso | Sakana</title>
     <link rel="stylesheet" href="view/css/style.css">
 </head>
-<body class="page">
+<body class="page access-selection-page">
 
     <div class="container">
         <h2 style="color: var(--dark-blue); margin-bottom: 20px; letter-spacing: 2px;">
@@ -37,15 +37,15 @@
                     </button>
                 </a>
 
-                <a href="<?= app_url('index.php?action=logout') ?>" class="btn-link" style="margin-top: 20px;">
+                <a href="<?= app_url('index.php?action=logout') ?>" class="btn-link access-home-link">
                     Voltar ao início
                 </a>
                 
             </div>
         </div>
        
-        
     </div>
 
+    <?php include __DIR__ . '/partials/publicFooter.php'; ?>
 </body>
 </html>
