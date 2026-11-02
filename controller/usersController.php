@@ -17,6 +17,8 @@ class UsersController extends BaseController
 
             "cadastroFuncionario" => __DIR__ . "/../view/pages/usersPages/gerencia/cadastroFuncionario.php",
 
+            "editarFuncionario" => __DIR__ . "/../view/pages/usersPages/gerencia/editarFuncionario.php",
+
             "consultaFuncionario" => __DIR__ . "/../view/pages/usersPages/gerencia/consultaFuncionario.php",
 
             "pedidos" => __DIR__ . "/../view/pages/usersPages/gerencia/pedidos.php",
@@ -342,6 +344,18 @@ class UsersController extends BaseController
         $this->renderPainel("home", []);
     }
 
+    public function editarFuncionario(): void
+    {
+        $this->requireSetor("gerencia", "logadoGerencia&page=funcionarios");
+        $idFuncionario = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+        require_once __DIR__ . "/../model/employeeModel.php";
+        $funcionario = $idFuncionario ? (new EmployeeModel())->buscarPorId($idFuncionario) : null;
+        if ($funcionario === null) {
+            $this->flashAndRedirect("error", "Funcionário não encontrado.", "logadoGerencia&page=consultaFuncionario");
+        }
+        $this->renderPainel("editarFuncionario", ["funcionario" => $funcionario]);
+    }
+
     // ACESSO ÀS PÁGINAS DE GERÊNCIA / ATENDIMENTO
     public function logadoGerencia(string $pagina = "home", array $dados = []): void
     {
@@ -395,6 +409,11 @@ class UsersController extends BaseController
             require_once __DIR__ . "/../model/employeeModel.php";
             $employeeModel = new EmployeeModel();
             $dados["listaFuncionarios"] = $employeeModel->listarTodosFuncionario();
+        }
+
+        if ($pagina === "pedidos" && ($_SESSION["setorAtual"] ?? null) === "cozinha") {
+            require_once __DIR__ . "/../model/pedidoModel.php";
+            $dados["itensCozinha"] = (new PedidoModel())->listarItensParaCozinha();
         }
 
         if (in_array($pagina, ["cardapio", "consultaCardapio", "consultarCardapio"], true)) {

@@ -1,3 +1,4 @@
+<?php $voltarUrl = app_previous_url(); ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -32,8 +33,7 @@
             </section>
 
             <nav class="institucional-actions" aria-label="Navegação">
-                <a class="btn-secondary" href="index.php?action=home">Voltar à Home</a>
-                <a class="btn-primary" href="index.php?action=login">Iniciar Simulador</a>
+                <a class="btn-secondary" href="<?= htmlspecialchars($voltarUrl, ENT_QUOTES, 'UTF-8') ?>">Voltar</a>
             </nav>
             <a class="home-privacy-link" href="index.php?action=politicaPrivacidade">Política de Privacidade</a>
         </section>

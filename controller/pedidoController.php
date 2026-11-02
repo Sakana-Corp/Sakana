@@ -91,7 +91,7 @@ class PedidoController extends BaseController
             $produtosPorId[$produto['idProduto']] = $produto;
         }
 
-        $itensRegistrados = 0;
+        $itens = [];
 
         foreach ($quantidades as $idProduto => $quantidade) {
 
@@ -108,15 +108,25 @@ class PedidoController extends BaseController
             $valorUnitario = (float) $produtosPorId[$idProduto]['valorProduto'];
             $valorTotalItem = round($valorUnitario * $quantidade, 2);
 
-            $ok = $this->pedidoModel->criarPedido($idMesa, $idProduto, $quantidade, $valorTotalItem);
-
-            if ($ok) {
-                $itensRegistrados++;
-            }
+            $itens[] = [
+                'idProduto' => (int) $idProduto,
+                'quantidade' => $quantidade,
+                'valor' => $valorTotalItem
+            ];
         }
 
-        if ($itensRegistrados === 0) {
+        if (count($itens) === 0) {
             $this->flashAndRedirect("warning", "Selecione ao menos um produto com quantidade válida.", "novoPedido&id=" . urlencode($idMesa));
+        }
+
+        $idGarcom = $_SESSION["setorAtual"] === "atendimento"
+            ? (int) ($_SESSION["idFuncionario"] ?? 0)
+            : null;
+        if ($idGarcom === 0) {
+            $idGarcom = null;
+        }
+        if (!$this->pedidoModel->criarPedido((int) $idMesa, $itens, $idGarcom)) {
+            $this->flashAndRedirect("error", "Não foi possível registrar o pedido.", "novoPedido&id=" . urlencode($idMesa));
         }
 
         $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
@@ -188,5 +198,21 @@ class PedidoController extends BaseController
             'listaPedidos' => $listaPedidos,
             'totalGeral' => $totalGeral
         ]);
+    }
+
+    public function marcarItemPreparado(): void
+    {
+        $voltar = "logadoGerencia&page=pedidos";
+        $this->requirePost($voltar);
+        $this->startSession();
+        $this->validateCsrfOrRedirect($voltar);
+        $this->requireSetor("cozinha", $voltar);
+
+        $idItemPedido = filter_input(INPUT_POST, "idItemPedido", FILTER_VALIDATE_INT);
+        if (!$idItemPedido || !$this->pedidoModel->marcarItemPreparado((int) $idItemPedido)) {
+            $this->flashAndRedirect("error", "Não foi possível marcar o item como preparado.", $voltar);
+        }
+        $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+        $this->flashAndRedirect("success", "Item marcado como preparado.", $voltar);
     }
 }

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="view/css/style.css">
 </head>
 <body class="page-home">
+    <?php $publicPage = 'home'; include __DIR__ . '/partials/publicHeader.php'; ?>
 
     <main class="home-container" id="home-container">
         <section class="home-brand" aria-label="Sakana">
@@ -43,6 +44,8 @@
             <a class="btn-link" href="index.php?action=institucional">Origem do projeto e contato</a>
         </section>
     </main>
+
+    <?php include __DIR__ . '/partials/publicFooter.php'; ?>
 
     <script>
         const aboutToggle = document.getElementById('about-toggle');

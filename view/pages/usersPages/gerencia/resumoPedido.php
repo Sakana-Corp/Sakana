@@ -43,6 +43,7 @@ $mesaDisponivel = ($mesa['status'] ?? '') === 'Disponivel';
                     <th>Produto</th>
                     <th>Quantidade</th>
                     <th>Valor</th>
+                    <th>Status</th>
                 </tr>
             </thead>
 
@@ -55,11 +56,12 @@ $mesaDisponivel = ($mesa['status'] ?? '') === 'Disponivel';
                             </td>
                             <td><?= htmlspecialchars($pedido['Quantidade']) ?></td>
                             <td>R$ <?= number_format($pedido['Valor'], 2, ',', '.') ?></td>
+                            <td><?= htmlspecialchars($pedido['statusItem'] === 'preparado' ? 'Preparado' : 'Pendente') ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr class="tabela-vazia">
-                        <td colspan="3">Nenhum pedido registrado para esta mesa.</td>
+                        <td colspan="4">Nenhum pedido registrado para esta mesa.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -67,7 +69,7 @@ $mesaDisponivel = ($mesa['status'] ?? '') === 'Disponivel';
             <?php if (count($listaPedidos) > 0): ?>
                 <tfoot>
                     <tr class="tabela-total">
-                        <td colspan="2">Total</td>
+                        <td colspan="3">Total</td>
                         <td>R$ <?= number_format($totalGeral, 2, ',', '.') ?></td>
                     </tr>
                 </tfoot>

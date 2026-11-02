@@ -27,13 +27,15 @@ class AccountController extends BaseController {
             );
         }
 
-        // validações
-        if ($nome === "" || $email === "" || $senha === "" || $confirmaSenha === "") {
-            $this->flashAndRedirect("warning", "Preencha todos os campos para continuar.", "cadastro");
-        }
+        require_once __DIR__ . "/../service/inputValidator.php";
+        $validator = new InputValidator();
+        $validator->name("nome", $nome, 100)
+                  ->email("email", $email)
+                  ->strongPassword("senha", $senha)
+                  ->match("confirmaSenha", $senha, $confirmaSenha, "As senhas");
 
-        if($senha !== $confirmaSenha){
-            $this->flashAndRedirect("warning", "As senhas não conferem. Digite novamente.", "cadastro");
+        if (!$validator->isValid()) {
+            $this->flashAndRedirect("warning", $validator->getFirstError(), "cadastro");
         }
 
         require_once __DIR__ . "/../model/accountModel.php";

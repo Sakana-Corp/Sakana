@@ -11,10 +11,31 @@ class InputValidator {
         return $this;
     }
 
+    public function name(string $fieldName, string $value, int $maxLength = 255): self {
+        $trimmed = trim($value);
+        if ($trimmed === '' || preg_match('/\d/u', $trimmed)) {
+            $this->errors[$fieldName] = "Informe um nome válido, sem números.";
+        } elseif (strlen($trimmed) > $maxLength) {
+            $this->errors[$fieldName] = "O nome deve ter no máximo {$maxLength} caracteres.";
+        }
+        return $this;
+    }
+
     public function email(string $fieldName, string $value): self {
         $trimmed = trim($value);
         if (!filter_var($trimmed, FILTER_VALIDATE_EMAIL)) {
             $this->errors[$fieldName] = "Email inválido.";
+        }
+        return $this;
+    }
+
+    public function strongPassword(string $fieldName, string $value, int $minLength = 8): self {
+        if (strlen($value) < $minLength ||
+            !preg_match('/[a-z]/', $value) ||
+            !preg_match('/[A-Z]/', $value) ||
+            !preg_match('/\d/', $value) ||
+            !preg_match('/[^A-Za-z0-9]/', $value)) {
+            $this->errors[$fieldName] = "A senha deve ter {$minLength} caracteres e conter letras maiúsculas, minúsculas, número e símbolo.";
         }
         return $this;
     }
