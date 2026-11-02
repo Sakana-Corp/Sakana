@@ -7,12 +7,12 @@
 
   <div class="cardapio-field">
     <label class="form-label" for="nomeProduto">Nome do produto</label>
-    <input type="text" id="nomeProduto" name="nomeProduto" class="form-input" required placeholder="Ex: Temaki">
+    <input type="text" id="nomeProduto" name="nomeProduto" class="form-input" maxlength="40" required placeholder="Ex: Temaki">
   </div>
 
   <div class="cardapio-field cardapio-field-wide">
     <label class="form-label" for="descProduto">Descrição do produto</label>
-    <input type="text" id="descProduto" name="descProduto" class="form-input" required placeholder="Ex: Temaki de salmão com cream cheese">
+    <input type="text" id="descProduto" name="descProduto" class="form-input" maxlength="255" required placeholder="Ex: Temaki de salmão com cream cheese">
   </div>
     
     <div class="form-separador cardapio-field-wide">

@@ -2,13 +2,19 @@
 <script src="<?= app_url('view/js/inputMasks.js') ?>" defer></script>
 <script src="<?= app_url('view/js/cepLookup.js') ?>" defer></script>
 
+<<<<<<< Updated upstream
 <h2 class="titulo-form-func">Cadastrar funcionários na equipe</h2>
+=======
+<form action="/Sakana/index.php?action=cadastrarFunc" method="POST" class="form-grupo">
+    <h2 class="titulo-form">Cadastrar funcionários na equipe</h2><br>
+>>>>>>> Stashed changes
 
 <form action="<?= app_url('index.php?action=cadastrarFunc') ?>" method="POST" class="form-grupo">
     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
     <div class="cardapio-field cardapio-field-wide">
         <label class="form-label" for="nomeFunc">Nome completo do funcionário</label>
+<<<<<<< Updated upstream
         <input type="text" id="nomeFunc" name="nomeFunc" class="form-input" required
                autocomplete="name" placeholder="Ex: Ana Paula Silva">
     </div>
@@ -31,6 +37,44 @@
             <option value="Cozinha">Cozinha</option>
         </select>
     </div>
+=======
+        <input type="text" id="nomeFunc" name="nomeFunc" class="form-input" required placeholder="Ex: Ana Paula Silva">
+    </div><br>
+
+    <div class="form-grid">
+        <div class="form-field">
+            <label class="form-label" for="cpf">CPF</label>
+            <input type="text" id="cpf" name="cpf" class="form-input" required
+                   placeholder="000.000.000-00" minlength="14" maxlength="14"
+                   pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}">
+        </div>
+    </div><br>
+
+    <label class="form-label">Cargo:</label>
+    <select name="cargo" class="form-input" required>
+       <option value="">Selecione o cargo</option>
+       <option value="Garçom">Garçom</option>
+       <option value="Cozinha">Cozinha</option>
+    </select>
+
+    <label class="form-label">Email do funcionário:</label>
+    <input type="email"
+           name="email"
+           class="form-input"
+           required>
+
+       <label class="form-label">Senha do funcionário:</label>
+       <input type="password"
+              name="senha"
+              class="form-input"
+              required
+              minlength="8">
+    <div class="form-field">
+        <label class="form-label" for="endereco">Endereço</label>
+        <input type="text" id="endereco" name="endereco" class="form-input" required
+               placeholder="Ex: Avenida Brasil, nº 100 - CEP: 00000-000">
+    </div><br>
+>>>>>>> Stashed changes
 
     <div class="cardapio-field">
         <label class="form-label" for="email">Email do funcionário</label>

@@ -4,12 +4,12 @@
     <div class="form-grid">
         <label class="form-field">
             <span>Nome completo</span>
-            <input type="text" name="nome" class="form-input" value="<?= $nomeUsuario ?? "" ?>" required>
+            <input type="text" name="nome" class="form-input" maxlength="30" value="<?= $nomeUsuario ?? "" ?>" required>
         </label>
 
         <label class="form-field">
             <span>E-mail</span>
-            <input type="email" name="email" class="form-input" value="<?= $emailUsuario ?? "" ?>" required>
+            <input type="email" name="email" class="form-input" maxlength="50" value="<?= $emailUsuario ?? "" ?>" required>
         </label>
     </div>
 

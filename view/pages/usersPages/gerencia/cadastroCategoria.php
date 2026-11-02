@@ -6,12 +6,12 @@
 
     <div class="cardapio-field">
       <label class="form-label" for="nomeCategoria">Nome da categoria</label>
-      <input type="text" id="nomeCategoria" name="nomeCategoria" class="form-input" required placeholder="Ex: Entradas">
+      <input type="text" id="nomeCategoria" name="nomeCategoria" class="form-input" maxlength="40" required placeholder="Ex: Entradas">
     </div>
 
     <div class="cardapio-field cardapio-field-wide">
       <label class="form-label" for="descCategoria">Descrição da categoria</label>
-      <input type="text" id="descCategoria" name="descCategoria" class="form-input" required placeholder="Ex: Pratos principais">
+      <input type="text" id="descCategoria" name="descCategoria" class="form-input" maxlength="255" required placeholder="Ex: Pratos principais">
     </div>
 
     <div class="form-separador cardapio-field-wide">
