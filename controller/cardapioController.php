@@ -1,8 +1,42 @@
 <?php
 require_once __DIR__ . "/baseController.php";
 require_once __DIR__ . "/../model/categoriaModel.php";
+require_once __DIR__ . "/../model/produtoModel.php";
 class CardapioController extends BaseController
 {
+    private function validarEGuardarImagem(string $campo, string $diretorio, string $prefixo): ?string
+    {
+        if (!isset($_FILES[$campo]) || $_FILES[$campo]['error'] !== UPLOAD_ERR_OK) {
+            return null;
+        }
+
+        $arquivo = $_FILES[$campo];
+        if ($arquivo['size'] <= 0 || $arquivo['size'] > 2 * 1024 * 1024) {
+            return null;
+        }
+        if (!is_uploaded_file($arquivo['tmp_name'])) {
+            return null;
+        }
+
+        $tiposPermitidos = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png'
+        ];
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $tipoReal = $finfo->file($arquivo['tmp_name']);
+        if (!isset($tiposPermitidos[$tipoReal])) {
+            return null;
+        }
+
+        $nomeFoto = $prefixo . '_' . bin2hex(random_bytes(12)) . '.' . $tiposPermitidos[$tipoReal];
+        $arquivoDestino = rtrim($diretorio, '/\\') . DIRECTORY_SEPARATOR . $nomeFoto;
+        if (!move_uploaded_file($arquivo['tmp_name'], $arquivoDestino)) {
+            return null;
+        }
+
+        return $nomeFoto;
+    }
+
     public function cadastrarCategoria()
     {
         $this->requirePost("logadoGerencia&page=cadastroCategoria");
@@ -10,37 +44,21 @@ class CardapioController extends BaseController
         $this->validateCsrfOrRedirect("logadoGerencia&page=cadastroCategoria");
         $this->requireSetor("gerencia");
 
-        if (!isset($_FILES['fotoCategoria']) || $_FILES['fotoCategoria']['error'] !== 0) {
-            echo "<script>alert('Nenhum arquivo foi enviado.'); window.history.back();</script>";
-            exit;
+        $nomeCategoria = trim($_POST["nomeCategoria"] ?? "");
+        $descCategoria = trim($_POST["descCategoria"] ?? "");
+        if (strlen($nomeCategoria) > 40 || strlen($descCategoria) > 255) {
+            $this->flashAndRedirect("warning", "Confira os limites dos campos informados.", "logadoGerencia&page=cadastroCategoria");
+        }
+        if ($nomeCategoria === "" || $descCategoria === "") {
+            $this->flashAndRedirect("warning", "Preencha todos os campos para continuar.", "logadoGerencia&page=cadastroCategoria");
         }
 
-        $extensao = strtolower(pathinfo($_FILES['fotoCategoria']['name'], PATHINFO_EXTENSION));
-        $extensoesPermitidas = ['jpg', 'jpeg', 'png'];
-
-        if (!in_array($extensao, $extensoesPermitidas, true)) {
-            echo "<script>alert('Formato inválido. Envie apenas JPG, JPEG ou PNG.'); window.history.back();</script>";
-            exit;
-        }
-
-        $nomeFoto = uniqid('', true) . '.' . $extensao;
         $diretorioUpload = __DIR__ . '/../view/images/categorias';
-        $arquivoDestino = $diretorioUpload . '/' . $nomeFoto;
-
-        if (!is_dir($diretorioUpload)) {
-            echo "<script>alert('A pasta view/images/categorias não existe.'); window.history.back();</script>";
-            exit;
+        $nomeFoto = $this->validarEGuardarImagem('fotoCategoria', $diretorioUpload, 'categoria');
+        if ($nomeFoto === null) {
+            $this->flashAndRedirect("warning", "Envie uma imagem JPG ou PNG válida, com no máximo 2 MB.", "logadoGerencia&page=cadastroCategoria");
         }
-
-        if (!move_uploaded_file($_FILES['fotoCategoria']['tmp_name'], $arquivoDestino)) {
-            echo "<script>alert('Erro ao mover o arquivo para o servidor.'); window.history.back();</script>";
-            exit;
-        }
-
         $caminhoWeb = app_url('view/images/categorias/' . $nomeFoto);
-
-        $nomeCategoria = $_POST["nomeCategoria"] ?? "";
-        $descCategoria = $_POST["descCategoria"] ?? "";
         $fotoCategoria = $caminhoWeb;
 
         if ($nomeCategoria === "" || $descCategoria === "" || $fotoCategoria === null) {
@@ -70,6 +88,93 @@ class CardapioController extends BaseController
         $this->flashAndRedirect("error", $msg, "logadoGerencia&page=cadastroCategoria");
     }
 
+    public function editarCategoria(): void
+    {
+        $this->requireSetor("gerencia", "logadoGerencia&page=cardapio");
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if (!$id) $this->flashAndRedirect("error", "Categoria inválida.", "logadoGerencia&page=cardapio");
+        $categoria = (new CategoriaModel())->buscarCategoria((int) $id);
+        if (!$categoria) $this->flashAndRedirect("error", "Categoria não encontrada.", "logadoGerencia&page=cardapio");
+        require_once __DIR__ . '/usersController.php';
+        (new UsersController())->logadoGerencia('editarCategoria', ['categoria' => $categoria]);
+    }
+
+    public function atualizarCategoria(): void
+    {
+        $voltar = "logadoGerencia&page=cardapio";
+        $this->requirePost($voltar);
+        $this->startSession();
+        $this->validateCsrfOrRedirect($voltar);
+        $this->requireSetor("gerencia", $voltar);
+
+        $id = filter_input(INPUT_POST, 'idCategoria', FILTER_VALIDATE_INT);
+        $nome = trim($_POST['nomeCategoria'] ?? '');
+        $descricao = trim($_POST['descCategoria'] ?? '');
+        if (!$id || $nome === '' || $descricao === '' || strlen($nome) > 40 || strlen($descricao) > 255) {
+            $this->flashAndRedirect("warning", "Informe dados válidos dentro dos limites do cadastro.", $voltar);
+        }
+
+        $foto = null;
+        if (isset($_FILES['fotoCategoria']) && $_FILES['fotoCategoria']['error'] !== UPLOAD_ERR_NO_FILE) {
+            $fotoNome = $this->validarEGuardarImagem('fotoCategoria', __DIR__ . '/../view/images/categorias', 'categoria');
+            if ($fotoNome === null) $this->flashAndRedirect("warning", "Envie uma imagem JPG ou PNG válida, com no máximo 2 MB.", $voltar);
+            $foto = app_url('view/images/categorias/' . $fotoNome);
+        }
+
+        $resultado = (new CategoriaModel())->atualizarCategoria((int) $id, $nome, $descricao, $foto);
+        if (!$resultado['ok']) {
+            $msg = $resultado['error'] === 'name_exists' ? 'Já existe uma categoria com esse nome.' : 'Não foi possível atualizar a categoria.';
+            $this->flashAndRedirect("error", $msg, $voltar);
+        }
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        $this->flashAndRedirect("success", "Categoria atualizada com sucesso!", $voltar);
+    }
+
+    public function editarProduto(): void
+    {
+        $this->requireSetor("gerencia", "logadoGerencia&page=cardapio");
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if (!$id) $this->flashAndRedirect("error", "Produto inválido.", "logadoGerencia&page=cardapio");
+        $produto = (new ProdutoModel())->buscarProduto((int) $id);
+        if (!$produto) $this->flashAndRedirect("error", "Produto não encontrado.", "logadoGerencia&page=cardapio");
+        require_once __DIR__ . '/usersController.php';
+        (new UsersController())->logadoGerencia('editarProduto', ['produto' => $produto]);
+    }
+
+    public function atualizarProduto(): void
+    {
+        $voltar = "logadoGerencia&page=cardapio";
+        $this->requirePost($voltar);
+        $this->startSession();
+        $this->validateCsrfOrRedirect($voltar);
+        $this->requireSetor("gerencia", $voltar);
+
+        $id = filter_input(INPUT_POST, 'idProduto', FILTER_VALIDATE_INT);
+        $nome = trim($_POST['nomeProduto'] ?? '');
+        $descricao = trim($_POST['descProduto'] ?? '');
+        $categoria = filter_var($_POST['idCategoria'] ?? null, FILTER_VALIDATE_INT);
+        $textoValor = str_replace(',', '.', str_replace('.', '', trim($_POST['valorProduto'] ?? '')));
+        $valor = filter_var($textoValor, FILTER_VALIDATE_FLOAT);
+        if (!$id || $nome === '' || $descricao === '' || !$categoria || $valor === false || $valor <= 0 || strlen($nome) > 40 || strlen($descricao) > 255) {
+            $this->flashAndRedirect("warning", "Informe nome, descrição, categoria e um preço válido maior que zero.", $voltar);
+        }
+
+        $foto = null;
+        if (isset($_FILES['fotoProduto']) && $_FILES['fotoProduto']['error'] !== UPLOAD_ERR_NO_FILE) {
+            $fotoNome = $this->validarEGuardarImagem('fotoProduto', __DIR__ . '/../view/images/produtos', 'produto');
+            if ($fotoNome === null) $this->flashAndRedirect("warning", "Envie uma imagem JPG ou PNG válida, com no máximo 2 MB.", $voltar);
+            $foto = app_url('view/images/produtos/' . $fotoNome);
+        }
+
+        $resultado = (new ProdutoModel())->atualizarProduto((int) $id, $nome, $descricao, (int) $categoria, (float) $valor, $foto);
+        if (!$resultado['ok']) {
+            $msg = $resultado['error'] === 'name_exists' ? 'Já existe um produto com esse nome.' : 'Não foi possível atualizar o produto.';
+            $this->flashAndRedirect("error", $msg, $voltar);
+        }
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        $this->flashAndRedirect("success", "Produto atualizado com sucesso!", $voltar);
+    }
+
     public function listarCategorias()
     {
         $this->requireAnySetor([
@@ -89,46 +194,27 @@ class CardapioController extends BaseController
         $this->validateCsrfOrRedirect("logadoGerencia&page=cadastroProduto");
         $this->requireSetor("gerencia");
 
-        if (!isset($_FILES['fotoProduto']) || $_FILES['fotoProduto']['error'] !== 0) {
-            echo "<script>alert('Nenhum arquivo foi enviado.'); window.history.back();</script>";
-            exit;
+        $nomeProduto = trim($_POST["nomeProduto"] ?? "");
+        $descProduto = trim($_POST["descProduto"] ?? "");
+        $categoriaId = filter_var($_POST["idCategoria"] ?? null, FILTER_VALIDATE_INT);
+        $valorProdutoTexto = trim($_POST["valorProduto"] ?? "");
+        $valorProdutoTexto = str_replace('.', '', $valorProdutoTexto);
+        $valorProdutoTexto = str_replace(',', '.', $valorProdutoTexto);
+        $valorProduto = filter_var($valorProdutoTexto, FILTER_VALIDATE_FLOAT);
+
+        if ($nomeProduto === "" || $descProduto === "" || !$categoriaId || $valorProduto === false || $valorProduto <= 0) {
+            $this->flashAndRedirect("warning", "Informe nome, descrição, categoria e um preço maior que zero.", "logadoGerencia&page=cadastroProduto");
+        }
+        if (strlen($nomeProduto) > 40 || strlen($descProduto) > 255) {
+            $this->flashAndRedirect("warning", "Confira os limites dos campos informados.", "logadoGerencia&page=cadastroProduto");
         }
 
-        $extensao = strtolower(pathinfo($_FILES['fotoProduto']['name'], PATHINFO_EXTENSION));
-        $extensoesPermitidas = ['jpg', 'jpeg', 'png'];
-
-        if (!in_array($extensao, $extensoesPermitidas, true)) {
-            echo "<script>alert('Formato inválido. Envie apenas JPG, JPEG ou PNG.'); window.history.back();</script>";
-            exit;
-        }
-
-        $nomeFoto = uniqid('', true) . '.' . $extensao;
         $diretorioUpload = __DIR__ . '/../view/images/produtos';
-        $arquivoDestino = $diretorioUpload . '/' . $nomeFoto;
-
-        if (!is_dir($diretorioUpload)) {
-            echo "<script>alert('A pasta view/images/produtos não existe.'); window.history.back();</script>";
-            exit;
+        $nomeFoto = $this->validarEGuardarImagem('fotoProduto', $diretorioUpload, 'produto');
+        if ($nomeFoto === null) {
+            $this->flashAndRedirect("warning", "Envie uma imagem JPG ou PNG válida, com no máximo 2 MB.", "logadoGerencia&page=cadastroProduto");
         }
-
-        if (!move_uploaded_file($_FILES['fotoProduto']['tmp_name'], $arquivoDestino)) {
-            echo "<script>alert('Erro ao mover o arquivo para o servidor.'); window.history.back();</script>";
-            exit;
-        }
-
-        $caminhoWeb = app_url('view/images/produtos/' . $nomeFoto);
-
-        $nomeProduto = $_POST["nomeProduto"] ?? "";
-        $descProduto = $_POST["descProduto"] ?? "";
-        $categoriaId = $_POST["idCategoria"] ?? "";
-        $valorProduto = trim($_POST["valorProduto"] ?? "");
-        $valorProduto = str_replace('.', '', $valorProduto);
-        $valorProduto = str_replace(',', '.', $valorProduto);
-        $fotoProduto = $caminhoWeb;
-
-        if ($nomeProduto === "" || $descProduto === "" || $fotoProduto === null || $categoriaId === "" || $valorProduto === "") {
-            $this->flashAndRedirect("warning", "Preencha todos os campos para continuar.", "logadoGerencia&page=cadastroProduto");
-        }
+        $fotoProduto = app_url('view/images/produtos/' . $nomeFoto);
 
         require_once __DIR__ . "/../model/produtoModel.php";
         $produtoModel = new ProdutoModel();

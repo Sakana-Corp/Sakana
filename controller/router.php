@@ -76,6 +76,30 @@ switch($action) {
         $controller->cadastrarProduto();
         break;
 
+    case "editarCategoria":
+        require_once "cardapioController.php";
+        $controller = new CardapioController();
+        $controller->editarCategoria();
+        break;
+
+    case "atualizarCategoria":
+        require_once "cardapioController.php";
+        $controller = new CardapioController();
+        $controller->atualizarCategoria();
+        break;
+
+    case "editarProduto":
+        require_once "cardapioController.php";
+        $controller = new CardapioController();
+        $controller->editarProduto();
+        break;
+
+    case "atualizarProduto":
+        require_once "cardapioController.php";
+        $controller = new CardapioController();
+        $controller->atualizarProduto();
+        break;
+
     case "seedCardapio":
         require_once "cardapioController.php";
         $controller = new CardapioController();

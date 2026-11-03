@@ -63,6 +63,7 @@ $categoriasVazias = array_filter(
                             <p class="categoria-nome"><?php echo htmlspecialchars($c['nomeCategoria'], ENT_QUOTES, 'UTF-8'); ?></p>
                         </button>
                         <?php if ($ehGerencia): ?>
+                            <a href="<?= app_url('index.php?action=editarCategoria&id=' . (int) $c['idCategoria']) ?>" class="btn-editar">Editar</a>
                             <form action="<?= app_url('index.php?action=excluirCategoria') ?>" method="POST"
                                 onsubmit="return confirm('Tem certeza que deseja excluir esta categoria?');">
                                 <input type="hidden" name="idCategoria" value="<?php echo htmlspecialchars($c['idCategoria'], ENT_QUOTES, 'UTF-8'); ?>">
@@ -107,6 +108,7 @@ $categoriasVazias = array_filter(
                             <p class="produto-valor">R$ <?php echo number_format($p['valorProduto'], 2, ',', '.'); ?></p>
                         </div>
                         <?php if ($ehGerencia): ?>
+                            <a href="<?= app_url('index.php?action=editarProduto&id=' . (int) $p['idProduto']) ?>" class="btn-editar">Editar</a>
                             <form action="<?= app_url('index.php?action=excluirProduto') ?>" method="POST"
                                 onsubmit="return confirm('Tem certeza que deseja excluir este produto?');">
                                 <input type="hidden" name="idProduto" value="<?php echo htmlspecialchars($p['idProduto'], ENT_QUOTES, 'UTF-8'); ?>">

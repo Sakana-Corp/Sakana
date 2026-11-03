@@ -25,10 +25,16 @@ internas e direciona páginas inexistentes para a rota inicial.
 - formulários POST usam token CSRF;
 - após cinco tentativas inválidas, o login fica bloqueado por 15 minutos;
 - sessões autenticadas expiram após 15 minutos sem atividade;
-- o acesso às áreas é validado no servidor, inclusive para URLs digitadas
-  diretamente;
-- o gerente pode alterar o nível de acesso de funcionários na consulta de
-  funcionários.
+- o acesso às áreas é validado no servidor, inclusive para URLs digitadas diretamente;
+- o gerente pode alterar o nível de acesso de funcionários na consulta de funcionários.
+
+## Logins de teste
+
+Importe o arquivo `docs/sql/bdSakana.sql` e use:
+
+- Gerente: `gerente@sakana.com` / `gerente123A!`
+- Garçom: `garcom@sakana.com` / `garcom123A!`
+- Cozinha: `cozinha@sakana.com` / `cozinha123A!`
 
 ## Autores
 

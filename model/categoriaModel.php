@@ -59,6 +59,35 @@
         }
     
 
+    public function buscarCategoria(int $id): ?array {
+        $stmt = Conexao::getConn()->prepare("SELECT * FROM categoria WHERE idCategoria = :id LIMIT 1");
+        $stmt->execute([':id' => $id]);
+        $categoria = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $categoria ?: null;
+    }
+
+    public function atualizarCategoria(int $id, string $nome, string $descricao, ?string $foto = null): array {
+        try {
+            $conexao = Conexao::getConn();
+            $stmt = $conexao->prepare("SELECT COUNT(*) FROM categoria WHERE nomeCategoria = :nome AND idCategoria <> :id");
+            $stmt->execute([':nome' => $nome, ':id' => $id]);
+            if ((int) $stmt->fetchColumn() > 0) return ['ok' => false, 'error' => 'name_exists'];
+
+            if ($foto === null) {
+                $sql = "UPDATE categoria SET nomeCategoria = :nome, descCategoria = :descricao WHERE idCategoria = :id";
+                $params = [':nome' => $nome, ':descricao' => $descricao, ':id' => $id];
+            } else {
+                $sql = "UPDATE categoria SET nomeCategoria = :nome, descCategoria = :descricao, imgCategoria = :foto WHERE idCategoria = :id";
+                $params = [':nome' => $nome, ':descricao' => $descricao, ':foto' => $foto, ':id' => $id];
+            }
+            $conexao->prepare($sql)->execute($params);
+            return ['ok' => true];
+        } catch (Throwable $e) {
+            error_log('Erro ao atualizar categoria: ' . $e->getMessage());
+            return ['ok' => false, 'error' => 'database_error'];
+        }
+    }
+
     public function excluirCategoria($id) {
         try {
             $conexao = Conexao::getConn();

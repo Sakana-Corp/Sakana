@@ -130,8 +130,17 @@ class EmployeeController extends BaseController
             || $endereco["cidade"] === "" || $endereco["uf"] === "") {
             $this->flashAndRedirect("warning", "Preencha os dados corretamente.", "editarFuncionario&id=" . (int) $idFuncionario);
         }
-        if ($senha !== "" && strlen($senha) < 8) {
-            $this->flashAndRedirect("warning", "A senha deve ter no mínimo 8 caracteres.", "editarFuncionario&id=" . (int) $idFuncionario);
+        require_once __DIR__ . '/../service/inputValidator.php';
+        $validator = new InputValidator();
+        $validator->name("nome", $nome, 100)
+            ->email("email", $email)
+            ->cep("cep", $endereco["cep"])
+            ->uf("uf", $endereco["uf"]);
+        if ($senha !== "") {
+            $validator->strongPassword("senha", $senha);
+        }
+        if (!$validator->isValid()) {
+            $this->flashAndRedirect("warning", $validator->getFirstError(), "editarFuncionario&id=" . (int) $idFuncionario);
         }
 
         $employeeModel = new EmployeeModel();

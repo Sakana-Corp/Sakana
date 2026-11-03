@@ -38,6 +38,35 @@
             }
         }
 
+        public function buscarProduto(int $id): ?array {
+            $stmt = Conexao::getConn()->prepare("SELECT * FROM produto WHERE idProduto = :id LIMIT 1");
+            $stmt->execute([':id' => $id]);
+            $produto = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $produto ?: null;
+        }
+
+        public function atualizarProduto(int $id, string $nome, string $descricao, int $categoriaId, float $valor, ?string $foto = null): array {
+            try {
+                $conexao = Conexao::getConn();
+                $stmt = $conexao->prepare("SELECT COUNT(*) FROM produto WHERE nomeProduto = :nome AND idProduto <> :id");
+                $stmt->execute([':nome' => $nome, ':id' => $id]);
+                if ((int) $stmt->fetchColumn() > 0) return ['ok' => false, 'error' => 'name_exists'];
+
+                if ($foto === null) {
+                    $sql = "UPDATE produto SET nomeProduto = :nome, descProduto = :descricao, idCategoria = :categoria, valorProduto = :valor WHERE idProduto = :id";
+                    $params = [':nome' => $nome, ':descricao' => $descricao, ':categoria' => $categoriaId, ':valor' => $valor, ':id' => $id];
+                } else {
+                    $sql = "UPDATE produto SET nomeProduto = :nome, descProduto = :descricao, idCategoria = :categoria, valorProduto = :valor, imgProduto = :foto WHERE idProduto = :id";
+                    $params = [':nome' => $nome, ':descricao' => $descricao, ':categoria' => $categoriaId, ':valor' => $valor, ':foto' => $foto, ':id' => $id];
+                }
+                $conexao->prepare($sql)->execute($params);
+                return ['ok' => true];
+            } catch (Throwable $e) {
+                error_log('Erro ao atualizar produto: ' . $e->getMessage());
+                return ['ok' => false, 'error' => 'database_error'];
+            }
+        }
+
         public function listarProdutos() {
             $sql = "SELECT p.idProduto, p.nomeProduto, p.descProduto, p.imgProduto, p.valorProduto, c.nomeCategoria
                 FROM produto p

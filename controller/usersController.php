@@ -41,7 +41,11 @@ class UsersController extends BaseController
 
             "cadastroMesa" => __DIR__ . "/../view/pages/usersPages/gerencia/mesasForm.php",
 
-            "editarMesa" => __DIR__ . "/../view/pages/usersPages/gerencia/mesasForm.php"
+            "editarMesa" => __DIR__ . "/../view/pages/usersPages/gerencia/mesasForm.php",
+
+            "editarCategoria" => __DIR__ . "/../view/pages/usersPages/gerencia/editarCategoria.php",
+
+            "editarProduto" => __DIR__ . "/../view/pages/usersPages/gerencia/editarProduto.php"
         ];
 
         if (!array_key_exists($pagina, $mapaPaginas)) {
@@ -383,6 +387,8 @@ class UsersController extends BaseController
             "cadastroCategoria"   => $gerencia,
             "cadastroMesa"        => $gerencia,
             "editarMesa"          => $gerencia,
+            "editarCategoria"     => $gerencia,
+            "editarProduto"       => $gerencia,
         ];
 
         if (!array_key_exists($pagina, $permissoes)) {
@@ -426,7 +432,7 @@ class UsersController extends BaseController
             $dados["listaProdutos"]   = (new ProdutoModel())->listarProdutos();
         }
 
-        if ($pagina === "cadastroProduto") {
+        if (in_array($pagina, ["cadastroProduto", "editarProduto"], true)) {
             require_once __DIR__ . "/../model/categoriaModel.php";
             $dados["listaCategorias"] = (new CategoriaModel())->listarCategorias();
         }
