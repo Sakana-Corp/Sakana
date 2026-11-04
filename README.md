@@ -9,21 +9,26 @@ garcom e cozinha.
 - MySQL 8.0 ou MariaDB compatível;
 - Apache com `mod_rewrite` e `AllowOverride All` habilitados.
 
-## Instalação local
+## Instalação local (XAMPP)
 
-1. Importe [`docs/sql/bdSakana.sql`](docs/sql/bdSakana.sql) pelo phpMyAdmin; o script cria o schema, tabelas e usuários de teste.
-2. Configure `SAKANA_DB_HOST`, `SAKANA_DB_PORT`, `SAKANA_DB_NAME`, `SAKANA_DB_USER` e `SAKANA_DB_PASSWORD` no ambiente da hospedagem. Sem variáveis, o fallback local é `localhost:3306`, banco `bdSakana`, usuário `root` sem senha.
-3. Publique somente os arquivos da aplicação na pasta `public_html`.
-4. Acesse `https://sakana.tech/`.
+1. Inicie Apache e MySQL no XAMPP.
+2. Crie o banco `bdSakana` no phpMyAdmin, selecione-o na coluna esquerda e importe [`docs/sql/bdSakana.sql`](docs/sql/bdSakana.sql). O SQL não contém `CREATE DATABASE` nem `USE`, porque o banco deve ser selecionado antes da importação.
+3. Coloque esta pasta em `C:\xampp\htdocs\Sakana`.
+4. Acesse `http://localhost/Sakana/`. O `.htaccess` precisa estar habilitado no Apache para que o bloqueio das pastas internas e a página 404 funcionem.
+5. Se o MySQL local usar outra porta, usuário ou senha, defina `SAKANA_DB_HOST`, `SAKANA_DB_PORT`, `SAKANA_DB_NAME`, `SAKANA_DB_USER` e `SAKANA_DB_PASSWORD` no ambiente do PHP. Sem essas variáveis, o fallback é `localhost:3306`, banco `bdSakana`, usuário `root` sem senha.
 
-### Deploy na Hostinger
+Para uma verificação rápida sem Apache, também é possível executar `php -S 127.0.0.1:8080 -t .` dentro da pasta do projeto e abrir `http://127.0.0.1:8080/`. Nesse modo, as regras do `.htaccess` não são processadas.
 
-No hPanel, crie o banco MySQL e o usuário, anote o host, nome com prefixo e senha e importe o SQL. Configure as mesmas cinco variáveis no ambiente PHP (ou ajuste os valores de fallback em `config/conexao.php` antes do upload, sem versionar credenciais). Mantenha `.htaccess` na raiz e confirme `AllowOverride`/mod_rewrite ativos.
+## Publicação na Hostinger
 
-Logins seed: administrador `admin@sakana.tech` / `SakanaAdmin!2026`; usuário comum `usuario@sakana.tech` / `SakanaUser!2026`. Troque as senhas após o primeiro acesso.
+1. No hPanel, abra **Bancos de dados MySQL** e crie o banco, o usuário e a senha. A Hostinger acrescentará um prefixo aos nomes, por exemplo `u550451621_bdsakana`; use exatamente o nome exibido no painel.
+2. Abra o phpMyAdmin pelo hPanel e selecione o banco criado na coluna esquerda. Não tente importar o arquivo pela tela inicial do phpMyAdmin.
+3. Na aba **Importar**, selecione [`docs/sql/bdSakana.sql`](docs/sql/bdSakana.sql) e execute. Esse arquivo foi preparado para ser importado dentro do banco selecionado e não tenta executar `CREATE DATABASE bdSakana`.
+4. Envie o conteúdo do projeto para `public_html`, incluindo o `.htaccess`, sem criar uma pasta intermediária.
+5. Configure em [`config/conexao.php`](config/conexao.php) o host, o nome completo do banco com prefixo, o usuário completo, a senha e a porta `3306`. Se a hospedagem fornecer variáveis de ambiente PHP, prefira usá-las e não grave credenciais no Git.
+6. Acesse `https://sakana.tech/` e teste login, cadastro, cardápio, mesas e pedidos.
 
-O arquivo `.htaccess` desativa a listagem de diretórios, bloqueia pastas
-internas e direciona páginas inexistentes para [`404.php`](404.php).
+Se o phpMyAdmin ainda informar erro de permissão, o banco não foi selecionado antes da importação ou o nome usado não é o nome completo criado no hPanel. Não altere o SQL para `CREATE DATABASE`; selecione o banco correto e importe novamente.
 
 ## Segurança e acesso
 

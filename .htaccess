@@ -3,5 +3,6 @@ Options -Indexes
 ErrorDocument 404 /404.php
 
 RewriteEngine On
-RewriteRule ^(?:config|controller|model|service|docs|view|sql)(?:/|$) - [F,L]
+RewriteRule ^(?:config|controller|model|service|docs|sql)(?:/|$) - [F,L]
+RewriteRule ^view/.*\.php$ - [F,L,NC]
 RewriteRule ^(?:\.git|composer\.(?:json|lock)|.*\.sql)$ - [F,L,NC]

@@ -1,5 +1,7 @@
-CREATE DATABASE IF NOT EXISTS bdSakana CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE bdSakana;
+-- Crie o banco pelo phpMyAdmin/hPanel e selecione-o antes de importar este arquivo.
+-- Não use CREATE DATABASE nem USE aqui: na Hostinger o banco recebe um prefixo
+-- próprio e o usuário normalmente não tem permissão para criar ou selecionar
+-- outro banco por SQL.
 
 CREATE TABLE IF NOT EXISTS LoginUser (
     idUser INT AUTO_INCREMENT PRIMARY KEY,

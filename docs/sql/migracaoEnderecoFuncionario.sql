@@ -1,4 +1,5 @@
-use bdSakana;
+-- Selecione o banco correto no phpMyAdmin antes de executar esta migração.
+-- Não use USE bdSakana: na Hostinger o banco recebe um prefixo próprio.
 
 alter table Funcionario
     add column cep char(8) not null default '' after cpf,

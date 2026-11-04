@@ -1,4 +1,5 @@
-USE bdSakana;
+-- Selecione o banco correto no phpMyAdmin antes de executar esta migração.
+-- Não use USE bdSakana: na Hostinger o banco recebe um prefixo próprio.
 
 -- Migração única da tabela antiga pedido (itens soltos) para pedido + itemPedido.
 -- Execute somente em uma instalação que ainda usa a estrutura antiga.
