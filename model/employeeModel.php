@@ -7,7 +7,8 @@
             $endereco,
             $cargo,
             $email,
-            $senha
+            $senha,
+            $idDono
         ) {
             $conexao = null;
 
@@ -98,9 +99,9 @@
 
             $sqlFuncionario = "INSERT INTO Funcionario
                             (nomeFunc, cpf, cep, logradouro, numero, complemento,
-                             bairro, cidade, uf, idUser, idCargo)
+                             bairro, cidade, uf, idUser, idDono, idCargo)
                             VALUES (:nome, :cpf, :cep, :logradouro, :numero, :complemento,
-                                    :bairro, :cidade, :uf, :idUser, :idCargo)";
+                                    :bairro, :cidade, :uf, :idUser, :idDono, :idCargo)";
 
             $stmtFuncionario = $conexao->prepare($sqlFuncionario);
             $stmtFuncionario->execute([
@@ -114,6 +115,7 @@
                 ":cidade" => $endereco["cidade"],
                 ":uf" => $endereco["uf"],
                 ":idUser" => $idUser,
+                ":idDono" => $idDono,
                 ":idCargo" => $idCargo
             ]);
 
@@ -158,7 +160,7 @@
         }
     }
 
-        public function listarTodosFuncionario() {
+        public function listarTodosFuncionario(int $idDono) {
             $sql = "SELECT f.idFuncionario,
                    f.idUser,
                    f.nomeFunc,
@@ -174,33 +176,39 @@
             FROM Funcionario f
             LEFT JOIN cargo c ON f.idCargo = c.idCargo
             INNER JOIN LoginUser u ON u.idUser = f.idUser
+            WHERE f.idDono = :idDono
             ORDER BY f.idFuncionario ASC";
 
             $stmt = Conexao::getConn()->prepare($sql);
-            $stmt->execute();
+            $stmt->execute([":idDono" => $idDono]);
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        public function buscarPorId(int $idFuncionario): ?array {
-            $stmt = Conexao::getConn()->prepare(
-                "SELECT f.idFuncionario, f.idUser, f.nomeFunc, f.cpf, f.cep,
+        public function buscarPorId(int $idFuncionario, ?int $idDono = null): ?array {
+            $sql = "SELECT f.idFuncionario, f.idUser, f.nomeFunc, f.cpf, f.cep,
                         f.logradouro, f.numero, f.complemento, f.bairro,
                         f.cidade, f.uf, c.nomeCargo AS cargo, u.email
                  FROM Funcionario f
                  INNER JOIN LoginUser u ON u.idUser = f.idUser
                  LEFT JOIN cargo c ON c.idCargo = f.idCargo
-                 WHERE f.idFuncionario = :idFuncionario
-                 LIMIT 1"
-            );
-            $stmt->execute([":idFuncionario" => $idFuncionario]);
+                 WHERE f.idFuncionario = :idFuncionario AND f.idDono = :idDono
+                 LIMIT 1";
+            $sqlParams = [":idFuncionario" => $idFuncionario];
+            $donoSql = "";
+            if ($idDono !== null) {
+                $donoSql = " AND f.idDono = :idDono";
+                $sqlParams[":idDono"] = $idDono;
+            }
+            $stmt = Conexao::getConn()->prepare(str_replace(" AND f.idDono = :idDono", $donoSql, $sql));
+            $stmt->execute($sqlParams);
             $funcionario = $stmt->fetch(PDO::FETCH_ASSOC);
             return $funcionario ?: null;
         }
 
-        public function atualizar(int $idFuncionario, string $nome, string $email, array $endereco, string $cargo, ?string $senha = null): string {
+        public function atualizar(int $idFuncionario, string $nome, string $email, array $endereco, string $cargo, ?string $senha = null, ?int $idDono = null): string {
             $conexao = Conexao::getConn();
-            $funcionario = $this->buscarPorId($idFuncionario);
+            $funcionario = $this->buscarPorId($idFuncionario, $idDono);
             if ($funcionario === null) {
                 return "not_found";
             }
@@ -273,9 +281,9 @@
             }
         }
 
-        public function excluir(int $idFuncionario): string {
+        public function excluir(int $idFuncionario, ?int $idDono = null): string {
             $conexao = Conexao::getConn();
-            $funcionario = $this->buscarPorId($idFuncionario);
+            $funcionario = $this->buscarPorId($idFuncionario, $idDono);
             if ($funcionario === null) {
                 return "not_found";
             }

@@ -408,12 +408,12 @@ class UsersController extends BaseController
         if ($pagina === "consultaFuncionario") {
             require_once __DIR__ . "/../model/employeeModel.php";
             $employeeModel = new EmployeeModel();
-            $dados["listaFuncionarios"] = $employeeModel->listarTodosFuncionario();
+            $dados["listaFuncionarios"] = $employeeModel->listarTodosFuncionario((int) $_SESSION["idUserPrincipal"]);
         }
 
         if ($pagina === "pedidos" && ($_SESSION["setorAtual"] ?? null) === "cozinha") {
             require_once __DIR__ . "/../model/pedidoModel.php";
-            $dados["itensCozinha"] = (new PedidoModel())->listarItensParaCozinha();
+            $dados["itensCozinha"] = (new PedidoModel())->listarItensParaCozinha((int) $_SESSION["idUserPrincipal"]);
         }
 
         if (in_array($pagina, ["cardapio", "consultaCardapio", "consultarCardapio"], true)) {
@@ -421,19 +421,19 @@ class UsersController extends BaseController
             require_once __DIR__ . "/../model/produtoModel.php";
 
             $categoriaModel = new CategoriaModel();
-            $dados["listaCategorias"] = $categoriaModel->listarCategoriasComProdutos();
-            $dados["listaTodasCategorias"] = $categoriaModel->listarCategorias();
-            $dados["listaProdutos"]   = (new ProdutoModel())->listarProdutos();
+            $dados["listaCategorias"] = $categoriaModel->listarCategoriasComProdutos((int) $_SESSION["idUserPrincipal"]);
+            $dados["listaTodasCategorias"] = $categoriaModel->listarCategorias((int) $_SESSION["idUserPrincipal"]);
+            $dados["listaProdutos"]   = (new ProdutoModel())->listarProdutos((int) $_SESSION["idUserPrincipal"]);
         }
 
         if ($pagina === "cadastroProduto") {
             require_once __DIR__ . "/../model/categoriaModel.php";
-            $dados["listaCategorias"] = (new CategoriaModel())->listarCategorias();
+            $dados["listaCategorias"] = (new CategoriaModel())->listarCategorias((int) $_SESSION["idUserPrincipal"]);
         }
 
         if ($pagina === "mesas" || $pagina === "pedidos") {
             require_once __DIR__ . "/../model/mesaModel.php";
-            $dados["listaMesas"] = (new Mesa())->listarMesas();
+            $dados["listaMesas"] = (new Mesa())->listarMesas((int) $_SESSION["idUserPrincipal"]);
         }
 
         $this->renderPainel($pagina, $dados);

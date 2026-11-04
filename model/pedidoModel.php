@@ -72,9 +72,9 @@ class PedidoModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function listarItensParaCozinha(): array
+    public function listarItensParaCozinha(int $idDono): array
     {
-        $stmt = $this->pdo->query(
+        $stmt = $this->pdo->prepare(
             "SELECT ip.idItemPedido, ip.quantidade, ip.valor, ip.status AS statusItem,
                     pe.idPedido, pe.dataPedido, pe.status AS statusPedido,
                     m.numeromesa, p.nomeProduto
@@ -82,26 +82,30 @@ class PedidoModel
              INNER JOIN pedido pe ON pe.idPedido = ip.idPedido
              INNER JOIN mesa m ON m.idmesa = pe.idMesa
              INNER JOIN produto p ON p.idProduto = ip.idProduto
-             WHERE ip.status = 'pendente' AND pe.status <> 'cancelado'
+             WHERE m.idDono = :idDono AND ip.status = 'pendente' AND pe.status <> 'cancelado'
              ORDER BY pe.dataPedido ASC, ip.idItemPedido ASC"
         );
+        $stmt->execute([':idDono' => $idDono]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function marcarItemPreparado(int $idItemPedido): bool
+    public function marcarItemPreparado(int $idItemPedido, int $idDono): bool
     {
         $stmt = $this->pdo->prepare(
-            "UPDATE itemPedido SET status = 'preparado'
-             WHERE idItemPedido = :idItemPedido AND status = 'pendente'"
+            "UPDATE itemPedido ip
+             INNER JOIN pedido pe ON pe.idPedido = ip.idPedido
+             INNER JOIN mesa m ON m.idmesa = pe.idMesa
+             SET status = 'preparado'
+             WHERE ip.idItemPedido = :idItemPedido AND m.idDono = :idDono AND ip.status = 'pendente'"
         );
-        $stmt->execute([':idItemPedido' => $idItemPedido]);
+        $stmt->execute([':idItemPedido' => $idItemPedido, ':idDono' => $idDono]);
         if ($stmt->rowCount() !== 1) {
             return false;
         }
 
         $pedidoStmt = $this->pdo->prepare(
             "UPDATE pedido pe
-             SET pe.status = CASE
+             SET status = CASE
                  WHEN NOT EXISTS (
                      SELECT 1 FROM itemPedido ip
                      WHERE ip.idPedido = pe.idPedido AND ip.status = 'pendente'
@@ -110,9 +114,11 @@ class PedidoModel
              END
              WHERE pe.idPedido = (
                  SELECT idPedido FROM itemPedido WHERE idItemPedido = :idItemPedido
+             ) AND EXISTS (
+                 SELECT 1 FROM mesa m WHERE m.idmesa = pe.idMesa AND m.idDono = :idDono
              )"
         );
-        $pedidoStmt->execute([':idItemPedido' => $idItemPedido]);
+        $pedidoStmt->execute([':idItemPedido' => $idItemPedido, ':idDono' => $idDono]);
         return true;
     }
 

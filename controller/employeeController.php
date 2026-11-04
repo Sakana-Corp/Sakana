@@ -68,6 +68,7 @@ class EmployeeController extends BaseController
             $cargo,
             $email,
             $senha
+            , (int) $_SESSION["idUserPrincipal"]
         );
 
         if ($resultado["ok"]) {
@@ -97,7 +98,7 @@ class EmployeeController extends BaseController
     {
         $this->requireSetor("gerencia");
         $employeeModel = new EmployeeModel();
-        $listaFuncionarios = $employeeModel->listarTodosFuncionario();
+        $listaFuncionarios = $employeeModel->listarTodosFuncionario((int) $_SESSION["idUserPrincipal"]);
 
         require_once __DIR__ . "/../view/pages/usersPages/gerencia/consultaFuncionario.php";
     }
@@ -135,7 +136,7 @@ class EmployeeController extends BaseController
         }
 
         $employeeModel = new EmployeeModel();
-        $resultado = $employeeModel->atualizar((int) $idFuncionario, $nome, $email, $endereco, $cargo, $senha);
+        $resultado = $employeeModel->atualizar((int) $idFuncionario, $nome, $email, $endereco, $cargo, $senha, (int) $_SESSION["idUserPrincipal"]);
         if ($resultado !== "ok") {
             $mensagens = [
                 "email_exists" => "Este email já está em uso.",
@@ -159,7 +160,7 @@ class EmployeeController extends BaseController
         if (!$idFuncionario) {
             $this->flashAndRedirect("warning", "Funcionário inválido.", $voltar);
         }
-        $resultado = (new EmployeeModel())->excluir((int) $idFuncionario);
+        $resultado = (new EmployeeModel())->excluir((int) $idFuncionario, (int) $_SESSION["idUserPrincipal"]);
         if ($resultado !== "ok") {
             $this->flashAndRedirect("error", "Não foi possível excluir o funcionário.", $voltar);
         }

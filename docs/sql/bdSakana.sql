@@ -39,34 +39,48 @@ CREATE TABLE IF NOT EXISTS Funcionario (
     telefone CHAR(11) UNIQUE NULL,
     dataCadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     idUser INT NOT NULL UNIQUE,
+    idDono INT NOT NULL,
     idCargo INT NOT NULL,
     idDepartamento INT NULL,
     CONSTRAINT fkFunc_user FOREIGN KEY (idUser) REFERENCES LoginUser(idUser),
+    CONSTRAINT fkFunc_dono FOREIGN KEY (idDono) REFERENCES LoginUser(idUser),
     CONSTRAINT fkFunc_cargo FOREIGN KEY (idCargo) REFERENCES cargo(idCargo)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS categoria (
     idCategoria INT AUTO_INCREMENT PRIMARY KEY,
-    nomeCategoria VARCHAR(40) NOT NULL UNIQUE,
-    descCategoria VARCHAR(255) NOT NULL UNIQUE,
-    imgCategoria VARCHAR(255) UNIQUE
+    idDono INT NOT NULL,
+    nomeCategoria VARCHAR(40) NOT NULL,
+    descCategoria VARCHAR(255) NOT NULL,
+    imgCategoria VARCHAR(255),
+    UNIQUE KEY uk_categoria_dono_nome (idDono, nomeCategoria),
+    UNIQUE KEY uk_categoria_dono_desc (idDono, descCategoria),
+    CONSTRAINT fkCategoria_dono FOREIGN KEY (idDono) REFERENCES LoginUser(idUser)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS produto (
     idProduto INT AUTO_INCREMENT PRIMARY KEY,
+    idDono INT NOT NULL,
     idCategoria INT NOT NULL,
-    nomeProduto VARCHAR(40) NOT NULL UNIQUE,
-    descProduto VARCHAR(255) NOT NULL UNIQUE,
-    imgProduto VARCHAR(255) NOT NULL UNIQUE,
+    nomeProduto VARCHAR(40) NOT NULL,
+    descProduto VARCHAR(255) NOT NULL,
+    imgProduto VARCHAR(255) NOT NULL,
     valorProduto DECIMAL(7,2) NOT NULL,
-    CONSTRAINT fkProd_Cat FOREIGN KEY (idCategoria) REFERENCES categoria(idCategoria)
+    CONSTRAINT fkProd_Cat FOREIGN KEY (idCategoria) REFERENCES categoria(idCategoria),
+    UNIQUE KEY uk_produto_dono_nome (idDono, nomeProduto),
+    UNIQUE KEY uk_produto_dono_desc (idDono, descProduto),
+    UNIQUE KEY uk_produto_dono_img (idDono, imgProduto),
+    CONSTRAINT fkProduto_dono FOREIGN KEY (idDono) REFERENCES LoginUser(idUser)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS mesa (
     idmesa INT AUTO_INCREMENT PRIMARY KEY,
-    numeromesa INT NOT NULL UNIQUE,
+    idDono INT NOT NULL,
+    numeromesa INT NOT NULL,
     lugares INT NOT NULL,
-    status ENUM('Disponivel', 'Indisponivel') NOT NULL DEFAULT 'Disponivel'
+    status ENUM('Disponivel', 'Indisponivel') NOT NULL DEFAULT 'Disponivel',
+    UNIQUE KEY uk_mesa_dono_numero (idDono, numeromesa),
+    CONSTRAINT fkMesa_dono FOREIGN KEY (idDono) REFERENCES LoginUser(idUser)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS pedido (
@@ -113,10 +127,10 @@ ON DUPLICATE KEY UPDATE
     politicaAceitaEm = VALUES(politicaAceitaEm);
 
 INSERT INTO Funcionario
-    (idFuncionario, nomeFunc, cpf, cep, logradouro, numero, bairro, cidade, uf, idUser, idCargo)
+    (idFuncionario, nomeFunc, cpf, cep, logradouro, numero, bairro, cidade, uf, idUser, idDono, idCargo)
 VALUES
-    (1, 'Administrador Sakana', '52998224725', '07700000', 'Rua Principal', '1', 'Centro', 'Franco da Rocha', 'SP', 1, 1),
-    (2, 'Usuario Sakana', '11144477735', '07700000', 'Rua Principal', '2', 'Centro', 'Franco da Rocha', 'SP', 2, 2)
+    (1, 'Administrador Sakana', '52998224725', '07700000', 'Rua Principal', '1', 'Centro', 'Franco da Rocha', 'SP', 1, 1, 1),
+    (2, 'Usuario Sakana', '11144477735', '07700000', 'Rua Principal', '2', 'Centro', 'Franco da Rocha', 'SP', 2, 1, 2)
 ON DUPLICATE KEY UPDATE
     nomeFunc = VALUES(nomeFunc),
     idCargo = VALUES(idCargo);

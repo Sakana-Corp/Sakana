@@ -9,15 +9,16 @@ class Mesa{
         $this->pdo = Conexao::getConn();
     }
 
-        public function cadastrarMesa($numeroMesa, $numeroLugares){
+        public function cadastrarMesa($idDono, $numeroMesa, $numeroLugares){
         try {
 
             $sql = "INSERT INTO mesa 
-                (numeromesa, lugares, status)
+                (idDono, numeromesa, lugares, status)
                     VALUES 
-                (:numeroMesa, :numeroLugares, 'Disponivel')";
+                (:idDono, :numeroMesa, :numeroLugares, 'Disponivel')";
 
             $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(':idDono', $idDono, PDO::PARAM_INT);
             $stmt->bindValue(':numeroMesa', $numeroMesa, PDO::PARAM_INT);
             $stmt->bindValue(':numeroLugares', $numeroLugares, PDO::PARAM_INT);
             return $stmt->execute();
@@ -28,36 +29,38 @@ class Mesa{
         }
     }
 
-    public function listarMesas(){
+    public function listarMesas($idDono){
         $sql = "SELECT *
-                FROM mesa
+                FROM mesa WHERE idDono = :idDono
                 ORDER BY numeromesa ASC";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute();
+        $stmt->execute([':idDono' => $idDono]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function buscarMesa($idMesa){
+    public function buscarMesa($idDono, $idMesa){
         $sql = "SELECT *
                 FROM mesa
-                WHERE idMesa = :idMesa";
+                WHERE idDono = :idDono AND idMesa = :idMesa";
 
         $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':idDono', $idDono, PDO::PARAM_INT);
         $stmt->bindValue(':idMesa', $idMesa, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function editarMesa($idMesa, $numeroMesa, $numeroLugares){
+    public function editarMesa($idDono, $idMesa, $numeroMesa, $numeroLugares){
         try {
 
             $sql = "UPDATE mesa
                     SET numeromesa = :numeroMesa,
                         lugares = :numeroLugares
-                    WHERE idMesa = :idMesa";
+                    WHERE idDono = :idDono AND idMesa = :idMesa";
 
             $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(':idDono', $idDono, PDO::PARAM_INT);
             $stmt->bindValue(':idMesa', $idMesa, PDO::PARAM_INT);
             $stmt->bindValue(':numeroMesa', $numeroMesa, PDO::PARAM_INT);
             $stmt->bindValue(':numeroLugares', $numeroLugares, PDO::PARAM_INT);
@@ -70,7 +73,7 @@ class Mesa{
     }
 
 
-    public function excluirMesa($idMesa){
+    public function excluirMesa($idDono, $idMesa){
         try {
 
             $this->pdo->beginTransaction();
@@ -83,9 +86,10 @@ class Mesa{
             $stmtPedidos->execute();
 
             $sql = "DELETE FROM mesa
-                    WHERE idMesa = :idMesa";
+                    WHERE idDono = :idDono AND idMesa = :idMesa";
 
             $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(':idDono', $idDono, PDO::PARAM_INT);
             $stmt->bindValue(':idMesa', $idMesa, PDO::PARAM_INT);
             $stmt->execute();
 
@@ -102,23 +106,25 @@ class Mesa{
         }
     }
 
-    public function abrirMesa($idMesa){
+    public function abrirMesa($idDono, $idMesa){
         $sql = "UPDATE mesa
                 SET status = 'Indisponivel'
-                WHERE idMesa = :idMesa";
+                WHERE idDono = :idDono AND idMesa = :idMesa";
 
         $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':idDono', $idDono, PDO::PARAM_INT);
         $stmt->bindValue(':idMesa', $idMesa, PDO::PARAM_INT);
         return $stmt->execute();
     }
 
 
-    public function fecharMesa($idMesa){
+    public function fecharMesa($idDono, $idMesa){
         $sql = "UPDATE mesa
                 SET status = 'Disponivel'
-                WHERE idMesa = :idMesa";
+                WHERE idDono = :idDono AND idMesa = :idMesa";
 
         $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':idDono', $idDono, PDO::PARAM_INT);
         $stmt->bindValue(':idMesa', $idMesa, PDO::PARAM_INT);
         return $stmt->execute();
     }

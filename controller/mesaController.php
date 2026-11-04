@@ -34,7 +34,7 @@ class MesaController extends BaseController
             $this->flashAndRedirect("error", "Mesa não encontrada.", self::PAGINA_MESAS);
         }
 
-        $mesa = $this->mesaModel->buscarMesa($idMesa);
+        $mesa = $this->mesaModel->buscarMesa((int) $_SESSION["idUserPrincipal"], $idMesa);
 
         if (!$mesa) {
             $this->flashAndRedirect("error", "Mesa não encontrada.", self::PAGINA_MESAS);
@@ -59,7 +59,7 @@ class MesaController extends BaseController
             $this->flashAndRedirect("warning", "Informe o número da mesa e a quantidade de lugares.", "cadastrarMesa");
         }
 
-        if (!$this->mesaModel->cadastrarMesa($numeroMesa, $numeroLugares)) {
+        if (!$this->mesaModel->cadastrarMesa((int) $_SESSION["idUserPrincipal"], $numeroMesa, $numeroLugares)) {
             $this->flashAndRedirect("error", "Erro ao cadastrar mesa. Verifique se o número já existe.", "cadastrarMesa");
         }
 
@@ -82,7 +82,7 @@ class MesaController extends BaseController
             $this->flashAndRedirect("warning", "Dados inválidos.", self::PAGINA_MESAS);
         }
 
-        if (!$this->mesaModel->editarMesa($idMesa, $numeroMesa, $numeroLugares)) {
+        if (!$this->mesaModel->editarMesa((int) $_SESSION["idUserPrincipal"], $idMesa, $numeroMesa, $numeroLugares)) {
             $this->flashAndRedirect("error", "Erro ao atualizar mesa. Verifique se o número já existe.", "editarMesa&id=" . $idMesa);
         }
 
@@ -99,7 +99,7 @@ class MesaController extends BaseController
 
         $idMesa = $this->inteiroPositivoPost("idMesa");
 
-        if ($idMesa === null || !$this->mesaModel->excluirMesa($idMesa)) {
+        if ($idMesa === null || !$this->mesaModel->excluirMesa((int) $_SESSION["idUserPrincipal"], $idMesa)) {
             $this->flashAndRedirect("error", "Erro ao excluir mesa.", self::PAGINA_MESAS);
         }
 
@@ -132,8 +132,8 @@ class MesaController extends BaseController
         }
 
         $ok = $operacao === "abrir"
-            ? $this->mesaModel->abrirMesa($idMesa)
-            : $this->mesaModel->fecharMesa($idMesa);
+            ? $this->mesaModel->abrirMesa((int) $_SESSION["idUserPrincipal"], $idMesa)
+            : $this->mesaModel->fecharMesa((int) $_SESSION["idUserPrincipal"], $idMesa);
 
         if (!$ok) {
             $this->flashAndRedirect("error", "Não foi possível alterar o status da mesa.", self::PAGINA_MESAS);

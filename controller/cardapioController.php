@@ -49,7 +49,8 @@ class CardapioController extends BaseController
 
         require_once __DIR__ . "/../model/categoriaModel.php";
         $categoriaModel = new CategoriaModel();
-        $resultado = $categoriaModel->cadastrarCategoria($nomeCategoria, $descCategoria, $fotoCategoria);
+        $idDono = (int) $_SESSION["idUserPrincipal"];
+        $resultado = $categoriaModel->cadastrarCategoria($idDono, $nomeCategoria, $descCategoria, $fotoCategoria);
 
         if ($resultado["ok"]) {
             // Renova token após sucesso para reduzir reutilização.
@@ -77,7 +78,7 @@ class CardapioController extends BaseController
             "atendimento"
         ]);
         $categoriaModel = new CategoriaModel();
-        $listaCategorias = $categoriaModel->listarCategorias();
+        $listaCategorias = $categoriaModel->listarCategorias((int) $_SESSION["idUserPrincipal"]);
 
         require_once __DIR__ . "/../view/pages/usersPages/gerencia/cardapio.php";
     }
@@ -132,7 +133,7 @@ class CardapioController extends BaseController
 
         require_once __DIR__ . "/../model/produtoModel.php";
         $produtoModel = new ProdutoModel();
-        $resultado = $produtoModel->cadastrarProduto($nomeProduto, $descProduto, $fotoProduto, $categoriaId, $valorProduto);
+        $resultado = $produtoModel->cadastrarProduto((int) $_SESSION["idUserPrincipal"], $nomeProduto, $descProduto, $fotoProduto, $categoriaId, $valorProduto);
 
         if ($resultado["ok"]) {
             // Renova token após sucesso para reduzir reutilização.
@@ -144,6 +145,8 @@ class CardapioController extends BaseController
 
         if ($error === "name_exists") {
             $msg = "Já existe um produto com esse nome.";
+        } elseif ($error === "category_not_found") {
+            $msg = "A categoria selecionada não pertence a este usuário.";
         } elseif ($error === "database_error") {
             $msg = "Banco de dados indisponível. Tente mais tarde.";
         } else {
@@ -160,7 +163,7 @@ class CardapioController extends BaseController
             "atendimento"
         ]);
         $produtoModel = new ProdutoModel();
-        $listaProdutos = $produtoModel->listarProdutos();
+        $listaProdutos = $produtoModel->listarProdutos((int) $_SESSION["idUserPrincipal"]);
 
         require_once __DIR__ . "/../view/pages/usersPages/gerencia/cardapio.php";
     }
@@ -186,7 +189,7 @@ class CardapioController extends BaseController
 
         $idsCategorias = [];
         foreach ($categoriasExemplo as [$nome, $desc, $foto]) {
-            $resultado = $categoriaModel->cadastrarCategoria($nome, $desc, $foto);
+            $resultado = $categoriaModel->cadastrarCategoria((int) $_SESSION["idUserPrincipal"], $nome, $desc, $foto);
             if ($resultado["ok"]) {
                 $idsCategorias[$nome] = $resultado["id"];
             }
@@ -204,7 +207,7 @@ class CardapioController extends BaseController
         foreach ($produtosExemplo as [$nome, $desc, $foto, $nomeCategoria, $valor]) {
             $categoriaId = $idsCategorias[$nomeCategoria] ?? null;
             if ($categoriaId) {
-                $produtoModel->cadastrarProduto($nome, $desc, $foto, $categoriaId, $valor);
+                $produtoModel->cadastrarProduto((int) $_SESSION["idUserPrincipal"], $nome, $desc, $foto, $categoriaId, $valor);
             }
         }
 
@@ -235,22 +238,22 @@ class CardapioController extends BaseController
 
             $placeholdersProdutos = implode(", ", array_fill(0, count($nomesProdutos), "?"));
             $stmtProdutos = $conexao->prepare(
-                "DELETE FROM produto WHERE nomeProduto IN ($placeholdersProdutos)"
+                "DELETE FROM produto WHERE idDono = ? AND nomeProduto IN ($placeholdersProdutos)"
             );
-            $stmtProdutos->execute($nomesProdutos);
+            $stmtProdutos->execute(array_merge([(int) $_SESSION["idUserPrincipal"]], $nomesProdutos));
 
             $stmtCategoria = $conexao->prepare(
-                "SELECT idCategoria FROM categoria WHERE nomeCategoria = ?"
+                "SELECT idCategoria FROM categoria WHERE idDono = ? AND nomeCategoria = ?"
             );
             $stmtProdutosCategoria = $conexao->prepare(
                 "SELECT COUNT(*) FROM produto WHERE idCategoria = ?"
             );
             $stmtExcluirCategoria = $conexao->prepare(
-                "DELETE FROM categoria WHERE idCategoria = ?"
+                "DELETE FROM categoria WHERE idDono = ? AND idCategoria = ?"
             );
 
             foreach ($nomesCategorias as $nomeCategoria) {
-                $stmtCategoria->execute([$nomeCategoria]);
+                $stmtCategoria->execute([(int) $_SESSION["idUserPrincipal"], $nomeCategoria]);
                 $idCategoria = $stmtCategoria->fetchColumn();
 
                 if ($idCategoria === false) {
@@ -259,7 +262,7 @@ class CardapioController extends BaseController
 
                 $stmtProdutosCategoria->execute([$idCategoria]);
                 if ((int) $stmtProdutosCategoria->fetchColumn() === 0) {
-                    $stmtExcluirCategoria->execute([$idCategoria]);
+                    $stmtExcluirCategoria->execute([(int) $_SESSION["idUserPrincipal"], $idCategoria]);
                 }
             }
 
@@ -289,7 +292,7 @@ class CardapioController extends BaseController
 
         require_once __DIR__ . "/../model/categoriaModel.php";
         $categoriaModel = new CategoriaModel();
-        $resultado = $categoriaModel->excluirCategoria($idCategoria);
+        $resultado = $categoriaModel->excluirCategoria((int) $_SESSION["idUserPrincipal"], $idCategoria);
 
         if ($resultado["ok"]) {
             $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
@@ -324,7 +327,7 @@ class CardapioController extends BaseController
 
         require_once __DIR__ . "/../model/produtoModel.php";
         $produtoModel = new ProdutoModel();
-        $resultado = $produtoModel->excluirProduto($idProduto);
+        $resultado = $produtoModel->excluirProduto((int) $_SESSION["idUserPrincipal"], $idProduto);
 
         if ($resultado["ok"]) {
             $_SESSION["csrf_token"] = bin2hex(random_bytes(32));

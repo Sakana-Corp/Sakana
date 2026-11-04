@@ -35,7 +35,7 @@ class PedidoController extends BaseController
             $this->flashAndRedirect("error", "Mesa não encontrada.", "logadoGerencia&page=pedidos");
         }
 
-        $mesa = $this->mesaModel->buscarMesa($idMesa);
+        $mesa = $this->mesaModel->buscarMesa((int) $_SESSION["idUserPrincipal"], $idMesa);
 
         if (!$mesa) {
             $this->flashAndRedirect("error", "Mesa não encontrada.", "logadoGerencia&page=pedidos");
@@ -49,8 +49,8 @@ class PedidoController extends BaseController
         $controller = new UsersController();
         $controller->logadoGerencia('novoPedido', [
             'mesa' => $mesa,
-            'listaProdutos' => $this->produtoModel->listarProdutos(),
-            'listaCategorias' => $this->categoriaModel->listarCategoriasComProdutos()
+            'listaProdutos' => $this->produtoModel->listarProdutos((int) $_SESSION["idUserPrincipal"]),
+            'listaCategorias' => $this->categoriaModel->listarCategoriasComProdutos((int) $_SESSION["idUserPrincipal"])
         ]);
     }
 
@@ -74,7 +74,7 @@ class PedidoController extends BaseController
             $this->flashAndRedirect("warning", "Selecione ao menos um produto.", "logadoGerencia&page=pedidos");
         }
 
-        $mesa = $this->mesaModel->buscarMesa($idMesa);
+        $mesa = $this->mesaModel->buscarMesa((int) $_SESSION["idUserPrincipal"], $idMesa);
 
         if (!$mesa) {
             $this->flashAndRedirect("error", "Mesa não encontrada.", "logadoGerencia&page=pedidos");
@@ -84,7 +84,7 @@ class PedidoController extends BaseController
             $this->flashAndRedirect("error", "Esta mesa não está disponível para novos pedidos.", "logadoGerencia&page=pedidos");
         }
 
-        $produtos = $this->produtoModel->listarProdutos();
+        $produtos = $this->produtoModel->listarProdutos((int) $_SESSION["idUserPrincipal"]);
 
         $produtosPorId = [];
         foreach ($produtos as $produto) {
@@ -152,13 +152,13 @@ class PedidoController extends BaseController
             $this->flashAndRedirect("error", "Mesa não encontrada.", "logadoGerencia&page=pedidos");
         }
 
-        $mesa = $this->mesaModel->buscarMesa($idMesa);
+        $mesa = $this->mesaModel->buscarMesa((int) $_SESSION["idUserPrincipal"], $idMesa);
 
         if (!$mesa) {
             $this->flashAndRedirect("error", "Mesa não encontrada.", "logadoGerencia&page=pedidos");
         }
 
-        $this->mesaModel->abrirMesa($idMesa);
+        $this->mesaModel->abrirMesa((int) $_SESSION["idUserPrincipal"], $idMesa);
 
         $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
         $this->flashAndRedirect("success", "Mesa fechada com sucesso.", "verResumoPedido&id=" . urlencode($idMesa));
@@ -178,7 +178,7 @@ class PedidoController extends BaseController
             $this->flashAndRedirect("error", "Mesa não encontrada.", "logadoGerencia&page=pedidos");
         }
 
-        $mesa = $this->mesaModel->buscarMesa($idMesa);
+        $mesa = $this->mesaModel->buscarMesa((int) $_SESSION["idUserPrincipal"], $idMesa);
 
         if (!$mesa) {
             $this->flashAndRedirect("error", "Mesa não encontrada.", "logadoGerencia&page=pedidos");
@@ -209,7 +209,7 @@ class PedidoController extends BaseController
         $this->requireSetor("cozinha", $voltar);
 
         $idItemPedido = filter_input(INPUT_POST, "idItemPedido", FILTER_VALIDATE_INT);
-        if (!$idItemPedido || !$this->pedidoModel->marcarItemPreparado((int) $idItemPedido)) {
+        if (!$idItemPedido || !$this->pedidoModel->marcarItemPreparado((int) $idItemPedido, (int) $_SESSION["idUserPrincipal"])) {
             $this->flashAndRedirect("error", "Não foi possível marcar o item como preparado.", $voltar);
         }
         $_SESSION["csrf_token"] = bin2hex(random_bytes(32));

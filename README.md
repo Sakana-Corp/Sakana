@@ -19,16 +19,14 @@ garcom e cozinha.
 
 Para uma verificação rápida sem Apache, também é possível executar `php -S 127.0.0.1:8080 -t .` dentro da pasta do projeto e abrir `http://127.0.0.1:8080/`. Nesse modo, as regras do `.htaccess` não são processadas.
 
-## Publicação na Hostinger
+Se você já tinha um banco criado antes desta versão, faça backup e execute
+[`docs/sql/migracaoIsolamentoUsuarios.sql`](docs/sql/migracaoIsolamentoUsuarios.sql)
+no banco selecionado antes de abrir o módulo de mesas ou pedidos. Em uma
+instalação nova, basta importar `bdSakana.sql`; não execute a migração de
+isolamento depois dele.
 
-1. No hPanel, abra **Bancos de dados MySQL** e crie o banco, o usuário e a senha. A Hostinger acrescentará um prefixo aos nomes, por exemplo `u550451621_bdsakana`; use exatamente o nome exibido no painel.
-2. Abra o phpMyAdmin pelo hPanel e selecione o banco criado na coluna esquerda. Não tente importar o arquivo pela tela inicial do phpMyAdmin.
-3. Na aba **Importar**, selecione [`docs/sql/bdSakana.sql`](docs/sql/bdSakana.sql) e execute. Esse arquivo foi preparado para ser importado dentro do banco selecionado e não tenta executar `CREATE DATABASE bdSakana`.
-4. Envie o conteúdo do projeto para `public_html`, incluindo o `.htaccess`, sem criar uma pasta intermediária.
-5. Configure em [`config/conexao.php`](config/conexao.php) o host, o nome completo do banco com prefixo, o usuário completo, a senha e a porta `3306`. Se a hospedagem fornecer variáveis de ambiente PHP, prefira usá-las e não grave credenciais no Git.
-6. Acesse `https://sakana.tech/` e teste login, cadastro, cardápio, mesas e pedidos.
-
-Se o phpMyAdmin ainda informar erro de permissão, o banco não foi selecionado antes da importação ou o nome usado não é o nome completo criado no hPanel. Não altere o SQL para `CREATE DATABASE`; selecione o banco correto e importe novamente.
+Se o banco foi criado antes do registro de aceite da política, execute também
+[`docs/sql/migracaoPoliticaUsuario.sql`](docs/sql/migracaoPoliticaUsuario.sql).
 
 ## Segurança e acesso
 
