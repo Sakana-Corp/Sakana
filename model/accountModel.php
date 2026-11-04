@@ -1,6 +1,6 @@
 <?php
     class AccountModel{
-        public function cadastrarUser($nome, $email, $senha){
+        public function cadastrarUser($nome, $email, $senha, bool $aceitouPolitica = false){
             require_once __DIR__ . "/../config/conexao.php";
 
             try{
@@ -19,11 +19,13 @@
                 
                 $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-                $sql = "INSERT INTO LoginUser (nomeUser, email, senha) VALUES (:nome, :email, :senha)";
+                $sql = "INSERT INTO LoginUser (nomeUser, email, senha, politicaAceita, politicaAceitaEm)
+                        VALUES (:nome, :email, :senha, :aceita, CURRENT_TIMESTAMP)";
                 $stmt = $conexao->prepare($sql);
                 $stmt->bindParam(":nome", $nome);
                 $stmt->bindParam(":email", $email);
                 $stmt->bindParam(":senha", $senhaHash);
+                $stmt->bindValue(":aceita", $aceitouPolitica ? 1 : 0, PDO::PARAM_INT);
                 $stmt->execute();
                 return ["ok" => true];
             } catch(PDOException $e){

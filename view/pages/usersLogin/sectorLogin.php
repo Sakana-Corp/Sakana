@@ -14,6 +14,8 @@ $titulo = $titulos[$setor] ?? "Login do setor";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Acesso seguro aos setores do simulador Sakana.">
+    <link rel="icon" type="image/png" href="<?= app_url('view/images/logo.png') ?>">
     <title><?= htmlspecialchars($titulo, ENT_QUOTES, 'UTF-8') ?> | Sakana</title>
     <link rel="stylesheet" href="<?= app_url('view/css/style.css') ?>">
 </head>

@@ -22,6 +22,12 @@ switch($action) {
         $controller->politicaPrivacidade();
         break;
 
+    case "termosUso":
+        require_once "homeController.php";
+        $controller = new HomeController();
+        $controller->termosUso();
+        break;
+
     case "login":
         require_once "accessController.php";
         $controller = new AccessController();

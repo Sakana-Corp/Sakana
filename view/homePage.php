@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sakana: simulador acadêmico de rotinas de gerência, atendimento e cozinha de restaurante.">
+    <link rel="icon" type="image/png" href="view/images/logo.png">
     <title>SAKANA | Simulador de restaurante</title>
     <link rel="stylesheet" href="view/css/style.css">
 </head>

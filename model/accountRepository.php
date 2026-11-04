@@ -25,14 +25,16 @@ class AccountRepository
         }
     }
 
-    public function create(string $nome, string $email, string $senhaHash): bool
+    public function create(string $nome, string $email, string $senhaHash, bool $aceitouPolitica = false): bool
     {
         try {
-            $sql = "INSERT INTO LoginUser (nomeUser, email, senha) VALUES (:nome, :email, :senha)";
+            $sql = "INSERT INTO LoginUser (nomeUser, email, senha, politicaAceita, politicaAceitaEm)
+                    VALUES (:nome, :email, :senha, :aceita, CURRENT_TIMESTAMP)";
             $stmt = $this->conexao->prepare($sql);
             $stmt->bindParam(":nome", $nome, PDO::PARAM_STR);
             $stmt->bindParam(":email", $email, PDO::PARAM_STR);
             $stmt->bindParam(":senha", $senhaHash, PDO::PARAM_STR);
+            $stmt->bindValue(":aceita", $aceitouPolitica ? 1 : 0, PDO::PARAM_INT);
 
             return $stmt->execute();
         } catch (PDOException $e) {

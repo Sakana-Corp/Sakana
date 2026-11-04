@@ -4,10 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Política de Privacidade e informações sobre tratamento de dados do Sakana.">
+    <link rel="icon" type="image/png" href="view/images/logo.png">
     <title>Política de Privacidade | Sakana</title>
     <link rel="stylesheet" href="view/css/style.css">
 </head>
 <body class="page-institucional">
+    <?php $publicPage = 'privacidade'; include __DIR__ . '/partials/publicHeader.php'; ?>
     <main class="institucional-container">
         <article class="institucional-card" aria-labelledby="politica-titulo">
             <img src="view/images/logo.png" alt="Logo Sakana" class="institucional-logo">
@@ -50,11 +53,11 @@
 
             <section aria-labelledby="contato-privacidade">
                 <h2 id="contato-privacidade">Contato</h2>
-                <p>O canal público informado pela equipe para dúvidas e solicitações de privacidade é o repositório oficial do projeto:</p>
+                <p>O responsável pelo tratamento é a equipe Sakana. Para dúvidas e solicitações de privacidade, acesse o repositório oficial do projeto:</p>
                 <a class="institucional-contact" href="https://github.com/Sakana-Corp/Sakana" target="_blank" rel="noopener noreferrer">
                     github.com/Sakana-Corp/Sakana
                 </a>
-                <p>Este canal é um repositório GitHub, não um endereço de e-mail dedicado à privacidade.</p>
+                <p>O pedido deve indicar a conta ou cadastro a que se refere; poderemos solicitar confirmação de identidade para proteger os dados.</p>
             </section>
 
             <nav class="institucional-actions" aria-label="Navegação">
@@ -63,5 +66,6 @@
             </nav>
         </article>
     </main>
+    <?php include __DIR__ . '/partials/publicFooter.php'; ?>
 </body>
 </html>

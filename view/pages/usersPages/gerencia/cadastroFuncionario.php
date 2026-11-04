@@ -5,7 +5,7 @@
 <<<<<<< Updated upstream
 <h2 class="titulo-form-func">Cadastrar funcionários na equipe</h2>
 =======
-<form action="/Sakana/index.php?action=cadastrarFunc" method="POST" class="form-grupo">
+<form action="<?= app_url('index.php?action=cadastrarFunc') ?>" method="POST" class="form-grupo">
     <h2 class="titulo-form">Cadastrar funcionários na equipe</h2><br>
 >>>>>>> Stashed changes
 

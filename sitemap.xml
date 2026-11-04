@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>http://localhost/Sakana/index.php?action=home</loc>
+        <loc>https://sakana.tech/</loc>
     </url>
     <url>
-        <loc>http://localhost/Sakana/index.php?action=login</loc>
+        <loc>https://sakana.tech/index.php?action=login</loc>
     </url>
     <url>
-        <loc>http://localhost/Sakana/index.php?action=cadastro</loc>
+        <loc>https://sakana.tech/index.php?action=cadastro</loc>
+    </url>
+    <url>
+        <loc>https://sakana.tech/index.php?action=institucional</loc>
+    </url>
+    <url>
+        <loc>https://sakana.tech/index.php?action=politicaPrivacidade</loc>
+    </url>
+    <url>
+        <loc>https://sakana.tech/index.php?action=termosUso</loc>
     </url>
 </urlset>

@@ -15,7 +15,7 @@ class AccountController extends BaseController {
         $this->validateCsrfOrRedirect("cadastro");
 
         $nome = $_POST["txtNome"] ?? "";
-        $email = $_POST["txtEmail"] ?? "";
+        $email = strtolower(trim($_POST["txtEmail"] ?? ""));
         $senha = $_POST["txtSenha"] ?? "";
         $confirmaSenha = $_POST["txtConfirmaSenha"] ?? "";
 
@@ -40,7 +40,7 @@ class AccountController extends BaseController {
 
         require_once __DIR__ . "/../model/accountModel.php";
         $accountModel = new AccountModel();
-        $resultado = $accountModel->cadastrarUser($nome, $email, $senha);
+        $resultado = $accountModel->cadastrarUser($nome, $email, $senha, true);
 
         if ($resultado["ok"]) {
             // Renova token após sucesso para reduzir reutilização.

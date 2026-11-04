@@ -31,7 +31,7 @@ foreach (glob($diretorioImagens . "/*/*.{jpg,jpeg,png,webp}", GLOB_BRACE) ?: [] 
                 <td><?= htmlspecialchars($img["nome"]) ?></td>
                 <td><?= htmlspecialchars($img["endpasta"]) ?></td>
                 <td>
-                    <?php $urlImagem = str_replace("\\", "/", "/Sakana/view/images" . $img["endpasta"]); ?>
+                    <?php $urlImagem = app_url("view/images" . str_replace("\\", "/", $img["endpasta"])); ?>
                     <img src="<?= htmlspecialchars($urlImagem) ?>" width="120" alt="Foto">
                 </td>
             </tr>

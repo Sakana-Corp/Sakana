@@ -8,6 +8,8 @@ $setorAtual = $_SESSION["setorAtual"] ?? null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Painel operacional do simulador de restaurante Sakana.">
+    <link rel="icon" type="image/png" href="<?= app_url('view/images/logo.png') ?>">
 
     <?php
     $titulosSetor = [

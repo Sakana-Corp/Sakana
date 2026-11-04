@@ -11,5 +11,9 @@
         public function politicaPrivacidade() {
             require_once __DIR__ . "/../view/privacyPolicyPage.php";
         }
+
+        public function termosUso() {
+            require_once __DIR__ . "/../view/termsPage.php";
+        }
     }
 ?>

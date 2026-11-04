@@ -1,7 +1,7 @@
 Options -Indexes
 
-ErrorDocument 404 /Sakana/index.php
+ErrorDocument 404 /404.php
 
 RewriteEngine On
-RewriteRule ^(?:config|controller|model|service|docs)(?:/|$) - [F,L]
+RewriteRule ^(?:config|controller|model|service|docs|view|sql)(?:/|$) - [F,L]
 RewriteRule ^(?:\.git|composer\.(?:json|lock)|.*\.sql)$ - [F,L,NC]

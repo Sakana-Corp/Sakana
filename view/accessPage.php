@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Selecione o setor de acesso do simulador Sakana.">
+    <link rel="icon" type="image/png" href="view/images/logo.png">
     <title>Acesso | Sakana</title>
     <link rel="stylesheet" href="view/css/style.css">
 </head>
